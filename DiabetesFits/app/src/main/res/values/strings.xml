@@ -2,5 +2,8 @@
     <string name="app_name">DiabetesFits</string>
 
     <string name="app_intro_done">START</string>
-    <string name="app_intro_scn0"></string>
+    <string name="app_intro_scn0">Enss</string>
+
+    <string name="permission_alert_title">This app needs location access</string>
+    <string name="permission_alert_message">Please grant location access so this app can detect peripherals.</string>
 </resources>

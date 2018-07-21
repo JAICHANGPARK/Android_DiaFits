@@ -4,9 +4,12 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.dreamwalker.diabetesfits.R;
 
 import java.util.ArrayList;
 
@@ -15,10 +18,10 @@ class DeviceScanViewHolder extends RecyclerView.ViewHolder{
     TextView deviceName;
     TextView deviceAddress;
 
-    public DeviceScanViewHolder(View itemView, TextView deviceName, TextView deviceAddress) {
+    public DeviceScanViewHolder(View itemView) {
         super(itemView);
-        this.deviceName = deviceName;
-        this.deviceAddress = deviceAddress;
+        this.deviceName = itemView.findViewById(R.id.device_name);
+        this.deviceAddress = itemView.findViewById(R.id.device_address);
     }
 
 }
@@ -36,8 +39,8 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
     @NonNull
     @Override
     public DeviceScanViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        return null;
+        View itemView = LayoutInflater.from(context).inflate(R.layout.listitem_device, parent, false);
+        return new DeviceScanViewHolder(itemView);
     }
 
     @Override
