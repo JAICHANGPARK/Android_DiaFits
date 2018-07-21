@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
@@ -17,11 +18,12 @@ class DeviceScanViewHolder extends RecyclerView.ViewHolder{
 
     TextView deviceName;
     TextView deviceAddress;
-
+    LinearLayout container;
     public DeviceScanViewHolder(View itemView) {
         super(itemView);
         this.deviceName = itemView.findViewById(R.id.device_name);
         this.deviceAddress = itemView.findViewById(R.id.device_address);
+        this.container = itemView.findViewById(R.id.container);
     }
 
 }
@@ -30,6 +32,8 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
 
     ArrayList<BluetoothDevice> deviceArrayList;
     Context context;
+
+
 
     public DeviceScanAdapter(ArrayList<BluetoothDevice> deviceArrayList, Context context) {
         this.deviceArrayList = deviceArrayList;
@@ -53,6 +57,13 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
             holder.deviceName.setText(R.string.unknown_device);
 //        holder.deviceName.setText(deviceArrayList.get(position).getName());
         holder.deviceAddress.setText(deviceArrayList.get(position).getAddress());
+
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override

@@ -151,6 +151,9 @@ public class DeviceScanActivity extends AppCompatActivity {
                 public void run() {
                     mScanning = false;
                     bluetoothLeScanner.stopScan(leScanCallback);
+                    StateButton.setText("SCAN");
+                    animationView.cancelAnimation();
+                    animationView.setFrame(0);
                 }
             }, SCAN_PERIOD);
             mScanning = true;
@@ -165,11 +168,27 @@ public class DeviceScanActivity extends AppCompatActivity {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
 //            super.onScanResult(callbackType, result);
-
             BluetoothDevice device = result.getDevice();
-            bleDeviceList.add(device);
-            adapter.notifyDataSetChanged();
 
+            // TODO: 2018-07-21 장비가 중복되어 리스트에 추가되는 현상을 막아줍니다. - 박제창
+            if (bleDeviceList.size() < 1){
+                bleDeviceList.add(device);
+                adapter.notifyDataSetChanged();
+            }
+            else {
+                boolean flag = true;
+                for (int i = 0; i< bleDeviceList.size(); i++){
+                    if (device.getAddress().equals(bleDeviceList.get(i).getAddress())){
+                        flag = false;
+                    }
+                }
+                if (flag){
+                    bleDeviceList.add(device);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+            
+            //String address = device.getAddress();
         }
 
         @Override
@@ -201,6 +220,7 @@ public class DeviceScanActivity extends AppCompatActivity {
 
         } else {
             animationView.cancelAnimation();
+            animationView.setProgress(0);
             StateButton.setText("SCAN");
             scanLeDevice(false);
         }
@@ -258,6 +278,7 @@ public class DeviceScanActivity extends AppCompatActivity {
         adapter = new DeviceScanAdapter(bleDeviceList, this);
         recyclerView.setAdapter(adapter);
         scanLeDevice(true);
+        StateButton.setText("STOP");
     }
 
     @Override
