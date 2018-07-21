@@ -1,7 +1,9 @@
 package com.dreamwalker.diabetesfits.activity;
 
+import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -12,22 +14,33 @@ import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.remote.IUploadAPI;
 import com.dreamwalker.materiallogin.DefaultLoginView;
 import com.dreamwalker.materiallogin.DefaultRegisterView;
 import com.dreamwalker.materiallogin.MaterialLoginView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import io.paperdb.Paper;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static com.dreamwalker.diabetesfits.consts.Url.BASE_URL;
 
 public class LoginActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+    private static final String TAG = "LoginActivity";
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -38,10 +51,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
     private AutoCompleteTextView emailAutoComplete;
 
+    Retrofit retrofit;
+    IUploadAPI service;
+
+    String userName;
+    String userPassword;
+    String userUUID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Paper.init(this);
+        retrofit = new Retrofit.Builder().baseUrl(BASE_URL).build();
+        service = retrofit.create(IUploadAPI.class);
 //        bindView();
         final MaterialLoginView loginView = (MaterialLoginView) findViewById(R.id.login);
         ((DefaultLoginView) loginView.getLoginView()).setListener((loginUser, loginPass) -> {
@@ -59,6 +82,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
             }
             loginPass.setError("");
 
+
+            // TODO: 2018-07-21 로그인 구현 하기 - 박제창  
             Snackbar.make(loginView, "Login success!", Snackbar.LENGTH_LONG).show();
         });
 
@@ -83,6 +108,53 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 return;
             }
             registerPassRep.setError("");
+
+            userName = user;
+            userPassword = pass;
+
+            // TODO: 2018-07-21  등록 구현하기.
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+            builder.setTitle("확인");
+            builder.setMessage("등록하시겠어요?");
+            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Call<ResponseBody> commnet = service.registerUser(userName, userPassword);
+                    commnet.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            try {
+                                Log.e(TAG, "onResponse: " + response.toString());
+                                Log.e(TAG, "onResponse: " + response.body().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            Paper.book().write("userName", userName);
+                            Paper.book().write("userPwd", userPassword);
+
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                            builder.setTitle("Error");
+                            builder.setMessage("에러가 발생 하였습니다." + t.getMessage());
+                            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.show();
+                        }
+                    });
+                }
+            });
+            builder.show();
 
             Snackbar.make(loginView, "Register success!", Snackbar.LENGTH_LONG).show();
         });
