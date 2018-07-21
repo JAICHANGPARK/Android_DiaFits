@@ -2,7 +2,21 @@
     <string name="app_name">DiabetesFits</string>
 
     <string name="app_intro_done">START</string>
-    <string name="app_intro_scn0">Enss</string>
+
+    <string name="app_intro_scn0_title">Diabetes Grue Fitness</string>
+    <string name="app_intro_scn0">안녕하세요 당뇨그루-피트니스를 설치해주셔서 감사합니다.
+        운동부하 자동획득 디바이스와 혈당 입력을 통해 목표 혈당을 유지해보세요! 디바이스가 없어도 괜찮습니다.
+        꾸준히 운동 입력과 혈당 입력만으로 혈당 관리를 시작해보세요</string>
+
+    <string name="app_intro_scn1_title">Management Glucose with Fitness Machine</string>
+    <string name="app_intro_scn1">목표 혈당 구간을 유지를 위해서 꾸준한 운동이 필요합니다.
+        이제 당뇨그루 운동 부하 자동 기록 디바이스가 여러분의 운동 기록을 편하게 도와줄겁니다.
+        운동 전/후 혈당 기록으로 목표하는 혈당 유지를 이뤄보세요.</string>
+
+    <string name="app_intro_scn2_title">Connect Automatic Fitness Device</string>
+    <string name="app_intro_scn2">Treadmill 과 Indoor Bike 중 운동부하 자동 기록기 스캔을 통해 장비를 등록하세요.
+        장비를 검색하기 위해서 1개의 권한 허가가 필요합니다.
+        만약 허용하지 않는다면 장비 검색이 되지 않습니다.</string>
 
     <string name="permission_alert_title">This app needs location access</string>
     <string name="permission_alert_message">Please grant location access so this app can detect peripherals.</string>

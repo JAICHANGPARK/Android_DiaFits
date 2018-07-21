@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
-import com.dreamwalker.diabetesfits.activity.HomeActivity;
+import com.dreamwalker.diabetesfits.activity.LoginActivity;
 import com.dreamwalker.diabetesfits.consts.IntentConst;
 
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
                         editor.putBoolean("activity_executed",true);
                         editor.apply();
 
-                        Intent intent = new Intent(context, HomeActivity.class);
+                        Intent intent = new Intent(context, LoginActivity.class);
                         intent.putExtra(IntentConst.EXTRAS_DEVICE_NAME, deviceName);
                         intent.putExtra(IntentConst.EXTRAS_DEVICE_ADDRESS, deviceAddress);
                         context.startActivity(intent);

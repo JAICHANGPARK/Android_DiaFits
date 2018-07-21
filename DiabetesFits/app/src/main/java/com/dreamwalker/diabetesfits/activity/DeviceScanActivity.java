@@ -221,7 +221,7 @@ public class DeviceScanActivity extends AppCompatActivity {
         editor.putBoolean("activity_executed",true);
         editor.apply();
 
-        startActivity(new Intent(this, HomeActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
         finish();
     }
 

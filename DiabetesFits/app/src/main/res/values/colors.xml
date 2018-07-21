@@ -7,6 +7,7 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="device_scan_background">#2ECC71</color>
+    <color name="login_background">#E3E3E3</color>
 
     <color name="color1">#c6ff00</color>
     <color name="color2">#02A8F4</color>
@@ -18,5 +19,11 @@
     <color name="guillotine_background">#444153</color>
     <color name="guillotine_background_dark">#383547</color>
     <color name="selected_item_color">#30d1d5</color>
+
+
+    <!--<color name="material_login_login_color">#000000</color>-->
+    <!--<color name="material_login_register_color">#00ff37</color>-->
+    <!--<color name="material_login_login_error_color">#ffbebe</color>-->
+    <!--<color name="material_login_register_error_color">#600002</color>-->
 
 </resources>
