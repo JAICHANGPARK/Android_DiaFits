@@ -13,4 +13,10 @@
     <string name="unknown_characteristic">Unknown characteristic</string>
     <string name="unknown_service">Unknown service</string>
 
+    <string name="home">HOME</string>
+    <string name="profile">PROFILE</string>
+    <string name="feed">FEED</string>
+    <string name="activity">ACTIVITY</string>
+    <string name="settings">SETTINGS</string>
 </resources>
+

@@ -19,7 +19,9 @@
 
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.HomeActivity"></activity>
+        <activity
+            android:name=".activity.HomeActivity"
+            android:theme="@style/AppTheme.Main"></activity>
         <activity
             android:name=".activity.AppIntroVerticalActivity"
             android:theme="@style/VerticalIntroStyle">

@@ -27,7 +27,7 @@ public class AppIntroVerticalActivity extends VerticalIntro {
         super.onStart();
         pref = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
         if(pref.getBoolean("activity_executed", false)){
-            Intent intent = new Intent(this, DeviceScanActivity.class);
+            Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();
         }
@@ -35,8 +35,6 @@ public class AppIntroVerticalActivity extends VerticalIntro {
 
     @Override
     protected void init() {
-
-
 //        else {
 //            SharedPreferences.Editor ed = pref.edit();
 //            ed.putBoolean("activity_executed", true);
@@ -103,9 +101,6 @@ public class AppIntroVerticalActivity extends VerticalIntro {
 
     @Override
     protected void onDonePressed() {
-        SharedPreferences.Editor ed = pref.edit();
-        ed.putBoolean("activity_executed", true);
-        ed.apply();
 
         Intent intent = new Intent(this, DeviceScanActivity.class);
         startActivity(intent);

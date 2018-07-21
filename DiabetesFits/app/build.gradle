@@ -45,6 +45,7 @@ dependencies {
     implementation 'io.paperdb:paperdb:2.6' //paper
 
     implementation 'de.cketti.library.changelog:ckchangelog:1.2.2' //change log
+    implementation 'com.github.Yalantis:GuillotineMenu-Android:1.2'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

@@ -12,6 +12,7 @@ import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -61,23 +62,34 @@ public class DeviceScanActivity extends AppCompatActivity {
     ArrayList<BluetoothDevice> bleDeviceList;
 
 
-    Handler handler;
-
-
-    BluetoothAdapter bluetoothAdapter;
-    BluetoothLeScanner bluetoothLeScanner;
-    boolean mScanning;
 
 
     BluetoothManager bluetoothManager;
+    BluetoothAdapter bluetoothAdapter;
+    BluetoothLeScanner bluetoothLeScanner;
+
+    Handler handler;
+
+    boolean mScanning;
+
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_scan);
+//
+//        SharedPreferences preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
+//        if (preferences.getBoolean("activity_init_scan", false)){
+//            Intent intent = new Intent(this, HomeActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//
         setStatusBar();
         viewBinding();
         checkScanPermission();
+        preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
 
         bleDeviceList = new ArrayList<>();
         handler = new Handler();
@@ -204,6 +216,11 @@ public class DeviceScanActivity extends AppCompatActivity {
 
     @OnClick(R.id.textView)
     public void onClickedSkipButton() {
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("activity_executed",true);
+        editor.apply();
+
         startActivity(new Intent(this, HomeActivity.class));
         finish();
     }
