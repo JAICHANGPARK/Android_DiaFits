@@ -3,4 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="device_scan_background">#2ECC71</color>
+
+    <color name="color1">#c6ff00</color>
+    <color name="color2">#02A8F4</color>
+    <color name="color3">#6739B7</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000</color>
+
 </resources>

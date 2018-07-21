@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">DiabetesFits</string>
+
+    <string name="app_intro_done">START</string>
+    <string name="app_intro_scn0"></string>
 </resources>
