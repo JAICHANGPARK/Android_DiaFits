@@ -46,6 +46,13 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
     @Override
     public void onBindViewHolder(@NonNull DeviceScanViewHolder holder, int position) {
 
+        final String deviceName = deviceArrayList.get(position).getName();
+        if (deviceName != null && deviceName.length() > 0)
+            holder.deviceName.setText(deviceName);
+        else
+            holder.deviceName.setText(R.string.unknown_device);
+//        holder.deviceName.setText(deviceArrayList.get(position).getName());
+        holder.deviceAddress.setText(deviceArrayList.get(position).getAddress());
     }
 
     @Override

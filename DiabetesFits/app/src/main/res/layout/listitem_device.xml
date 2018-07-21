@@ -21,11 +21,14 @@
         android:id="@+id/device_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:textSize="24sp" />
 
     <TextView
-        android:layout_margin="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:id="@+id/device_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
