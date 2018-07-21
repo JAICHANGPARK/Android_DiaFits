@@ -106,7 +106,8 @@ public class AppIntroVerticalActivity extends VerticalIntro {
         SharedPreferences.Editor ed = pref.edit();
         ed.putBoolean("activity_executed", true);
         ed.apply();
-        Intent intent = new Intent(this, HomeActivity.class);
+
+        Intent intent = new Intent(this, DeviceScanActivity.class);
         startActivity(intent);
         finish();
 
