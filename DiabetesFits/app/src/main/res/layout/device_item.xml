@@ -28,7 +28,7 @@
                 android:clickable="true"
                 android:longClickable="true"
                 android:background="?android:attr/selectableItemBackground"
-                android:src="@drawable/stationary_bike"
+                android:src="@drawable/device_icon"
                 android:layout_marginTop="8dp"
                 android:focusable="true" />
 
@@ -67,7 +67,7 @@
                 android:contentDescription="@string/controlcenter_start_activity_tracks"
                 android:padding="4dp"
                 android:scaleType="fitXY"
-                android:tint="@color/secondarytext"
+                android:tint="@color/white"
                 card_view:srcCompat="@drawable/ic_activity_tracks"
                 android:focusable="true" />
 
@@ -84,14 +84,10 @@
                 android:layout_below="@id/device_image"
                 android:layout_toEndOf="@id/device_action_show_activity_tracks"
                 android:contentDescription="@string/candidate_item_device_image"
-                android:tint="@color/secondarytext"
+                android:tint="@color/white"
                 android:background="?android:attr/selectableItemBackground"
                 card_view:srcCompat="@drawable/ic_info_outline_black_24dp"
                 android:focusable="true" />
-
-
-
-
 
         </RelativeLayout>
 

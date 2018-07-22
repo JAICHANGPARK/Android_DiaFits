@@ -19,6 +19,7 @@ import com.dreamwalker.diabetesfits.activity.LoginActivity;
 import com.dreamwalker.diabetesfits.model.Device;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import io.paperdb.Paper;
 
@@ -45,7 +46,7 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
 
 //    HashMap<String,String> deviceMap = new HashMap<>();
     //ArrayList<HashMap<String,String>> deviceDatabase = new ArrayList<>();
-    ArrayList<Device> deviceDatabase = new ArrayList<>();
+    HashSet<Device> deviceDatabase = new HashSet<>();
 
     public DeviceScanAdapter(ArrayList<BluetoothDevice> deviceArrayList, Context context) {
         this.deviceArrayList = deviceArrayList;

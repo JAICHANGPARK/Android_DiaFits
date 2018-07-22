@@ -26,6 +26,7 @@ import com.dreamwalker.diabetesfits.remote.IUploadAPI;
 import com.yalantis.guillotine.animation.GuillotineAnimation;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,7 +71,8 @@ public class HomeActivity extends AppCompatActivity {
 
     //HashMap<String, String> deviceMap = new HashMap<>();
     //ArrayList<HashMap<String, String>> deviceArrayList = new ArrayList<>();
-    ArrayList<Device> deviceArrayList = new ArrayList<>();
+    HashSet<Device> deviceDatabase = new HashSet<>();
+    ArrayList<Device> deviceArrayList;
 
     String userID;
     final String pageNum = String.valueOf(PageConst.HOME_PAGE);
@@ -103,6 +105,7 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Validate> call, Response<Validate> response) {
 
                 }
+
                 @Override
                 public void onFailure(Call<Validate> call, Throwable t) {
                     Toast.makeText(HomeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -110,7 +113,7 @@ public class HomeActivity extends AppCompatActivity {
             });
 
         } else {
-            Snackbar.make(getWindow().getDecorView().getRootView(),"인터넷 연결 없음", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(getWindow().getDecorView().getRootView(), "인터넷 연결 없음", Snackbar.LENGTH_SHORT).show();
             Log.e("연결 안 됨", "연결이 다시 한번 확인해주세요");
         }
 
@@ -119,7 +122,7 @@ public class HomeActivity extends AppCompatActivity {
 
         tabBar.setOnFoldingItemClickListener(menuItem -> {
             Log.e(TAG, "onFoldingItemSelected: " + menuItem.getItemId());
-            switch (menuItem.getItemId()){
+            switch (menuItem.getItemId()) {
                 case R.id.ftb_menu_nearby:
 
                     startActivity(new Intent(HomeActivity.this, DeviceChooseActivity.class));
@@ -143,13 +146,13 @@ public class HomeActivity extends AppCompatActivity {
 //            deviceArrayList.add(deviceMap);
 //            Paper.book("device").write("user_device", deviceArrayList);
 //        }
-        deviceArrayList = Paper.book("device").read("user_device");
-        if (deviceArrayList != null) {
-            if (deviceArrayList.size() != 0) {
+        deviceDatabase = Paper.book("device").read("user_device");
+        if (deviceDatabase != null) {
+            if (deviceDatabase.size() != 0) {
 
                 deviceLayout.setVisibility(View.VISIBLE);
                 emptyLayout.setVisibility(View.GONE);
-
+                deviceArrayList = new ArrayList<>(deviceDatabase);
                 deviceAdapter = new DeviceAdapter(this, deviceArrayList);
                 recyclerView.setAdapter(deviceAdapter);
 
