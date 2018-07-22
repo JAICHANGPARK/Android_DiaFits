@@ -1,6 +1,7 @@
 package com.dreamwalker.diabetesfits.activity.sync;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.activity.chart.AnalysisBSActivity;
 import com.dreamwalker.diabetesfits.adapter.isens.BSMSyncAdapter;
 import com.dreamwalker.diabetesfits.model.isens.BloodSugar;
 import com.mingle.entity.MenuEntity;
@@ -315,7 +317,7 @@ public class SyncBMSResultActivity extends AppCompatActivity {
                     mSweetSheet.dismiss();
                     break;
                 case 1:
-                    //startActivity(new Intent(SyncBMSResultActivity.this, AnalysisBSActivity.class));
+                    startActivity(new Intent(SyncBMSResultActivity.this, AnalysisBSActivity.class));
                     break;
                 case 2:
                     break;
