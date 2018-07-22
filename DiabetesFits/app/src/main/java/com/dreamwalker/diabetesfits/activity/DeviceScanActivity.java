@@ -8,7 +8,9 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -160,7 +162,8 @@ public class DeviceScanActivity extends AppCompatActivity {
                 }
             }, SCAN_PERIOD);
             mScanning = true;
-            bluetoothLeScanner.startScan(leScanCallback);
+            startNEWBTLEDiscovery();
+            //bluetoothLeScanner.startScan(leScanCallback);
         } else {
             mScanning = false;
             bluetoothLeScanner.stopScan(leScanCallback);
@@ -290,4 +293,46 @@ public class DeviceScanActivity extends AppCompatActivity {
         scanLeDevice(false);
         bleDeviceList.clear();
     }
+
+    private void stopBLEDiscovery() {
+        if (adapter != null)
+            bluetoothLeScanner.stopScan(leScanCallback);
+    }
+
+    // New BTLE Discovery use startScan (List<ScanFilter> filters,
+    //                                  ScanSettings settings,
+    //                                  ScanCallback callback)
+    // It's added on API21
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void startNEWBTLEDiscovery() {
+        // Only use new API when user uses Lollipop+ device
+        bluetoothLeScanner.startScan(getScanFilters(), getScanSettings(), leScanCallback);
+    }
+
+    private List<ScanFilter> getScanFilters() {
+        List<ScanFilter> allFilters = new ArrayList<>();
+        ScanFilter scanFilter0 = new ScanFilter.Builder().setDeviceName("KNU EG0").build();
+        allFilters.add(scanFilter0);
+//        ScanFilter scanFilter1 = new ScanFilter.Builder().setDeviceName("").build();
+//        for (DeviceCoordinator coordinator : DeviceHelper.getInstance().getAllCoordinators()) {
+//            allFilters.addAll(coordinator.createBLEScanFilters());
+//        }
+        return allFilters;
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private ScanSettings getScanSettings() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            return new ScanSettings.Builder()
+                    .setScanMode(android.bluetooth.le.ScanSettings.SCAN_MODE_LOW_LATENCY)
+                    .setMatchMode(android.bluetooth.le.ScanSettings.MATCH_MODE_STICKY)
+                    .build();
+        } else {
+            return new ScanSettings.Builder()
+                    .setScanMode(android.bluetooth.le.ScanSettings.SCAN_MODE_LOW_LATENCY)
+                    .build();
+        }
+    }
+
 }
