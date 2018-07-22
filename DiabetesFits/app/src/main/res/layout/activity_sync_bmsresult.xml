@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.sync.SyncBMSResultActivity">
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar_add_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:title="동기화 결과" />
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/bsm_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
+
+        <LinearLayout
+            android:gravity="center|center_vertical|clip_horizontal"
+            android:id="@+id/animationLayout"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:id="@+id/animation_view"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                app:lottie_autoPlay="false"
+                app:lottie_fileName="empty.json"
+                app:lottie_loop="true" />
+            <TextView
+                android:layout_marginTop="24dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:text="동기화할 데이터가 없어요"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:backgroundTint="@color/colorPrimary"
+            android:clickable="true"
+            android:src="@drawable/ic_add_black_24dp"
+            app:elevation="6dp"
+            app:layout_anchor="@+id/bsm_recycler_view"
+            app:layout_anchorGravity="bottom|end"
+            app:rippleColor="@color/colorAccent" />
+
+        <!--<FrameLayout-->
+        <!--android:id="@+id/fragment_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<com.michaldrabik.tapbarmenulib.TapBarMenu-->
+        <!--android:id="@+id/tapBarMenu"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="56dp"-->
+        <!--android:layout_gravity="bottom"-->
+        <!--android:layout_marginBottom="24dp"-->
+        <!--app:tbm_backgroundColor="@color/red"-->
+        <!--app:tbm_buttonMarginRight="16dp"-->
+        <!--app:tbm_buttonPosition="right"-->
+        <!--app:tbm_menuAnchor="bottom">-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/item1"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:src="@drawable/ic_person_black_24dp"-->
+        <!--tools:visibility="visible" />-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/item2"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:src="@drawable/ic_show_chart_black_24dp" />-->
+
+        <!--<Space-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1" />-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/item3"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:src="@drawable/ic_show_chart_black_24dp" />-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/item4"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:paddingBottom="10dp"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:src="@drawable/ic_add_black_24dp" />-->
+
+        <!--</com.michaldrabik.tapbarmenulib.TapBarMenu>-->
+        <!--</FrameLayout>-->
+    </android.support.design.widget.CoordinatorLayout>
+
+</RelativeLayout>

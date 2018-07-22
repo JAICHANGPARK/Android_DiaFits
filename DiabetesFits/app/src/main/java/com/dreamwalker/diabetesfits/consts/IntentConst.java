@@ -5,4 +5,6 @@ public class IntentConst {
     public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
 
+    public static final String SYNC_BSM_DEVICE = "SYNC_BSM_DEVICE";
+
 }

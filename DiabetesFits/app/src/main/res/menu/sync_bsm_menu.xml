@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.dreamwalker.knu2018.dteacher.BSMSync.SyncBMSResultActivity">
+    <item
+        android:id="@+id/save"
+        android:title="저장하기"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/analysis"
+        android:icon="@drawable/ic_bubble_chart_black_24dp"
+        android:title="데이터 분석"
+        app:showAsAction="never"/>
+
+</menu>

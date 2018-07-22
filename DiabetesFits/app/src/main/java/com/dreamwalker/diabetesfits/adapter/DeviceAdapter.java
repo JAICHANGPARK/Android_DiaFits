@@ -18,9 +18,11 @@
 package com.dreamwalker.diabetesfits.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +33,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.activity.sync.SyncBSMDataActivity;
 import com.dreamwalker.diabetesfits.consts.isens.PremierNConst;
 import com.dreamwalker.diabetesfits.model.Device;
 
 import java.util.List;
+
+import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_BSM_DEVICE;
 
 
 /**
@@ -122,21 +127,27 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 //        }
 
 
-        if (deviceName.equals(PremierNConst.PREMIER_N_BLE)){
+        if (deviceName.equals(PremierNConst.PREMIER_N_BLE)) {
             holder.fetchActivityData.setVisibility(View.VISIBLE);
             holder.showActivityTracks.setVisibility(View.GONE);
-        }else {
+        } else {
             holder.fetchActivityData.setVisibility(View.VISIBLE);
         }
         //fetch activity data
 //        holder.fetchActivityDataBox.setVisibility((device.isInitialized() && coordinator.supportsActivityDataFetching()) ? View.VISIBLE : View.GONE);
-        holder.fetchActivityData.setOnClickListener(new View.OnClickListener()
-
-                                                    {
+        holder.fetchActivityData.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
-//                                                            showTransientSnackbar(R.string.busy_task_fetch_activity_data);
-//                                                            GBApplication.deviceService().onFetchRecordedData(RecordedDataTypes.TYPE_ACTIVITY);
+                                                            switch (deviceName) {
+                                                                case PremierNConst.PREMIER_N_BLE:
+                                                                    Log.e("클릭됨", "onClick: 클릭툄" );
+                                                                    Intent bsmIntent = new Intent(context, SyncBSMDataActivity.class);
+                                                                    bsmIntent.putExtra(SYNC_BSM_DEVICE, deviceAddress);
+                                                                    context.startActivity(bsmIntent);
+                                                                    break;
+                                                                default:
+                                                                    break;
+                                                            }
                                                         }
                                                     }
         );
