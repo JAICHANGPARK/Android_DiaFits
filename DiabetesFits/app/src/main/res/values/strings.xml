@@ -36,6 +36,7 @@
 
     <string name="candidate_item_device_image">Device image</string>
     <string name="controlcenter_start_activity_tracks">Your activity tracks</string>
+    <string name="controlcenter_fetch_activity_data">Synchronize</string>
     <string name="not_connected">Not connected</string>
     <string name="connecting">Connecting</string>
     <string name="connected">Connected</string>

@@ -9,6 +9,8 @@ public class PremierNConst {
 
     public final static int BLE_SCAN_DURATION = 5000;
 
+    public final static String PREMIER_N_BLE = "CareSens 0701";
+
     public final static String INTENT_BLE_EXTRA_DATA 			= "com.isens.standard.ble.BLE_EXTRA_DATA";
     public final static String INTENT_BLE_CONNECTED_DEVICE		= "com.isens.standard.ble.BLE_CONNECTED_DEVICE";
     public final static String INTENT_BLE_BONDED = "air.SmartLog.android.ble.BLE_BONDED";

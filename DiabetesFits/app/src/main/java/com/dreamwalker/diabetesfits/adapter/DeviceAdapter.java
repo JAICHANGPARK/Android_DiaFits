@@ -31,6 +31,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.consts.isens.PremierNConst;
 import com.dreamwalker.diabetesfits.model.Device;
 
 import java.util.List;
@@ -91,8 +92,11 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         //holder.deviceImageView.setImageLevel(device.getType().getKey() + 100 + (device.isInitialized() ? 100 : 0));
 
         //holder.deviceNameLabel.setText(getUniqueDeviceName(device));
+        String deviceName = deviceList.get(position).getDeviceName();
+        String deviceAddress = deviceList.get(position).getDeviceAddress();
         holder.deviceNameLabel.setText(deviceList.get(position).getDeviceName());
         holder.deviceStatusLabel.setText(deviceList.get(position).getDeviceAddress());
+
 //        if (device.isBusy()) {
 //            holder.deviceStatusLabel.setText(device.getBusyTask());
 //            holder.busyIndicator.setVisibility(View.VISIBLE);
@@ -117,18 +121,25 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 //            }
 //        }
 
-//        //fetch activity data
+
+        if (deviceName.equals(PremierNConst.PREMIER_N_BLE)){
+            holder.fetchActivityData.setVisibility(View.VISIBLE);
+            holder.showActivityTracks.setVisibility(View.GONE);
+        }else {
+            holder.fetchActivityData.setVisibility(View.VISIBLE);
+        }
+        //fetch activity data
 //        holder.fetchActivityDataBox.setVisibility((device.isInitialized() && coordinator.supportsActivityDataFetching()) ? View.VISIBLE : View.GONE);
-//        holder.fetchActivityData.setOnClickListener(new View.OnClickListener()
-//
-//                                                    {
-//                                                        @Override
-//                                                        public void onClick(View v) {
+        holder.fetchActivityData.setOnClickListener(new View.OnClickListener()
+
+                                                    {
+                                                        @Override
+                                                        public void onClick(View v) {
 //                                                            showTransientSnackbar(R.string.busy_task_fetch_activity_data);
 //                                                            GBApplication.deviceService().onFetchRecordedData(RecordedDataTypes.TYPE_ACTIVITY);
-//                                                        }
-//                                                    }
-//        );
+                                                        }
+                                                    }
+        );
 
 
 //        //take screenshot
@@ -207,12 +218,12 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         //ItemWithDetailsAdapter infoAdapter = new ItemWithDetailsAdapter(context, device.getDeviceInfos());
         //infoAdapter.setHorizontalAlignment(true);
-       // holder.deviceInfoList.setAdapter(infoAdapter);
+        // holder.deviceInfoList.setAdapter(infoAdapter);
         //justifyListViewHeightBasedOnChildren(holder.deviceInfoList);
         //holder.deviceInfoList.setFocusable(false);
 
         //final boolean detailsShown = position == expandedDevicePosition;
-       // boolean showInfoIcon = device.hasDeviceInfos() && !device.isBusy();
+        // boolean showInfoIcon = device.hasDeviceInfos() && !device.isBusy();
         //holder.deviceInfoView.setVisibility(showInfoIcon ? View.VISIBLE : View.GONE);
         //holder.deviceInfoBox.setActivated(detailsShown);
         //holder.deviceInfoBox.setVisibility(detailsShown ? View.VISIBLE : View.GONE);
@@ -349,6 +360,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
             deviceStatusLabel = view.findViewById(R.id.device_status);
 
             //actions
+            fetchActivityData = view.findViewById(R.id.device_action_fetch_activity);
             showActivityTracks = view.findViewById(R.id.device_action_show_activity_tracks);
             deviceInfoView = view.findViewById(R.id.device_info_image);
 

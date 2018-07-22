@@ -45,9 +45,10 @@
             android:orientation="vertical">
 
             <TextView
+                android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="내 장비"
+                android:text="등록된 디바이스"
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 

@@ -29,7 +29,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -52,9 +51,6 @@ public class MachineScanActivity extends AppCompatActivity {
 
     @BindView(R.id.animation_view)
     LottieAnimationView animationView;
-
-    @BindView(R.id.textView)
-    TextView skipTextView;
 
     @BindView(R.id.button)
     Button StateButton;
@@ -210,16 +206,6 @@ public class MachineScanActivity extends AppCompatActivity {
         }
     };
 
-    @OnClick(R.id.textView)
-    public void onClickedSkipButton() {
-
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("activity_executed", true);
-        editor.apply();
-
-        startActivity(new Intent(this, LoginActivity.class));
-        finish();
-    }
 
     @OnClick(R.id.button)
     public void onClickScanButton() {

@@ -41,6 +41,8 @@ public class DeviceSearchAdapter extends RecyclerView.Adapter<DeviceSearchViewHo
     Context context;
     ArrayList<Device> deviceArrayList;
     HashSet<Device> deviceDatabase = new HashSet<>();
+    ArrayList<Device> tmpArrayList;
+    boolean flag = false;
 
     public DeviceSearchAdapter(Context context, ArrayList<Device> deviceArrayList) {
         this.context = context;
@@ -76,23 +78,42 @@ public class DeviceSearchAdapter extends RecyclerView.Adapter<DeviceSearchViewHo
                 // TODO: 2018-07-22 기존 장비 케시 데이터베이스를 가져온다.
                 if (Paper.book("device").read("user_device") != null) {
                     deviceDatabase = Paper.book("device").read("user_device");
+                    tmpArrayList = new ArrayList<>(deviceDatabase);
 
-                    if (deviceDatabase == null) {
-                        // TODO: 2018-07-22 없으면 추가해서 저장하고
-                        deviceDatabase.add(new Device(deviceName, deviceAddress));
-                        Paper.book("device").write("user_device", deviceDatabase);
+                    for (Device d : tmpArrayList) {
 
-                    } else {
-                        for (Device s : deviceDatabase) {
-                            if (s.getDeviceAddress().equals(deviceAddress)) {
-                                Log.e("혈당계 추가  ", "onBindViewHolder: " + "이미 장비 추가되어 있음");
-                            } else {
-                                // TODO: 2018-07-22 있으면 가져온 데이터베이스에 추가해서 저장한다.
-                                deviceDatabase.add(new Device(deviceName, deviceAddress));
-                                Paper.book("device").write("user_device", deviceDatabase);
-                            }
+                        if (d.getDeviceAddress().equals(deviceAddress)) {
+                            flag = true;
+                            Log.e("디바이스 ", "onBindViewHolder: " + d.getDeviceAddress());
+                            Log.e("디바이스  ", "onBindViewHolder: " + "이미 장비 추가되어 있음");
+                        } else {
+                            flag = false;
+//                                // TODO: 2018-07-22 있으면 가져온 데이터베이스에 추가해서 저장한다.
+//                                deviceDatabase.add(new Device(deviceName, deviceAddress));
+//                                Paper.book("device").write("user_device", deviceDatabase);
                         }
                     }
+
+                    if (!flag) {
+                        deviceDatabase.add(new Device(deviceName, deviceAddress));
+                        Paper.book("device").write("user_device", deviceDatabase);
+                    }
+//                    if (deviceDatabase == null) {
+//                        // TODO: 2018-07-22 없으면 추가해서 저장하고
+//                        deviceDatabase.add(new Device(deviceName, deviceAddress));
+//                        Paper.book("device").write("user_device", deviceDatabase);
+//
+//                    } else {
+//                        for (Device s : deviceDatabase) {
+//                            if (s.getDeviceAddress().equals(deviceAddress)) {
+//                                Log.e("혈당계 추가  ", "onBindViewHolder: " + "이미 장비 추가되어 있음");
+//                            } else {
+//                                // TODO: 2018-07-22 있으면 가져온 데이터베이스에 추가해서 저장한다.
+//                                deviceDatabase.add(new Device(deviceName, deviceAddress));
+//                                Paper.book("device").write("user_device", deviceDatabase);
+//                            }
+//                        }
+//                    }
 
                 } else {
                     deviceDatabase.add(new Device(deviceName, deviceAddress));
