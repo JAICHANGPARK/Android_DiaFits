@@ -1,0 +1,358 @@
+/*  Copyright (C) 2015-2018 Andreas Shimokawa, Carsten Pfeiffer, Daniele
+    Gobbetti, Lem Dulfo
+
+    This file is part of Gadgetbridge.
+
+    Gadgetbridge is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published
+    by the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Gadgetbridge is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
+package com.dreamwalker.diabetesfits.adapter;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.model.Device;
+
+import java.util.List;
+
+
+/**
+ * Adapter for displaying GBDevice instances.
+ */
+public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder> {
+
+    private final Context context;
+    private List<Device> deviceList;
+    private int expandedDevicePosition = RecyclerView.NO_POSITION;
+    private ViewGroup parent;
+
+    public DeviceAdapter(Context context, List<Device> deviceList) {
+        this.context = context;
+        this.deviceList = deviceList;
+    }
+
+    @NonNull
+    @Override
+    public DeviceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        this.parent = parent;
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.device_item, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
+        //final GBDevice device = deviceList.get(position);
+        //final DeviceCoordinator coordinator = DeviceHelper.getInstance().getCoordinator(device);
+
+        holder.container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                if (device.isInitialized() || device.isConnected()) {
+//                    showTransientSnackbar(R.string.controlcenter_snackbar_need_longpress);
+//                } else {
+//                    showTransientSnackbar(R.string.controlcenter_snackbar_connecting);
+//                    GBApplication.deviceService().connect(device);
+//                }
+            }
+        });
+
+        holder.container.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+//                if (device.getState() != GBDevice.State.NOT_CONNECTED) {
+//                    showTransientSnackbar(R.string.controlcenter_snackbar_disconnecting);
+//                    GBApplication.deviceService().disconnect();
+//                }
+                return true;
+            }
+        });
+        //holder.deviceImageView.setImageResource(R.drawable.level_list_device);
+        //level-list does not allow negative values, hence we always add 100 to the key.
+        //holder.deviceImageView.setImageLevel(device.getType().getKey() + 100 + (device.isInitialized() ? 100 : 0));
+
+        //holder.deviceNameLabel.setText(getUniqueDeviceName(device));
+        holder.deviceNameLabel.setText(deviceList.get(position).getDeviceName());
+        holder.deviceStatusLabel.setText(deviceList.get(position).getDeviceAddress());
+//        if (device.isBusy()) {
+//            holder.deviceStatusLabel.setText(device.getBusyTask());
+//            holder.busyIndicator.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.deviceStatusLabel.setText(device.getStateString());
+//            holder.busyIndicator.setVisibility(View.INVISIBLE);
+//        }
+
+//        //begin of action row
+//        //battery
+//        holder.batteryStatusBox.setVisibility(View.GONE);
+//        short batteryLevel = device.getBatteryLevel();
+//        if (batteryLevel != GBDevice.BATTERY_UNKNOWN) {
+//            holder.batteryStatusBox.setVisibility(View.VISIBLE);
+//            holder.batteryStatusLabel.setText(device.getBatteryLevel() + "%");
+//            BatteryState batteryState = device.getBatteryState();
+//            if (BatteryState.BATTERY_CHARGING.equals(batteryState) ||
+//                    BatteryState.BATTERY_CHARGING_FULL.equals(batteryState)) {
+//                holder.batteryIcon.setImageLevel(device.getBatteryLevel() + 100);
+//            } else {
+//                holder.batteryIcon.setImageLevel(device.getBatteryLevel());
+//            }
+//        }
+
+//        //fetch activity data
+//        holder.fetchActivityDataBox.setVisibility((device.isInitialized() && coordinator.supportsActivityDataFetching()) ? View.VISIBLE : View.GONE);
+//        holder.fetchActivityData.setOnClickListener(new View.OnClickListener()
+//
+//                                                    {
+//                                                        @Override
+//                                                        public void onClick(View v) {
+//                                                            showTransientSnackbar(R.string.busy_task_fetch_activity_data);
+//                                                            GBApplication.deviceService().onFetchRecordedData(RecordedDataTypes.TYPE_ACTIVITY);
+//                                                        }
+//                                                    }
+//        );
+
+
+//        //take screenshot
+//        holder.takeScreenshotView.setVisibility((device.isInitialized() && coordinator.supportsScreenshots()) ? View.VISIBLE : View.GONE);
+//        holder.takeScreenshotView.setOnClickListener(new View.OnClickListener()
+//
+//                                                     {
+//                                                         @Override
+//                                                         public void onClick(View v) {
+//                                                             showTransientSnackbar(R.string.controlcenter_snackbar_requested_screenshot);
+//                                                             GBApplication.deviceService().onScreenshotReq();
+//                                                         }
+//                                                     }
+//        );
+//
+//        //manage apps
+//        holder.manageAppsView.setVisibility((device.isInitialized() && coordinator.supportsAppsManagement()) ? View.VISIBLE : View.GONE);
+//        holder.manageAppsView.setOnClickListener(new View.OnClickListener()
+//
+//                                                 {
+//                                                     @Override
+//                                                     public void onClick(View v) {
+//                                                         DeviceCoordinator coordinator = DeviceHelper.getInstance().getCoordinator(device);
+//                                                         Class<? extends Activity> appsManagementActivity = coordinator.getAppsManagementActivity();
+//                                                         if (appsManagementActivity != null) {
+//                                                             Intent startIntent = new Intent(context, appsManagementActivity);
+//                                                             startIntent.putExtra(GBDevice.EXTRA_DEVICE, device);
+//                                                             context.startActivity(startIntent);
+//                                                         }
+//                                                     }
+//                                                 }
+//        );
+//
+//        //set alarms
+//        holder.setAlarmsView.setVisibility(coordinator.supportsAlarmConfiguration() ? View.VISIBLE : View.GONE);
+//        holder.setAlarmsView.setOnClickListener(new View.OnClickListener()
+//
+//                                                {
+//                                                    @Override
+//                                                    public void onClick(View v) {
+//                                                        Intent startIntent;
+//                                                        startIntent = new Intent(context, ConfigureAlarms.class);
+//                                                        startIntent.putExtra(GBDevice.EXTRA_DEVICE, device);
+//                                                        context.startActivity(startIntent);
+//                                                    }
+//                                                }
+//        );
+
+//        //show graphs
+//        holder.showActivityGraphs.setVisibility(coordinator.supportsActivityTracking() ? View.VISIBLE : View.GONE);
+//        holder.showActivityGraphs.setOnClickListener(new View.OnClickListener()
+//
+//                                                     {
+//                                                         @Override
+//                                                         public void onClick(View v) {
+//                                                             Intent startIntent;
+//                                                             startIntent = new Intent(context, ChartsActivity.class);
+//                                                             startIntent.putExtra(GBDevice.EXTRA_DEVICE, device);
+//                                                             context.startActivity(startIntent);
+//                                                         }
+//                                                     }
+//        );
+
+        //show activity tracks
+        //holder.showActivityTracks.setVisibility(coordinator.supportsActivityTracks() ? View.VISIBLE : View.GONE);
+        holder.showActivityTracks.setOnClickListener(new View.OnClickListener() {
+                                                         @Override
+                                                         public void onClick(View v) {
+//                                                             Intent startIntent;
+//                                                             startIntent = new Intent(context, ActivitySummariesActivity.class);
+//                                                             startIntent.putExtra(GBDevice.EXTRA_DEVICE, device);
+//                                                             context.startActivity(startIntent);
+                                                         }
+                                                     }
+        );
+
+        //ItemWithDetailsAdapter infoAdapter = new ItemWithDetailsAdapter(context, device.getDeviceInfos());
+        //infoAdapter.setHorizontalAlignment(true);
+       // holder.deviceInfoList.setAdapter(infoAdapter);
+        //justifyListViewHeightBasedOnChildren(holder.deviceInfoList);
+        //holder.deviceInfoList.setFocusable(false);
+
+        //final boolean detailsShown = position == expandedDevicePosition;
+       // boolean showInfoIcon = device.hasDeviceInfos() && !device.isBusy();
+        //holder.deviceInfoView.setVisibility(showInfoIcon ? View.VISIBLE : View.GONE);
+        //holder.deviceInfoBox.setActivated(detailsShown);
+        //holder.deviceInfoBox.setVisibility(detailsShown ? View.VISIBLE : View.GONE);
+        holder.deviceInfoView.setOnClickListener(new View.OnClickListener() {
+                                                     @Override
+                                                     public void onClick(View v) {
+//                                                         expandedDevicePosition = detailsShown ? -1 : position;
+//                                                         TransitionManager.beginDelayedTransition(parent);
+//                                                         notifyDataSetChanged();
+                                                     }
+                                                 }
+
+        );
+
+//        holder.findDevice.setVisibility(device.isInitialized() ? View.VISIBLE : View.GONE);
+//        holder.findDevice.setOnClickListener(new View.OnClickListener()
+//
+//                                             {
+//                                                 @Override
+//                                                 public void onClick(View v) {
+//                                                     if (device.getType() == DeviceType.VIBRATISSIMO) {
+//                                                         Intent startIntent;
+//                                                         startIntent = new Intent(context, VibrationActivity.class);
+//                                                         startIntent.putExtra(GBDevice.EXTRA_DEVICE, device);
+//                                                         context.startActivity(startIntent);
+//                                                         return;
+//                                                     }
+//                                                     GBApplication.deviceService().onFindDevice(true);
+//                                                     //TODO: extract string resource if we like this solution.
+//                                                     Snackbar.make(parent, R.string.control_center_find_lost_device, Snackbar.LENGTH_INDEFINITE).setAction("Found it!", new View.OnClickListener() {
+//                                                         @Override
+//                                                         public void onClick(View v) {
+//                                                             GBApplication.deviceService().onFindDevice(false);
+//                                                         }
+//                                                     }).setCallback(new Snackbar.Callback() {
+//                                                         @Override
+//                                                         public void onDismissed(Snackbar snackbar, int event) {
+//                                                             GBApplication.deviceService().onFindDevice(false);
+//                                                             super.onDismissed(snackbar, event);
+//                                                         }
+//                                                     }).show();
+////                                                     ProgressDialog.show(
+////                                                             context,
+////                                                             context.getString(R.string.control_center_find_lost_device),
+////                                                             context.getString(R.string.control_center_cancel_to_stop_vibration),
+////                                                             true, true,
+////                                                             new DialogInterface.OnCancelListener() {
+////                                                                 @Override
+////                                                                 public void onCancel(DialogInterface dialog) {
+////                                                                     GBApplication.deviceService().onFindDevice(false);
+////                                                                 }
+////                                                             });
+//                                                 }
+//                                             }
+//
+//        );
+
+//        //remove device, hidden under details
+//        holder.removeDevice.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View v) {
+//                new AlertDialog.Builder(context)
+//                        .setCancelable(true)
+//                        .setTitle(context.getString(R.string.controlcenter_delete_device_name, device.getName()))
+//                        .setMessage(R.string.controlcenter_delete_device_dialogmessage)
+//                        .setPositiveButton(R.string.Delete, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                try {
+//                                    DeviceCoordinator coordinator = DeviceHelper.getInstance().getCoordinator(device);
+//                                    if (coordinator != null) {
+//                                        coordinator.deleteDevice(device);
+//                                    }
+//                                    DeviceHelper.getInstance().removeBond(device);
+//                                } catch (Exception ex) {
+//                                    GB.toast(context, "Error deleting device: " + ex.getMessage(), Toast.LENGTH_LONG, GB.ERROR, ex);
+//                                } finally {
+//                                    Intent refreshIntent = new Intent(DeviceManager.ACTION_REFRESH_DEVICELIST);
+//                                    LocalBroadcastManager.getInstance(context).sendBroadcast(refreshIntent);
+//                                }
+//                            }
+//                        })
+//                        .setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                // do nothing
+//                            }
+//                        })
+//                        .show();
+//            }
+//        });
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return deviceList.size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+
+        CardView container;
+
+        ImageView deviceImageView;
+        TextView deviceNameLabel;
+        TextView deviceStatusLabel;
+
+        //actions
+        LinearLayout batteryStatusBox;
+        TextView batteryStatusLabel;
+        ImageView batteryIcon;
+        LinearLayout fetchActivityDataBox;
+        ImageView fetchActivityData;
+        ProgressBar busyIndicator;
+        ImageView takeScreenshotView;
+        ImageView manageAppsView;
+        ImageView setAlarmsView;
+        ImageView showActivityGraphs;
+        ImageView showActivityTracks;
+
+        ImageView deviceInfoView;
+        //overflow
+        ListView deviceInfoList;
+        ImageView findDevice;
+        ImageView removeDevice;
+
+        ViewHolder(View view) {
+            super(view);
+            container = view.findViewById(R.id.card_view);
+
+            deviceImageView = view.findViewById(R.id.device_image);
+            deviceNameLabel = view.findViewById(R.id.device_name);
+            deviceStatusLabel = view.findViewById(R.id.device_status);
+
+            //actions
+            showActivityTracks = view.findViewById(R.id.device_action_show_activity_tracks);
+            deviceInfoView = view.findViewById(R.id.device_info_image);
+
+        }
+    }
+
+}

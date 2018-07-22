@@ -16,9 +16,9 @@ import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.LoginActivity;
+import com.dreamwalker.diabetesfits.model.Device;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import io.paperdb.Paper;
 
@@ -43,9 +43,9 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
     Context context;
     SharedPreferences preferences;
 
-    HashMap<String,String> deviceMap = new HashMap<>();
-    ArrayList<HashMap<String,String>> deviceDatabase = new ArrayList<>();
-
+//    HashMap<String,String> deviceMap = new HashMap<>();
+    //ArrayList<HashMap<String,String>> deviceDatabase = new ArrayList<>();
+    ArrayList<Device> deviceDatabase = new ArrayList<>();
     public DeviceScanAdapter(ArrayList<BluetoothDevice> deviceArrayList, Context context) {
         this.deviceArrayList = deviceArrayList;
         this.context = context;
@@ -83,9 +83,9 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
                 editor.putBoolean("activity_executed",true);
                 editor.apply();
                 // TODO: 2018-07-22 장비 등록 내부 케시에 저장한다. - 박제창 
-                deviceMap.put("deviceName", deviceName);
-                deviceMap.put("deviceAddress", deviceAddress);
-                deviceDatabase.add(deviceMap);
+//                deviceMap.put("deviceName", deviceName);
+//                deviceMap.put("deviceAddress", deviceAddress);
+                deviceDatabase.add(new Device(deviceName, deviceAddress));
                 Paper.book("device").write("user_device", deviceDatabase);
 
                 Intent intent = new Intent(context, LoginActivity.class);

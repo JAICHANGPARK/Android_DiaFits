@@ -20,6 +20,7 @@
     <color name="guillotine_background_dark">#383547</color>
     <color name="selected_item_color">#30d1d5</color>
 
+    <color name="secondarytext" type="color">#ff808080</color>
 
     <!--<color name="material_login_login_color">#000000</color>-->
     <!--<color name="material_login_register_color">#00ff37</color>-->

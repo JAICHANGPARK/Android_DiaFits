@@ -1,18 +1,23 @@
 package com.dreamwalker.diabetesfits.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.adapter.DeviceAdapter;
+import com.dreamwalker.diabetesfits.model.Device;
 import com.yalantis.guillotine.animation.GuillotineAnimation;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,8 +39,21 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.content_hamburger)
     View contentHamburger;
 
-    HashMap<String, String> deviceMap = new HashMap<>();
-    ArrayList<HashMap<String, String>> deviceArrayList = new ArrayList<>();
+    @BindView(R.id.empty_layout)
+    LinearLayout emptyLayout;
+    @BindView(R.id.device_layout)
+    LinearLayout deviceLayout;
+
+
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+
+    DeviceAdapter deviceAdapter;
+
+    //HashMap<String, String> deviceMap = new HashMap<>();
+    //ArrayList<HashMap<String, String>> deviceArrayList = new ArrayList<>();
+    ArrayList<Device> deviceArrayList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +61,8 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         Paper.init(this);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 //        final Intent intent = getIntent();
 //        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
@@ -55,13 +75,25 @@ public class HomeActivity extends AppCompatActivity {
 //            Paper.book("device").write("user_device", deviceArrayList);
 //        }
         deviceArrayList = Paper.book("device").read("user_device");
+        if (deviceArrayList != null){
+            if (deviceArrayList.size() != 0) {
 
-        for (int i = 0; i < deviceArrayList.size(); i++) {
-            HashMap<String, String> map = deviceArrayList.get(i);
-            Log.e(TAG, "onCreate: " + map.get("deviceName") );
-            Log.e(TAG, "onCreate: " + map.get("deviceAddress") );
+                deviceLayout.setVisibility(View.VISIBLE);
+                emptyLayout.setVisibility(View.GONE);
+
+                deviceAdapter = new DeviceAdapter(this, deviceArrayList);
+                recyclerView.setAdapter(deviceAdapter);
+
+                for (int i = 0; i < deviceArrayList.size(); i++) {
+                    Device device = deviceArrayList.get(i);
+                    Log.e(TAG, "onCreate: " + device.getDeviceName() + ", " + device.getDeviceAddress());
+                }
+            }
+        }else {
+            Log.e(TAG, "onCreate: " + "등록된 장비 없음" );
+            emptyLayout.setVisibility(View.VISIBLE);
+            deviceLayout.setVisibility(View.GONE);
         }
-
 
         ChangeLog cl = new ChangeLog(this);
         if (cl.isFirstRun()) {
@@ -82,6 +114,12 @@ public class HomeActivity extends AppCompatActivity {
                 .setActionBarViewForAnimation(toolbar)
                 .setClosedOnStart(true)
                 .build();
+
+        LinearLayout settingLayout = guillotineMenu.findViewById(R.id.settings_group);
+        settingLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        });
 
     }
 }

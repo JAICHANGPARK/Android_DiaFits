@@ -74,6 +74,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
         service = retrofit.create(IUploadAPI.class);
 //        bindView();
+
+
         final MaterialLoginView loginView = (MaterialLoginView) findViewById(R.id.login);
         // TODO: 2018-07-22 로그인 구현합니다. - 박제창  
         ((DefaultLoginView) loginView.getLoginView()).setListener((loginUser, loginPass) -> {
@@ -105,7 +107,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     String result = response.body().getSuccess();
                     if (result.equals("true")){
                         // TODO: 2018-07-22 로그인 성공
+                        Paper.book("user").write("userID", user);
+                        Paper.book("user").write("userPassword", pass);
+
                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+
                         finish();
                     } else {
                         // TODO: 2018-07-22 로그인 실패

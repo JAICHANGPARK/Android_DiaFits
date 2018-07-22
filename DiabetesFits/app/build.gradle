@@ -40,6 +40,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:2.5.5' //lottie
 
     implementation 'com.jakewharton:butterknife:8.8.1' // butter knife
+    implementation 'com.android.support:support-v4:27.1.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1' // butter knife
 
     implementation 'io.paperdb:paperdb:2.6' //paper
@@ -51,6 +52,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'// retrofit2 gson
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3' //MP android chart
+
+    implementation 'com.github.Yalantis:OfficialFoldingTabBar.Android:v0.9' //OfficialFoldingTabBar
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
