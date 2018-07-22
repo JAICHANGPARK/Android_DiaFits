@@ -89,11 +89,8 @@ public class BSMScanActivity extends AppCompatActivity {
 //        dialog.setCancelable(false);
 //        dialog.show(getFragmentManager(), "scan_fragment");
         mHandler = new Handler();
-
         startScan();
-
         mHandler.postDelayed(() -> stopScan(), SCAN_PERIOD);
-
 
     }
 

@@ -93,16 +93,18 @@ public class DeviceChooseActivity extends AppCompatActivity implements DiscreteS
 
                 switch (item.getId()){
                     case 1:
+                        startActivity(new Intent(DeviceChooseActivity.this, MachineScanActivity.class));
+                        finish();
                         break;
                     case 2:
+                        startActivity(new Intent(DeviceChooseActivity.this, MachineScanActivity.class));
+                        finish();
                         break;
                     case 3:
                         startActivity(new Intent(DeviceChooseActivity.this, BSMScanActivity.class));
                         finish();
                         break;
                 }
-
-
                 break;
             case R.id.item_btn_comment:
                 int commentPosition = infiniteAdapter.getRealPosition(itemPicker.getCurrentItem());

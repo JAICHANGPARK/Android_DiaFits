@@ -56,11 +56,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
 
-        <activity android:name=".activity.BSMScanActivity"
+        <activity
+            android:name=".activity.BSMScanActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme">
         </activity>
 
+        <activity
+            android:name=".activity.MachineScanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
