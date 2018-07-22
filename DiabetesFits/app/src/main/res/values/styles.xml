@@ -85,4 +85,28 @@
         <item name="android:background">?android:selectableItemBackgroundBorderless</item>
     </style>
 
+
+    <style name="text_title">
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginLeft">16dip</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="text_label">
+        <item name="android:typeface">sans</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dip</item>
+        <item name="android:background">#e2e2e2</item>
+    </style>
 </resources>

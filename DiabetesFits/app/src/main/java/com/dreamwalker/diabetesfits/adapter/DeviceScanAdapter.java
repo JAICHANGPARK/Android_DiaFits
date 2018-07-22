@@ -46,6 +46,7 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
 //    HashMap<String,String> deviceMap = new HashMap<>();
     //ArrayList<HashMap<String,String>> deviceDatabase = new ArrayList<>();
     ArrayList<Device> deviceDatabase = new ArrayList<>();
+
     public DeviceScanAdapter(ArrayList<BluetoothDevice> deviceArrayList, Context context) {
         this.deviceArrayList = deviceArrayList;
         this.context = context;

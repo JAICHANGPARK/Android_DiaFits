@@ -1,5 +1,6 @@
 package com.dreamwalker.diabetesfits.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -89,6 +90,19 @@ public class DeviceChooseActivity extends AppCompatActivity implements DiscreteS
                 int position = infiniteAdapter.getRealPosition(itemPicker.getCurrentItem());
                 Item item = data.get(position);
                 //Log.e(TAG, "onClick: " + item.getName() + ", " + item.getId());
+
+                switch (item.getId()){
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                    case 3:
+                        startActivity(new Intent(DeviceChooseActivity.this, BSMScanActivity.class));
+                        finish();
+                        break;
+                }
+
+
                 break;
             case R.id.item_btn_comment:
                 int commentPosition = infiniteAdapter.getRealPosition(itemPicker.getCurrentItem());

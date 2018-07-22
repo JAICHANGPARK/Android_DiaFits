@@ -33,4 +33,37 @@
     <!--<color name="material_login_login_error_color">#ffbebe</color>-->
     <!--<color name="material_login_register_error_color">#600002</color>-->
 
+
+    <!--i-sens-->
+    <color name="main_bg">#fcfcfc</color>
+    <color name="grey">#9c9c9c</color>
+    <color name="blue">#1762c6</color>
+    <color name="pink">#ee73eb</color>
+
+    <color name="edit">#555555</color>
+
+    <color name="under_text">#d24151</color>	<!-- 저혈당텍스트 (빨강) -->
+    <color name="low_text">#f6ec84</color>		<!-- 저혈당~목표하한혈당텍스트 (노랑) -->
+    <color name="inbounds_text">#6bcc99</color>	<!-- 목료내혈당텍스트 (초록) -->
+    <color name="exceed_text">#579fdd</color>	<!-- 목표상한초과혈당텍스트 (파랑) -->
+    <color name="ketone_text">#ee73eb</color>	<!-- ketone텍스트 (pink) -->
+
+    <color name="under_spot">#edb2b9</color>	<!-- 저혈당 (빨강) -->
+    <color name="low_spot">#f9f3b5</color>		<!-- 저혈당~목표하한혈당 (노랑) -->
+    <color name="inbounds_spot">#c5e7d5</color>	<!-- 목료내혈당 (초록) -->
+    <color name="exceed_spot">#bcd8ee</color>	<!-- 목표상한초과혈당 (파랑) -->
+
+    <color name="under_line">#eeb3ba</color>	<!-- 저혈당라인 (빨강) -->
+    <color name="low_line">#f5febe</color>		<!-- 목표하한라인 (노랑) -->
+    <color name="exceed_line">#bbd8f1</color>	<!-- 목표상한라인 (파랑) -->
+    <color name="grid_line">#c0c0c0</color>		<!-- 그래프 그리드라인 -->
+
+    <color name="under_stat">#ff3333</color>	<!-- 저혈당 (빨강)-->
+    <color name="low_stat">#f0d100</color>		<!-- 저혈당~목표하한혈당  (노랑)-->
+    <color name="inbounds_stat">#6bcc99</color>	<!-- 목료내혈당 (초록) -->
+    <color name="exceed_stat">#33ccff</color>	<!-- 목표상한초과혈당 (파랑)-->
+
+    <color name="line">#e2e2e2</color>
+    <color name="light_grey">#ededed</color>
+
 </resources>

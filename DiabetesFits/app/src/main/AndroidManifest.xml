@@ -51,9 +51,16 @@
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".activity.DeviceChooseActivity"
+        <activity
+            android:name=".activity.DeviceChooseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ShopTheme"></activity>
+            android:theme="@style/ShopTheme" />
+
+        <activity android:name=".activity.BSMScanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme">
+        </activity>
+
     </application>
 
 </manifest>
