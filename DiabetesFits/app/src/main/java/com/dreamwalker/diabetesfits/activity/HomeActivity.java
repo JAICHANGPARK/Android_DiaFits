@@ -5,16 +5,17 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.DeviceAdapter;
@@ -94,7 +95,6 @@ public class HomeActivity extends AppCompatActivity {
 
         Call<Validate> accessQueue = service.userAccess(userID, pageNum);
 
-
         // wifi 또는 모바일 네트워크 어느 하나라도 연결이 되어있다면,
         if (wifi.isConnected() || mobile.isConnected()) {
             Log.e("연결됨", "연결이 되었습니다.");
@@ -103,26 +103,34 @@ public class HomeActivity extends AppCompatActivity {
                 public void onResponse(Call<Validate> call, Response<Validate> response) {
 
                 }
-
                 @Override
                 public void onFailure(Call<Validate> call, Throwable t) {
-
+                    Toast.makeText(HomeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
         } else {
+            Snackbar.make(getWindow().getDecorView().getRootView(),"인터넷 연결 없음", Snackbar.LENGTH_SHORT).show();
             Log.e("연결 안 됨", "연결이 다시 한번 확인해주세요");
         }
 
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        tabBar.setOnFoldingItemClickListener(new FoldingTabBar.OnFoldingItemSelectedListener() {
-            @Override
-            public boolean onFoldingItemSelected(MenuItem menuItem) {
-                Log.e(TAG, "onFoldingItemSelected: " + menuItem.getItemId());
-                return false;
+        tabBar.setOnFoldingItemClickListener(menuItem -> {
+            Log.e(TAG, "onFoldingItemSelected: " + menuItem.getItemId());
+            switch (menuItem.getItemId()){
+                case R.id.ftb_menu_nearby:
+
+                    startActivity(new Intent(HomeActivity.this, DeviceChooseActivity.class));
+
+
+                    break;
+                case R.id.ftb_menu_new_chat:
+
+                    break;
             }
+            return false;
         });
 
 //        final Intent intent = getIntent();

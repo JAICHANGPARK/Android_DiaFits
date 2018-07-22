@@ -22,6 +22,12 @@
 
     <color name="secondarytext" type="color">#ff808080</color>
 
+    <color name="shopAccent">#84ceca</color>
+    <color name="shopSecondary">#727272</color>
+    <color name="shopRatedStar">#ffeb5a</color>
+    <color name="shopFabRipple">#51b2ac</color>
+
+
     <!--<color name="material_login_login_color">#000000</color>-->
     <!--<color name="material_login_register_color">#00ff37</color>-->
     <!--<color name="material_login_login_error_color">#ffbebe</color>-->

@@ -55,6 +55,11 @@ dependencies {
 
     implementation 'com.github.Yalantis:OfficialFoldingTabBar.Android:v0.9' //OfficialFoldingTabBar
 
+    implementation 'com.yarolegovich:discrete-scrollview:1.4.8' //discrete-scrollview
+
+    implementation 'com.github.bumptech.glide:glide:4.7.1'//glide
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1' //glide
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
