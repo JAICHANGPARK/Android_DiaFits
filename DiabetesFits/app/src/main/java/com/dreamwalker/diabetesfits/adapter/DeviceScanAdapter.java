@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -17,9 +16,11 @@ import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.LoginActivity;
-import com.dreamwalker.diabetesfits.consts.IntentConst;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import io.paperdb.Paper;
 
 class DeviceScanViewHolder extends RecyclerView.ViewHolder{
 
@@ -42,12 +43,15 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
     Context context;
     SharedPreferences preferences;
 
+    HashMap<String,String> deviceMap = new HashMap<>();
+    ArrayList<HashMap<String,String>> deviceDatabase = new ArrayList<>();
+
     public DeviceScanAdapter(ArrayList<BluetoothDevice> deviceArrayList, Context context) {
         this.deviceArrayList = deviceArrayList;
         this.context = context;
 
         preferences = this.context.getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-
+        Paper.init(this.context);
     }
 
     @NonNull
@@ -69,30 +73,29 @@ public class DeviceScanAdapter extends RecyclerView.Adapter<DeviceScanViewHolder
 //        holder.deviceName.setText(deviceArrayList.get(position).getName());
         holder.deviceAddress.setText(deviceArrayList.get(position).getAddress());
 
-        holder.container.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Check");
-                builder.setMessage(deviceName + " 장비를 등록합니다.");
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        holder.container.setOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Check");
+            builder.setMessage(deviceName + " 장비를 등록합니다.");
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
 
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putBoolean("activity_executed",true);
-                        editor.apply();
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putBoolean("activity_executed",true);
+                editor.apply();
+                // TODO: 2018-07-22 장비 등록 내부 케시에 저장한다. - 박제창 
+                deviceMap.put("deviceName", deviceName);
+                deviceMap.put("deviceAddress", deviceAddress);
+                deviceDatabase.add(deviceMap);
+                Paper.book("device").write("user_device", deviceDatabase);
 
-                        Intent intent = new Intent(context, LoginActivity.class);
-                        intent.putExtra(IntentConst.EXTRAS_DEVICE_NAME, deviceName);
-                        intent.putExtra(IntentConst.EXTRAS_DEVICE_ADDRESS, deviceAddress);
-                        context.startActivity(intent);
-                        ((Activity)context).finish();
+                Intent intent = new Intent(context, LoginActivity.class);
+//                intent.putExtra(IntentConst.EXTRAS_DEVICE_NAME, deviceName);
+//                intent.putExtra(IntentConst.EXTRAS_DEVICE_ADDRESS, deviceAddress);
+                context.startActivity(intent);
+                ((Activity)context).finish();
 
-                    }
-                });
-                builder.show();
-            }
+            });
+            builder.show();
         });
     }
 

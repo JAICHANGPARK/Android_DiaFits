@@ -10,7 +10,6 @@ import android.bluetooth.le.BluetoothLeScanner;
 import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -60,9 +59,6 @@ public class DeviceScanActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     DeviceScanAdapter adapter;
     ArrayList<BluetoothDevice> bleDeviceList;
-
-
-
 
     BluetoothManager bluetoothManager;
     BluetoothAdapter bluetoothAdapter;
@@ -136,12 +132,7 @@ public class DeviceScanActivity extends AppCompatActivity {
             builder.setTitle(getString(R.string.permission_alert_title));
             builder.setMessage(getString(R.string.permission_alert_message));
             builder.setPositiveButton(android.R.string.ok, null);
-            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION);
-                }
-            });
+            builder.setOnDismissListener(dialog -> requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_REQUEST_COARSE_LOCATION));
             builder.show();
         }
     }
@@ -260,12 +251,7 @@ public class DeviceScanActivity extends AppCompatActivity {
                     builder.setMessage("Since location access has not been granted, " +
                             "this app will not be able to discover BLE Device when in the background.");
                     builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                            finish();
-                        }
-                    });
+                    builder.setOnDismissListener(dialog -> finish());
                     builder.show();
                 }
 

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+
+    <release version="1.0.1" versioncode="2">
+        <change>Date : 2018-07-22</change>
+        <change>Home UI change</change>
+
+        <change>Maid by JAICHANGPARK(DREAMWALKER)</change>
+    </release>
+
     <release version="1.0.0" versioncode="1">
         <change>Date : 2018-07-21</change>
         <change>First release</change>

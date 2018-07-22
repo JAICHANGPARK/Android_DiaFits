@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Paper.init(this);
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -105,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     if (result.equals("true")){
                         // TODO: 2018-07-22 로그인 성공
                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                        finish();
                     } else {
                         // TODO: 2018-07-22 로그인 실패
                         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
