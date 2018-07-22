@@ -76,6 +76,7 @@
         <activity
             android:name=".activity.sync.SyncBMSResultActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.chart.AnalysisBSActivity" />
     </application>
 
 </manifest>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.dreamwalker.knu2018.dteacher.Activity.AnalysisBSActivity">
+
+    <com.github.mikephil.charting.charts.HorizontalBarChart
+        android:layout_margin="8dp"
+        android:id="@+id/horizontal_bar_chart"
+        android:layout_width="match_parent"
+        android:layout_height="140dp">
+    </com.github.mikephil.charting.charts.HorizontalBarChart>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_below="@id/horizontal_bar_chart"
+        android:layout_margin="8dp"
+        android:id="@+id/analysis_linechart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </com.github.mikephil.charting.charts.LineChart>
+
+</RelativeLayout>

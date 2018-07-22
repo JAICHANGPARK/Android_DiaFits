@@ -48,7 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 app:lottie_autoPlay="false"
-                app:lottie_fileName="empty.json"
+                app:lottie_rawRes="@raw/empty_box"
                 app:lottie_loop="true" />
             <TextView
                 android:layout_marginTop="24dp"
@@ -64,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/colorAccent"
             android:clickable="true"
             android:src="@drawable/ic_add_black_24dp"
             app:elevation="6dp"
