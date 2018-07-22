@@ -39,4 +39,8 @@ public interface IUploadAPI {
     @POST("diafitness/code/UserLogin.php")
     Call<Validate> userLogin(@Field("userID") String id, @Field("userPassword") String pwd);
 
+    @FormUrlEncoded
+    @POST("diafitness/code/UserAccess.php")
+    Call<Validate> userAccess(@Field("userID") String id, @Field("pageNum") String pageNum);
+
 }

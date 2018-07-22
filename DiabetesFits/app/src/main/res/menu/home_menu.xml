@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/ftb_menu_nearby"
+        android:icon="@drawable/ic_device_hub_black_24dp"
+        android:title="Device"/>
+
+    <item
+        android:id="@+id/ftb_menu_new_chat"
+        android:icon="@drawable/ic_edit_black_24dp"
+        android:title="Write"/>
+
+    <!--<item-->
+        <!--android:id="@+id/ftb_menu_profile"-->
+        <!--android:icon="@drawable/ic_profile_icon"-->
+        <!--android:title="Profile"/>-->
+
+    <!--<item-->
+        <!--android:id="@+id/ftb_menu_settings"-->
+        <!--android:icon="@drawable/ic_settings_icon"-->
+        <!--android:title="Settings"/>-->
+</menu>

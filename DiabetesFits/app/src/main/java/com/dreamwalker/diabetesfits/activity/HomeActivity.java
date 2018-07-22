@@ -1,6 +1,9 @@
 package com.dreamwalker.diabetesfits.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,21 +11,33 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.DeviceAdapter;
+import com.dreamwalker.diabetesfits.consts.PageConst;
 import com.dreamwalker.diabetesfits.model.Device;
+import com.dreamwalker.diabetesfits.model.Validate;
+import com.dreamwalker.diabetesfits.remote.IUploadAPI;
 import com.yalantis.guillotine.animation.GuillotineAnimation;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import client.yalantis.com.foldingtabbar.FoldingTabBar;
 import de.cketti.library.changelog.ChangeLog;
 import io.paperdb.Paper;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.dreamwalker.diabetesfits.consts.Url.BASE_URL;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -44,6 +59,8 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.device_layout)
     LinearLayout deviceLayout;
 
+    @BindView(R.id.folding_tab_bar)
+    FoldingTabBar tabBar;
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -54,6 +71,11 @@ public class HomeActivity extends AppCompatActivity {
     //ArrayList<HashMap<String, String>> deviceArrayList = new ArrayList<>();
     ArrayList<Device> deviceArrayList = new ArrayList<>();
 
+    String userID;
+    final String pageNum = String.valueOf(PageConst.HOME_PAGE);
+
+    Retrofit retrofit;
+    IUploadAPI service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +83,47 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         Paper.init(this);
+
+        ConnectivityManager manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        NetworkInfo wifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        userID = Paper.book("user").read("userID");
+        retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build();
+        service = retrofit.create(IUploadAPI.class);
+
+        Call<Validate> accessQueue = service.userAccess(userID, pageNum);
+
+
+        // wifi 또는 모바일 네트워크 어느 하나라도 연결이 되어있다면,
+        if (wifi.isConnected() || mobile.isConnected()) {
+            Log.e("연결됨", "연결이 되었습니다.");
+            accessQueue.enqueue(new Callback<Validate>() {
+                @Override
+                public void onResponse(Call<Validate> call, Response<Validate> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<Validate> call, Throwable t) {
+
+                }
+            });
+
+        } else {
+            Log.e("연결 안 됨", "연결이 다시 한번 확인해주세요");
+        }
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        tabBar.setOnFoldingItemClickListener(new FoldingTabBar.OnFoldingItemSelectedListener() {
+            @Override
+            public boolean onFoldingItemSelected(MenuItem menuItem) {
+                Log.e(TAG, "onFoldingItemSelected: " + menuItem.getItemId());
+                return false;
+            }
+        });
 
 //        final Intent intent = getIntent();
 //        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
@@ -75,7 +136,7 @@ public class HomeActivity extends AppCompatActivity {
 //            Paper.book("device").write("user_device", deviceArrayList);
 //        }
         deviceArrayList = Paper.book("device").read("user_device");
-        if (deviceArrayList != null){
+        if (deviceArrayList != null) {
             if (deviceArrayList.size() != 0) {
 
                 deviceLayout.setVisibility(View.VISIBLE);
@@ -89,8 +150,8 @@ public class HomeActivity extends AppCompatActivity {
                     Log.e(TAG, "onCreate: " + device.getDeviceName() + ", " + device.getDeviceAddress());
                 }
             }
-        }else {
-            Log.e(TAG, "onCreate: " + "등록된 장비 없음" );
+        } else {
+            Log.e(TAG, "onCreate: " + "등록된 장비 없음");
             emptyLayout.setVisibility(View.VISIBLE);
             deviceLayout.setVisibility(View.GONE);
         }

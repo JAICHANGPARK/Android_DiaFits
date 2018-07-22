@@ -86,6 +86,22 @@
             android:textColor="@color/black"
             android:textSize="18sp" />
 
+
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <client.yalantis.com.foldingtabbar.FoldingTabBar
+            android:id="@+id/folding_tab_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            app:menu="@menu/home_menu" />
+    </RelativeLayout>
+
 
 </FrameLayout>

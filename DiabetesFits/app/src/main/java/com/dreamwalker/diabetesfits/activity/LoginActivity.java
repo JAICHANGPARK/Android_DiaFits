@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         setContentView(R.layout.activity_login);
         Paper.init(this);
 
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -75,6 +76,36 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         service = retrofit.create(IUploadAPI.class);
 //        bindView();
 
+        String id = Paper.book("user").read("userID");
+        String pwd = Paper.book("user").read("userPassword");
+
+        if (id != null && pwd != null) {
+            Call<Validate> autoLoginQueue = service.userLogin(id, pwd);
+            autoLoginQueue.enqueue(new Callback<Validate>() {
+                @Override
+                public void onResponse(Call<Validate> call, Response<Validate> response) {
+                    // TODO: 2018-07-22 로그인 처리
+                    Log.e(TAG, "onResponse: " + response.body().getSuccess());
+                    String result = response.body().getSuccess();
+                    if (result.equals("true")) {
+                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                        finish();
+                    } else {
+                        // TODO: 2018-07-22 로그인 실패
+                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                        builder.setTitle("Error");
+                        builder.setMessage("자동 로그인 실패");
+                        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.dismiss());
+                        builder.show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Validate> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         final MaterialLoginView loginView = (MaterialLoginView) findViewById(R.id.login);
         // TODO: 2018-07-22 로그인 구현합니다. - 박제창  
@@ -91,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 //                loginPass.setError("Wrong password");
 //                return;
 //            }
-            if (pass.length() == 0){
+            if (pass.length() == 0) {
                 loginPass.setError("Wrong password");
                 return;
             }
@@ -105,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     // TODO: 2018-07-22 로그인 처리
                     Log.e(TAG, "onResponse: " + response.body().getSuccess());
                     String result = response.body().getSuccess();
-                    if (result.equals("true")){
+                    if (result.equals("true")) {
                         // TODO: 2018-07-22 로그인 성공
                         Paper.book("user").write("userID", user);
                         Paper.book("user").write("userPassword", pass);
