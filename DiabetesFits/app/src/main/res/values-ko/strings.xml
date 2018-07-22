@@ -33,4 +33,30 @@
     <string name="activity">ACTIVITY</string>
     <string name="settings">SETTINGS</string>
 
+
+    <!--케어센스-->
+    <string name="scanner_subtitle_bonded">BONDED DEVICES:</string>
+    <string name="scanner_subtitle__not_bonded">AVAILABLE DEVICES:</string>
+    <string name="scanner_empty">No device found</string>
+    <string name="scanner_action_scan">Scan</string>
+    <string name="scanner_title">Select device:</string>
+    <string name="scanner_action_cancel">Cancel</string>
+    <string name="SEARCH">Search</string>
+    <string name="STOP">Stop</string>
+    <string name="CLOSE">Close</string>
+    <string name="ValidationWarningPopup_31">This mobile device doesn\'t support Bluetooth 4.0.</string>
+    <string name="bond_none">Failed to connect to Bluetooth.\nPlease, try to reconnect.</string>
+    <string name="bonded">Connected to Bluetooth.\nPlease, turn meter on again to download glucose data.</string>
+    <string name="not_supported">This mobile device doesn\'t support Bluetooth 4.0. </string>
+    <string name="gls_operation_not_supported">Download failed (Code 109)</string>
+    <string name="gls_operation_failed">Download failed (Code 110)</string>
+    <string name="ERROR_CONNECTION_STATE_CHANGE">Download failed (Code 111)</string>
+    <string name="ERROR_DISCOVERY_SERVICE">Download failed (Code 112)</string>
+    <string name="ERROR_WRITE_DESCRIPTOR">Download failed (Code 113)</string>
+    <string name="ERROR_WRITE_CHARACTERISTIC">Download failed (Code 114)</string>
+    <string name="ERROR_AUTH_ERROR_WHILE_BONDED">Download failed (Code 115)</string>
+    <string name="ERROR_SEQUENCE_NUMBER">Download failed (Code 116)</string>
+    <string name="ValidationWarningPopup_36">No more than 10 registered meters allowed. Please delete unused meters.</string>
+    <string name="error_software_revision">The meter\'s software version does not support. Please update the SmartLog.</string>
+
 </resources>
