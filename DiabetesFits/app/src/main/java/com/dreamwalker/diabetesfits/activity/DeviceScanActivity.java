@@ -84,14 +84,13 @@ public class DeviceScanActivity extends AppCompatActivity {
 //            finish();
 //        }
 //
-        setStatusBar();
-        viewBinding();
-        checkScanPermission();
         preferences = getSharedPreferences("ActivityPREF", Context.MODE_PRIVATE);
-
         bleDeviceList = new ArrayList<>();
         handler = new Handler();
 
+        setStatusBar();
+        viewBinding();
+        checkScanPermission();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
@@ -105,6 +104,8 @@ public class DeviceScanActivity extends AppCompatActivity {
     private void viewBinding() {
         ButterKnife.bind(this);
     }
+
+
 
     private void checkBleSupport() {
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {

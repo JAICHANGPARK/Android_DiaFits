@@ -44,6 +44,9 @@
     <string name="msg_no_browser">No app found to open the url</string>
     <string name="msg_unsupported_op">Unsupported operation</string>
 
+    <string name="device_choose_treadmill">트레드밀 장비를 추가합니다. 운동부하자동기록 디바이스가 당신의 운동 기록을 보다 자유롭게 도와줄겁니다.</string>
+    <string name="device_choose_ergometer">실내 자전거 장비를 추가합니다. 운동부하자동기록 디바이스가 당신의 운동 기록을 보다 자유롭게 도와줄겁니다.</string>
+    <string name="device_choose_bsm">혈당 채혈기의 장비를 추가합니다. 혈당기와 연결하여 혈당기 데이터 동기화 가능합니다.</string>
 
 
     <!-- Strings related to Settings -->

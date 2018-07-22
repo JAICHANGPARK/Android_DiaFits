@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -74,7 +74,7 @@ public class DeviceChooseActivity extends AppCompatActivity implements DiscreteS
 
     @Override
     public void onClick(View v) {
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(DeviceChooseActivity.this);
         switch (v.getId()) {
             case R.id.item_btn_rate:
                 int realPosition = infiniteAdapter.getRealPosition(itemPicker.getCurrentItem());
@@ -88,15 +88,39 @@ public class DeviceChooseActivity extends AppCompatActivity implements DiscreteS
             case R.id.item_btn_buy:
                 int position = infiniteAdapter.getRealPosition(itemPicker.getCurrentItem());
                 Item item = data.get(position);
-                Log.e(TAG, "onClick: " + item.getName() + ", " + item.getId());
+                //Log.e(TAG, "onClick: " + item.getName() + ", " + item.getId());
                 break;
             case R.id.item_btn_comment:
                 int commentPosition = infiniteAdapter.getRealPosition(itemPicker.getCurrentItem());
                 Item commentItem = data.get(commentPosition);
-                Log.e(TAG, "onClick: " + commentItem.getName() + ", " + commentItem.getId());
+                //Log.e(TAG, "onClick: " + commentItem.getName() + ", " + commentItem.getId());
+                switch (commentItem.getId()){
+                    case 1:
+                        builder.setTitle(commentItem.getName());
+                        builder.setMessage(getString(R.string.device_choose_treadmill));
+                        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            dialog.dismiss();
+                        });
+                        builder.show();
+                        break;
+                    case 2:
+                        builder.setTitle(commentItem.getName());
+                        builder.setMessage(getString(R.string.device_choose_ergometer));
+                        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            dialog.dismiss();
+                        });
+                        builder.show();
+                        break;
+                    case 3:
+                        builder.setTitle(commentItem.getName());
+                        builder.setMessage(getString(R.string.device_choose_bsm));
+                        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                            dialog.dismiss();
+                        });
+                        builder.show();
+                        break;
+                }
                 break;
-
-
 //            case R.id.btn_transition_time:
 //                DiscreteScrollViewOptions.configureTransitionTime(itemPicker);
 //                break;
@@ -107,7 +131,6 @@ public class DeviceChooseActivity extends AppCompatActivity implements DiscreteS
                 showUnsupportedSnackBar();
                 break;
         }
-
     }
 
     private void onItemChanged(Item item) {

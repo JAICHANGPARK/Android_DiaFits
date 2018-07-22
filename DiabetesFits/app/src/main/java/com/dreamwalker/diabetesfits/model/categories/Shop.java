@@ -27,8 +27,8 @@ public class Shop {
 
     public List<Item> getData() {
         return Arrays.asList(
-                new Item(1, "Treadmill", "Unknown", R.drawable.device_treadmill),
-                new Item(2, "Lexpa", "Unknown", R.drawable.device_ergometer),
+                new Item(1, "Treadmill", "Kangwon National University", R.drawable.device_treadmill),
+                new Item(2, "Indoor Bike", "Kangwon National University", R.drawable.device_ergometer),
                 new Item(3, "CareSens N Premier", "i-Sens", R.drawable.device_bsm)
 //                new Item(3, "Favourite Board", "$265.00 USD", R.drawable.shop3),
 //                new Item(4, "Earthenware Bowl", "$18.00 USD", R.drawable.shop4),

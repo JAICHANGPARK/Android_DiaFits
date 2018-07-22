@@ -4,7 +4,8 @@
     <release version="1.0.1" versioncode="2">
         <change>Date : 2018-07-22</change>
         <change>Home UI change</change>
-
+        <change>Device Categories UI Added</change>
+        <change>implement Auto Login </change>
         <change>Maid by JAICHANGPARK(DREAMWALKER)</change>
     </release>
 
