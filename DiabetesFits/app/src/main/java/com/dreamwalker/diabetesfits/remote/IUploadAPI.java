@@ -1,5 +1,7 @@
 package com.dreamwalker.diabetesfits.remote;
 
+import com.dreamwalker.diabetesfits.model.Validate;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -26,8 +28,15 @@ import retrofit2.http.POST;
 public interface IUploadAPI {
 
     @FormUrlEncoded
-    @POST("diafitness/code/userRegister.php")
-    Call<ResponseBody> registerUser(@Field("userName") String name, @Field("userPwd") String pwd);
+    @POST("diafitness/code/UserRegister.php")
+    Call<ResponseBody> registerUser(@Field("userID") String name, @Field("userPassword") String pwd);
 
+    @FormUrlEncoded
+    @POST("diafitness/code/UserValidate.php")
+    Call<Validate> registerValidate(@Field("userID") String name);
+
+    @FormUrlEncoded
+    @POST("diafitness/code/UserLogin.php")
+    Call<Validate> userLogin(@Field("userID") String id, @Field("userPassword") String pwd);
 
 }
