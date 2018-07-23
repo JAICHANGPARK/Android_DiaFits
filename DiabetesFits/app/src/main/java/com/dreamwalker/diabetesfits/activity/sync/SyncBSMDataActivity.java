@@ -24,6 +24,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -129,7 +130,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
 
     private boolean bolBroacastRegistred;
 
-    private boolean bondingCheckFlag;
+    private boolean bondingCheckFlag = true;
 
     String deviceAddress;
 
@@ -545,8 +546,10 @@ public class SyncBSMDataActivity extends AppCompatActivity {
         }
 
 
-        if (mBluetoothManager != null && mBluetoothManager.getConnectionState(device, BluetoothProfile.GATT) == BluetoothProfile.STATE_CONNECTED)
+        if (mBluetoothManager != null && mBluetoothManager.getConnectionState(device, BluetoothProfile.GATT) == BluetoothProfile.STATE_CONNECTED){
             return false;
+        }
+
 //        if(mBluetoothManager != null && mBluetoothManager.getConnectedDevices(BluetoothProfile.GATT).contains(device) == true) return false;
 
         Log.e("---connect", address);
@@ -558,7 +561,9 @@ public class SyncBSMDataActivity extends AppCompatActivity {
             }
         }
 
-        if (mHandler == null) mHandler = new Handler();
+        if (mHandler == null){
+            mHandler = new Handler();
+        }
 
         final IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         bolBroacastRegistred = true;
@@ -633,6 +638,14 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //device.createBond();
+                        finish();
+                    }
+                });
+                builder.setNeutralButton("블루투스 설정", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+                        startActivity(intent);
                         finish();
                     }
                 });

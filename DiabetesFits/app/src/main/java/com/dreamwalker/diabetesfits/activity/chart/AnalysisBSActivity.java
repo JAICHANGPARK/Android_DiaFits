@@ -34,6 +34,7 @@ public class AnalysisBSActivity extends AppCompatActivity {
 
     @BindView(R.id.analysis_linechart)
     LineChart lineChart;
+
     @BindView(R.id.horizontal_bar_chart)
     HorizontalBarChart horizontalBarChart;
 
