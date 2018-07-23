@@ -130,7 +130,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
 
     private boolean bolBroacastRegistred;
 
-    private boolean bondingCheckFlag = true;
+    private boolean bondingCheckFlag = false;
 
     String deviceAddress;
 
@@ -144,7 +144,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.home)
-    public void homeImageButtonClicked(View v){
+    public void homeImageButtonClicked(View v) {
 
         mBluetoothGatt.disconnect();
         finish();
@@ -227,7 +227,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                             if (ScannerServiceParser.decodeDeviceAdvData(result.getScanRecord().getBytes())) {
                                 if (result.getDevice().getBondState() == BluetoothDevice.BOND_BONDED) {
 //                                    connect(result.getDevice().toString());
-                                   connect(deviceAddress);
+                                    connect(deviceAddress);
                                 }
                             }
                         } catch (Exception e) {
@@ -468,6 +468,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                     requestBleAll();
                     break;
                 case PremierNConst.INTENT_BLE_READCOMPLETED:
+                    bondingCheckFlag = true;
                     disconnect();
                     break;
             }
@@ -546,7 +547,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
         }
 
 
-        if (mBluetoothManager != null && mBluetoothManager.getConnectionState(device, BluetoothProfile.GATT) == BluetoothProfile.STATE_CONNECTED){
+        if (mBluetoothManager != null && mBluetoothManager.getConnectionState(device, BluetoothProfile.GATT) == BluetoothProfile.STATE_CONNECTED) {
             return false;
         }
 
@@ -561,7 +562,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
             }
         }
 
-        if (mHandler == null){
+        if (mHandler == null) {
             mHandler = new Handler();
         }
 
@@ -669,7 +670,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                 gatt.discoverServices();
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                if (bondingCheckFlag){
+                if (bondingCheckFlag) {
                     //TODO : result data list show
                     Log.e(TAG, "onConnectionStateChange: " + "데이터 다 받아와서 연결을 끊었어요.");
                     if (Paper.book("syncBms").read("data") == null) {
@@ -682,8 +683,31 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                         startActivity(new Intent(SyncBSMDataActivity.this, SyncBMSResultActivity.class));
                         finish();
                     }
-                }else {
-                    Log.e(TAG, "onConnectionStateChange: " + " 페어링 되어 있지 않아 서 연결 종료 " );
+                } else {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SyncBSMDataActivity.this);
+                    builder.setTitle("Error");
+                    builder.setMessage("데이터 동기화를 위해서 혈당계와 페어링 과정이 필요합니다. \n 1. S 버튼을 길게 눌러 설정으로 가세요.\n 2. 블루투스 페어링을 진행하세요" +
+                            " \n\n또는 설정 -> 블루투스 에 들어가 혈당계와 페어링을 진행하세요.");
+                    builder.setCancelable(false);
+                    builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //device.createBond();
+                            finish();
+                        }
+                    });
+                    builder.setNeutralButton("블루투스 설정", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    builder.show();
+
+                    Log.e(TAG, "onConnectionStateChange: " + " 페어링 되어 있지 않아 서 연결 종료 ");
                 }
 
 
