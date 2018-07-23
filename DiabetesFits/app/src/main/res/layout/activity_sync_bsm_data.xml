@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,106 +7,131 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/white"
     tools:context=".activity.sync.SyncBSMDataActivity">
 
-    <Button
-        android:id="@+id/search"
+    <ImageView
+        android:id="@+id/home"
+        style="@style/ClickableImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:onClick="onSearchClick"
-        android:text="Search" />
+        android:layout_gravity="start"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_back_black_24dp" />
 
-    <TextView
-        android:id="@+id/result_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/count"
-        android:text="Result"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/serial"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/search"
-        android:text="SerialNumber: "
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/serial_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/count_txt"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/version"
-        android:layout_marginEnd="40dp"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/serial"
-        android:paddingBottom="10dip"
-        android:text="Count: "
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <TextView
-        android:id="@+id/count_txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/result_text"
-        android:layout_alignEnd="@+id/serial_num"
-        android:layout_below="@+id/serial"
-        android:text=""
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_margin="8dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/smiley_stack" />
 
     <TextView
         android:id="@+id/result"
-        android:textStyle="bold"
-        android:textSize="40dp"
-        android:text="hi"
-        android:gravity="center_vertical|center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/result_text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/serial"
-        android:layout_toStartOf="@+id/version"
-        android:text="sw ver: "
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:layout_below="@+id/animation_view"
+        android:fontFamily="@font/noto_sans"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Connection Waiting"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/version"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/textView"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    <!--<Button-->
+    <!--android:id="@+id/search"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentStart="true"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:onClick="onSearchClick"-->
+    <!--android:text="Search" />-->
 
-    <Button
-        android:id="@+id/CLEAR"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView"
-        android:layout_toEndOf="@+id/search"
-        android:onClick="onClearClick"
-        android:text="CLEAR" />
+    <!--<TextView-->
+    <!--android:id="@+id/result_text"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentStart="true"-->
+    <!--android:layout_below="@+id/count"-->
+    <!--android:text="Result"-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/serial"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentStart="true"-->
+    <!--android:layout_below="@+id/search"-->
+    <!--android:text="SerialNumber: "-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/serial_num"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_above="@+id/count_txt"-->
+    <!--android:layout_alignParentEnd="true"-->
+    <!--android:layout_below="@+id/version"-->
+    <!--android:layout_marginEnd="40dp"-->
+    <!--android:text=""-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/count"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentStart="true"-->
+    <!--android:layout_below="@+id/serial"-->
+    <!--android:paddingBottom="10dip"-->
+    <!--android:text="Count: "-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/count_txt"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_above="@+id/result_text"-->
+    <!--android:layout_alignEnd="@+id/serial_num"-->
+    <!--android:layout_below="@+id/serial"-->
+    <!--android:text=""-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+
+
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/textView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_above="@+id/serial"-->
+    <!--android:layout_toStartOf="@+id/version"-->
+    <!--android:text="sw ver: "-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/version"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignBottom="@+id/textView"-->
+    <!--android:layout_alignParentEnd="true"-->
+    <!--android:layout_alignTop="@+id/textView"-->
+    <!--android:text="Medium Text"-->
+    <!--android:textAppearance="?android:attr/textAppearanceMedium" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/CLEAR"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignBottom="@+id/textView"-->
+    <!--android:layout_toEndOf="@+id/search"-->
+    <!--android:onClick="onClearClick"-->
+    <!--android:text="CLEAR" />-->
 
 </RelativeLayout>
 

@@ -17,26 +17,28 @@ import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.isens.BSMSyncAdapter;
-import com.dreamwalker.diabetesfits.consts.IntentConst;
 import com.dreamwalker.diabetesfits.consts.isens.PremierNConst;
 import com.dreamwalker.diabetesfits.device.isens.GlucoseRecord;
 import com.dreamwalker.diabetesfits.device.isens.ScannerServiceParser;
@@ -49,25 +51,36 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.paperdb.Paper;
+
+import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_BSM_DEVICE;
+
 
 public class SyncBSMDataActivity extends AppCompatActivity {
     private static final String TAG = "SyncBSMDataActivity";
 
-    @BindView(R.id.serial_num)
-    TextView _serial_num;
-    @BindView(R.id.count_txt)
-    TextView _count;
+    //    @BindView(R.id.serial_num)
+//    TextView _serial_num;
+//    @BindView(R.id.count_txt)
+//    TextView _count;
     @BindView(R.id.result)
     TextView _result;
-    @BindView(R.id.version)
-    TextView version;
+//    @BindView(R.id.version)
+//    TextView version;
 //    @BindView(R.id.bsm_recycler_view)
 //    RecyclerView recyclerView;
+
+    @BindView(R.id.animation_view)
+    LottieAnimationView animationView;
+
+    @BindView(R.id.home)
+    ImageView backImageView;
 
     private static final int REQUEST_ENABLE_BT = 2;
     private BluetoothManager mBluetoothManager;
@@ -114,6 +127,10 @@ public class SyncBSMDataActivity extends AppCompatActivity {
 
     private boolean _isScanning = false;
 
+    private boolean bolBroacastRegistred;
+
+    private boolean bondingCheckFlag;
+
     String deviceAddress;
 
     private void initCharacteristics() {
@@ -125,24 +142,31 @@ public class SyncBSMDataActivity extends AppCompatActivity {
         mCustomTimeCharacteristic = null;
     }
 
+    @OnClick(R.id.home)
+    public void homeImageButtonClicked(View v){
+
+        mBluetoothGatt.disconnect();
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sync_bsm_data);
         setTitle("혈당계 동기화");
 
-        deviceAddress  = getIntent().getStringExtra(IntentConst.SYNC_BSM_DEVICE);
+        deviceAddress = getIntent().getStringExtra(SYNC_BSM_DEVICE);
 
         Paper.init(this);
         ButterKnife.bind(this);
 
-        PackageInfo info = null;
-        try {
-            info = getPackageManager().getPackageInfo(getPackageName(), 0);
-            version.setText(info.versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
+//        PackageInfo info = null;
+//        try {
+//            info = getPackageManager().getPackageInfo(getPackageName(), 0);
+//            version.setText(info.versionName);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            e.printStackTrace();
+//        }
         boolean isBleAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE) ? true : false;
 
         if (isBleAvailable && runningOnKitkatOrHigher()) {
@@ -155,6 +179,8 @@ public class SyncBSMDataActivity extends AppCompatActivity {
         }
 
         init();
+
+        connect(deviceAddress);
     }
 
     public void init() {
@@ -171,16 +197,15 @@ public class SyncBSMDataActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        boolean isBleAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
-        if (isBleAvailable && runningOnKitkatOrHigher() && mBluetoothAdapter.isEnabled()) {
-            connect(deviceAddress);
-//            final Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
-//            for (BluetoothDevice device : devices) {
-////                    Util.log("####Resume()- Device name:" + device.getName() +", bond status: " + device.getBondState());
-//                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-//
-//                }
-//            }
+        boolean isBleAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE) ? true : false;
+        if (isBleAvailable && runningOnKitkatOrHigher() && mBluetoothAdapter.isEnabled() == true) {
+            final Set<BluetoothDevice> devices = mBluetoothAdapter.getBondedDevices();
+            for (BluetoothDevice device : devices) {
+//                    Util.log("####Resume()- Device name:" + device.getName() +", bond status: " + device.getBondState());
+                if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                    startScan();
+                }
+            }
         }
     }
 
@@ -199,10 +224,10 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                     if (result != null) {
                         try {
                             if (ScannerServiceParser.decodeDeviceAdvData(result.getScanRecord().getBytes())) {
-                                connect(deviceAddress);
-//                                if (result.getDevice().getBondState() == BluetoothDevice.BOND_BONDED) {
-//
-//                                }
+                                if (result.getDevice().getBondState() == BluetoothDevice.BOND_BONDED) {
+//                                    connect(result.getDevice().toString());
+                                   connect(deviceAddress);
+                                }
                             }
                         } catch (Exception e) {
 //						DebugLogger.e(TAG, "Invalid data in Advertisement packet " + e.toString());
@@ -229,10 +254,9 @@ public class SyncBSMDataActivity extends AppCompatActivity {
             if (device != null) {
                 try {
                     if (ScannerServiceParser.decodeDeviceAdvData(scanRecord)) {
-                        connect(deviceAddress);
-//                        if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
-//
-//                        }
+                        if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
+                            connect(deviceAddress);
+                        }
                     }
                 } catch (Exception e) {
                 }
@@ -281,35 +305,46 @@ public class SyncBSMDataActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onPause() {
+        if (bolBroacastRegistred) {
+            unregisterReceiver(mBondingBroadcastReceiver);
+            bolBroacastRegistred = false;
+        }
+        super.onPause();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mGattUpdateReceiver); //ble
         //등록되지 않은 리시버라는데 어떻게 처리해야 좋을까?
-        unregisterReceiver(mBondingBroadcastReceiver);
+
+
         Log.d("-- close", " -- destroy");
         close();
     }
 
-    public void onSearchClick(View v) {
-        Log.e(TAG, "onSearchClick: " + "스캔버튼 눌렀어요 ");
-        _serial_num.setText("");
-        _count.setText("");
-        //_result.setText("");
-        //mBSList.clear();
-
-        String[] permission = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION};
-        if (isBLEEnabled() && checkPermission(permission)) {
-            Log.e(TAG, "onSearchClick: " + " 다이얼로그 들어옴 ");
-            showDeviceScanningDialog();
-        } else if (!isBLEEnabled()) {
-            Log.e(TAG, "onSearchClick: " + " 블루투스 사용불가  ");
-            showBLEDialog();
-        } else if (!checkPermission(permission)) {
-            Log.e(TAG, "onSearchClick: " + " 퍼미션 문제  ");
-            requestPermissions(permission);
-        }
-    }
+//    public void onSearchClick(View v) {
+//        Log.e(TAG, "onSearchClick: " + "스캔버튼 눌렀어요 ");
+//        _serial_num.setText("");
+//        _count.setText("");
+//        //_result.setText("");
+//        //mBSList.clear();
+//
+//        String[] permission = new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION};
+//        if (isBLEEnabled() && checkPermission(permission)) {
+//            Log.e(TAG, "onSearchClick: " + " 다이얼로그 들어옴 ");
+//            showDeviceScanningDialog();
+//        } else if (!isBLEEnabled()) {
+//            Log.e(TAG, "onSearchClick: " + " 블루투스 사용불가  ");
+//            showBLEDialog();
+//        } else if (!checkPermission(permission)) {
+//            Log.e(TAG, "onSearchClick: " + " 퍼미션 문제  ");
+//            requestPermissions(permission);
+//        }
+//    }
 
     public boolean checkPermission(String[] permission) {
         for (int i = 0; i < permission.length; i++) {
@@ -332,13 +367,13 @@ public class SyncBSMDataActivity extends AppCompatActivity {
         Toast.makeText(SyncBSMDataActivity.this, "Call camera allows us to access.", Toast.LENGTH_SHORT).show();
     }
 
-    public void onClearClick(View v) {
-        _serial_num.setText("");
-        _count.setText("");
-        //_result.setText("");
-        mBSList.clear();
-        adapter.notifyDataSetChanged();
-    }
+//    public void onClearClick(View v) {
+//        _serial_num.setText("");
+//        _count.setText("");
+//        //_result.setText("");
+//        mBSList.clear();
+//        adapter.notifyDataSetChanged();
+//    }
 
     private boolean isBLEEnabled() {
         final BluetoothAdapter adapter = mBluetoothManager.getAdapter();
@@ -369,7 +404,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
             switch (action) {
                 case PremierNConst.INTENT_BLE_CONNECTED_DEVICE:
                     if (extraData != "") {
-                        connect(deviceAddress);
+                        connect(extraData);
                     }
                     break;
                 case PremierNConst.INTENT_BLE_BOND_NONE:
@@ -427,9 +462,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                     }
                     break;
                 case PremierNConst.INTENT_BLE_SEQUENCECOMPLETED:
-                    if (getSerialNumber() == null) {
-                        return;
-                    }
+                    if (getSerialNumber() == null) return;
                     // TODO: 2018-01-29  가져올 순서 번호가 확인되면 모든 ble 데이터를 요청
                     requestBleAll();
                     break;
@@ -512,10 +545,8 @@ public class SyncBSMDataActivity extends AppCompatActivity {
         }
 
 
-        if (mBluetoothManager != null && mBluetoothManager.getConnectionState(device, BluetoothProfile.GATT) == BluetoothProfile.STATE_CONNECTED){
+        if (mBluetoothManager != null && mBluetoothManager.getConnectionState(device, BluetoothProfile.GATT) == BluetoothProfile.STATE_CONNECTED)
             return false;
-        }
-
 //        if(mBluetoothManager != null && mBluetoothManager.getConnectedDevices(BluetoothProfile.GATT).contains(device) == true) return false;
 
         Log.e("---connect", address);
@@ -527,11 +558,10 @@ public class SyncBSMDataActivity extends AppCompatActivity {
             }
         }
 
-        if (mHandler == null) {
-            mHandler = new Handler();
-        }
+        if (mHandler == null) mHandler = new Handler();
 
         final IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        bolBroacastRegistred = true;
         registerReceiver(mBondingBroadcastReceiver, filter);
 
         mBluetoothGatt = device.connectGatt(this, true, mGattCallback);
@@ -549,12 +579,8 @@ public class SyncBSMDataActivity extends AppCompatActivity {
 
     public void close() {
         Log.e("-- close", " -- close");
-        if (mBluetoothGatt != null) {
-            mBluetoothGatt.close();
-        }
-        if (mRecords != null) {
-            mRecords.clear();
-        }
+        if (mBluetoothGatt != null) mBluetoothGatt.close();
+        if (mRecords != null) mRecords.clear();
 
         mGlucoseMeasurementCharacteristic = null;
         mGlucoseMeasurementContextCharacteristic = null;
@@ -574,38 +600,47 @@ public class SyncBSMDataActivity extends AppCompatActivity {
     private BroadcastReceiver mBondingBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, final Intent intent) {
-            // TODO: 2018-02-06 연결된 디바이스의 정보와 연결상태를 받아온다. 
+            // TODO: 2018-02-06 연결된 디바이스의 정보와 연결상태를 받아온다.
             final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             final int bondState = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, -1);
             // TODO: 2018-02-06 디바이스가 없다면 리턴
-            if (device == null || mBluetoothGatt == null) {
-                return;
-            }
+            if (device == null || mBluetoothGatt == null) return;
+
             // skip other devices
             if (!device.getAddress().equals(mBluetoothGatt.getDevice().getAddress())) {
                 return;
             }
 
-            if (mBluetoothGatt == null) {
-                return;
-            }
-
-            broadcastUpdate(PremierNConst.INTENT_BLE_BONDED, device.getAddress());
-            mBluetoothGatt.discoverServices();
+            if (mBluetoothGatt == null) return;
 
             if (bondState == BluetoothDevice.BOND_BONDING) {
-
             } else if (bondState == BluetoothDevice.BOND_BONDED) {
+
+                bondingCheckFlag = true;
                 // TODO: 2018-02-06 연결이되면 서비스를 찾으려고 한다.
                 broadcastUpdate(PremierNConst.INTENT_BLE_BONDED, device.getAddress());
                 //[2016.06.10][leenain] After bonded, discover services.
                 mBluetoothGatt.discoverServices();
             } else if (bondState == BluetoothDevice.BOND_NONE) {
-                broadcastUpdate(PremierNConst.INTENT_BLE_BONDED, device.getAddress());
-                mBluetoothGatt.discoverServices();
-//                broadcastUpdate(PremierNConst.INTENT_BLE_BOND_NONE, "");
-//                Log.e("-- close", " -- non bond");
-//                close();
+                bondingCheckFlag = false;
+                // TODO: 2018-07-23 프로토콜상 페어링 필수 - 박제창 .
+                AlertDialog.Builder builder = new AlertDialog.Builder(SyncBSMDataActivity.this);
+                builder.setTitle("Error");
+                builder.setMessage("데이터 동기화를 위해서 혈당계와 페어링 과정이 필요합니다. \n 1. S 버튼을 길게 눌러 설정으로 가세요.\n 2. 블루투스 페어링을 진행하세요" +
+                        " \n\n또는 설정 -> 블루투스 에 들어가 혈당계와 페어링을 진행하세요.");
+                builder.setCancelable(false);
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //device.createBond();
+                        finish();
+                    }
+                });
+                builder.show();
+
+                //broadcastUpdate(PremierNConst.INTENT_BLE_BOND_NONE, "");
+                Log.e("-- close", " -- non bond");
+                //close();
             }
         }
     };
@@ -621,18 +656,23 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                 gatt.discoverServices();
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                //TODO : result data list show
-                Log.e(TAG, "onConnectionStateChange: " + "데이터 다 받아와서 연결을 끊었어요.");
-                if (Paper.book("syncBms").read("data") == null){
-                    Paper.book("syncBms").write("data", mBSList);
-                    startActivity(new Intent(SyncBSMDataActivity.this, SyncBMSResultActivity.class));
-                    finish();
+                if (bondingCheckFlag){
+                    //TODO : result data list show
+                    Log.e(TAG, "onConnectionStateChange: " + "데이터 다 받아와서 연결을 끊었어요.");
+                    if (Paper.book("syncBms").read("data") == null) {
+                        Paper.book("syncBms").write("data", mBSList);
+                        startActivity(new Intent(SyncBSMDataActivity.this, SyncBMSResultActivity.class));
+                        finish();
+                    } else {
+                        Paper.book("syncBms").delete("data");
+                        Paper.book("syncBms").write("data", mBSList);
+                        startActivity(new Intent(SyncBSMDataActivity.this, SyncBMSResultActivity.class));
+                        finish();
+                    }
                 }else {
-                    Paper.book("syncBms").delete("data");
-                    Paper.book("syncBms").write("data", mBSList);
-                    startActivity(new Intent(SyncBSMDataActivity.this, SyncBMSResultActivity.class));
-                    finish();
+                    Log.e(TAG, "onConnectionStateChange: " + " 페어링 되어 있지 않아 서 연결 종료 " );
                 }
+
 
                 //                ArrayList<BloodSugar> mBusinesses2 = mBSList;
 //                mBSList.clear();
@@ -642,7 +682,9 @@ public class SyncBSMDataActivity extends AppCompatActivity {
 //                }
                 //recyclerView.setAdapter(new BSMSyncAdapter(getApplicationContext(), mBusinesses2));
                 //mHandler.post(() -> adapter.notifyDataSetChanged());
-                startScan();
+
+                // TODO: 2018-07-23 전송이 완료되면 필요 없기 때문에 지운다.
+                //startScan();
                 broadcastUpdate(PremierNConst.INTENT_BLE_DEVICEDISCONNECTED, "");
             }
         }
@@ -681,6 +723,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
             }
         }
 
+        ;
 
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
@@ -715,7 +758,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            _serial_num.setText(_serial_text);
+                            //_serial_num.setText(_serial_text);
                             _result.setText("연결 성공");
                         }
                     });
@@ -867,7 +910,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                         if (record == null || mealPresent == false) return;
                         record.flag_context = 1;
                         String value = String.valueOf(record.glucoseData);
-                        _result.setText("동기화 중..");
+                        _result.setText("동기화 중");
                         //_result.append(sequenceNumber + " : " + record.glucoseData + " , " + getDateTime(record.time) + ", " + meal + "\n");
                         //_result.append(sequenceNumber + " : " + record.glucoseData + " , " + getDateTime(record.time) + "\n");
                         mBSList.add(new BloodSugar(value, getDateTime(record.time), meal));
@@ -910,14 +953,14 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                     final int number = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, offset);
                     offset += 2;
 
-                    // TODO: 2018-01-29  number 개수가져오는 곳? 
+                    // TODO: 2018-01-29  number 개수가져오는 곳?
                     // number를 문자열로 변환하여 던진다.M
                     broadcastUpdate(PremierNConst.INTENT_BLE_SEQUENCECOMPLETED, Integer.toString(number));
 
                     mHandler.post(new Runnable() {
                         @Override
                         public void run() {
-                            _count.setText(Integer.toString(number));
+                            //_count.setText(Integer.toString(number));
                         }
                     });
 
@@ -1132,7 +1175,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
 
         //Log.e(TAG, "getDateTime: " + strDate);
         //df = DateFormat.getTimeFormat(this);
-        // TODO: 2018-02-27 기존코드는 아래  
+        // TODO: 2018-02-27 기존코드는 아래
         //strDate += " " + df.format(t * 1000);
         // TODO: 2018-02-27 trim하기위한것
         //strDate += "," + df.format(t * 1000);

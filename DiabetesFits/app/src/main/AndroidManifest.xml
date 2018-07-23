@@ -55,28 +55,24 @@
             android:name=".activity.DeviceChooseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-
         <activity
             android:name=".activity.BSMScanActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ShopTheme">
-        </activity>
-
+            android:theme="@style/ShopTheme"></activity>
         <activity
             android:name=".activity.MachineScanActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity
+            android:theme="@style/ShopTheme"
             android:name=".activity.sync.SyncBSMDataActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.sync.SyncBMSResultActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.chart.AnalysisBSActivity" />
+        <activity android:name=".activity.chart.ChartActivity"></activity>
     </application>
 
 </manifest>

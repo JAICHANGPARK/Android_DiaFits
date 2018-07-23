@@ -184,11 +184,13 @@ public class SyncBMSResultActivity extends AppCompatActivity {
         subIndex = newIndex - oldIndex;
         Log.e(TAG, "init: subIndex -  " + subIndex);
         if (subIndex == 0) {
+            runOnUiThread(()->{
+                animationLayout.setVisibility(View.VISIBLE);
+                lottieAnimationView.playAnimation();
+                fab.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.GONE);
+            });
 
-            animationLayout.setVisibility(View.VISIBLE);
-            lottieAnimationView.playAnimation();
-            fab.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.GONE);
             //dbTextView.setVisibility(View.GONE);
             // TODO: 2018-02-27 같은 데이터 양이라면
 //            Log.e(TAG, "init: 같은 데이터 양이라면");
@@ -205,10 +207,14 @@ public class SyncBMSResultActivity extends AppCompatActivity {
 //            recyclerView.setAdapter(adapter);
             //추가할 데이터가 없어요
         } else if (subIndex > 0) {
-            animationLayout.setVisibility(View.GONE);
-            lottieAnimationView.cancelAnimation();
-            fab.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.VISIBLE);
+
+            runOnUiThread(() -> {
+                animationLayout.setVisibility(View.GONE);
+                lottieAnimationView.cancelAnimation();
+                fab.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+            });
+
             // TODO: 2018-02-27 새로운 데이터가 더 많다면
             Log.e(TAG, "새로운 데이터가 더 많다면");
             //List<BloodSugar> subList =  mBSList.subList(oldIndex, newIndex);

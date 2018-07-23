@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.activity.chart.ChartActivity;
 import com.dreamwalker.diabetesfits.adapter.DeviceAdapter;
 import com.dreamwalker.diabetesfits.consts.PageConst;
 import com.dreamwalker.diabetesfits.model.Device;
@@ -58,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @BindView(R.id.empty_layout)
     LinearLayout emptyLayout;
+
     @BindView(R.id.device_layout)
     LinearLayout deviceLayout;
 
@@ -188,10 +190,16 @@ public class HomeActivity extends AppCompatActivity {
                 .build();
 
         LinearLayout settingLayout = guillotineMenu.findViewById(R.id.settings_group);
+        LinearLayout activityLayout = guillotineMenu.findViewById(R.id.activity_group);
         settingLayout.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
             startActivity(intent);
         });
+        activityLayout.setOnClickListener(v -> {
+            startActivity(new Intent(HomeActivity.this, ChartActivity.class));
+
+        });
+
 
     }
 }
