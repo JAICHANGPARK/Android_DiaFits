@@ -122,11 +122,11 @@ public class EZBLEService extends Service {
 
                         if (mIndoorBikeCharacteristic != null) {
                             //setCharacteristicNotification(mIndoorBikeCharacteristic, true);
-                            Log.e(TAG, "onServicesDiscovered: " + "mIndoorBikeCharacteristic set" );
+                            Log.e(TAG, "onServicesDiscovered: " + "mIndoorBikeCharacteristic set");
                         }
                         if (mTreadmillCharacteristic != null) {
                             //setCharacteristicNotification(mTreadmillCharacteristic, true);
-                            Log.e(TAG, "onServicesDiscovered: " + "mTreadmillCharacteristic set" );
+                            Log.e(TAG, "onServicesDiscovered: " + "mTreadmillCharacteristic set");
                         }
                     }
                 }
@@ -151,32 +151,67 @@ public class EZBLEService extends Service {
         }
 
 
-
         @Override
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
-            if (status == BluetoothGatt.GATT_SUCCESS){
-                if (EZGattService.BLE_CHAR_HEART_RATE_MEASUREMENT.equals(descriptor.getCharacteristic().getUuid())){
-                    enableHeartRateNotification(gatt);
-                }
-                if (EZGattService.BLE_CHAR_INDOOR_BIKE_DATA.equals(descriptor.getCharacteristic().getUuid())){
-                    enableIndoorBikeNotification(gatt);
-                }
-                if (EZGattService.BLE_CHAR_TREADMILL_DATA.equals(descriptor.getCharacteristic().getUuid())){
-                    enableTreadmillNotification(gatt);
-                }
 
-
-            }else if (status == BluetoothGatt.GATT_INSUFFICIENT_AUTHENTICATION) {
-                if (gatt.getDevice().getBondState() != BluetoothDevice.BOND_NONE) {
-                    Log.e(TAG, "onDescriptorWrite: Error" );
-                   // broadcastUpdate(PremierNConst.INTENT_BLE_ERROR, "error", " (" + status + ")");
-                }
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                Log.d(TAG, "Callback: Wrote GATT Descriptor successfully.");
             }
+            else{
+                Log.d(TAG, "Callback: Error writing GATT Descriptor: "+ status);
+            }
+//            descriptorWriteQueue.remove();  //pop the item that we just finishing writing
+//            //if there is more to write, do it!
+//            if(descriptorWriteQueue.size() > 0)
+//                mBluetoothGatt.writeDescriptor(descriptorWriteQueue.element());
+//            else if(characteristicReadQueue.size() > 0)
+//                mBluetoothGatt.readCharacteristic(readQueue.element());
+//            if (status == BluetoothGatt.GATT_SUCCESS) {
+//                if (EZGattService.BLE_CHAR_HEART_RATE_MEASUREMENT.equals(descriptor.getCharacteristic().getUuid())) {
+//                    enableHeartRateNotification(gatt);
+//                }
+//                if (EZGattService.BLE_CHAR_INDOOR_BIKE_DATA.equals(descriptor.getCharacteristic().getUuid())) {
+//                    enableIndoorBikeNotification(gatt);
+//                }
+//                if (EZGattService.BLE_CHAR_TREADMILL_DATA.equals(descriptor.getCharacteristic().getUuid())) {
+//                    enableTreadmillNotification(gatt);
+//                }
+//            } else if (status == BluetoothGatt.GATT_INSUFFICIENT_AUTHENTICATION) {
+//                if (gatt.getDevice().getBondState() != BluetoothDevice.BOND_NONE) {
+//                    Log.e(TAG, "onDescriptorWrite: Error");
+//                    // broadcastUpdate(PremierNConst.INTENT_BLE_ERROR, "error", " (" + status + ")");
+//                }
+//            }
         }
     };
 
-    private void enableHeartRateNotification(final BluetoothGatt gatt){
-        if (mHeartRateMeasurementCharacteristic == null){
+    public void readCharacteristic(String characteristicName) {
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+            Log.w(TAG, "BluetoothAdapter not initialized");
+            return;
+        }
+
+        BluetoothGattService s = mBluetoothGatt.getService(EZGattService.BLE_HEART_RATE);
+        BluetoothGattCharacteristic c = s.getCharacteristic(UUID.fromString(characteristicName));
+        //put the characteristic into the read queue
+        characteristicReadQueue.add(c);
+        //if there is only 1 item in the queue, then read it.  If more than 1, we handle asynchronously in the callback above
+        //GIVE PRECEDENCE to descriptor writes.  They must all finish first.
+        if((characteristicReadQueue.size() == 1) && (descriptorWriteQueue.size() == 0))
+            mBluetoothGatt.readCharacteristic(c);
+    }
+
+    public void writeGattDescriptor(BluetoothGattDescriptor d){
+        //put the descriptor into the write queue
+        descriptorWriteQueue.add(d);
+        //if there is only 1 item in the queue, then write it.  If more than 1, we handle asynchronously in the callback above
+        if(descriptorWriteQueue.size() == 1){
+            mBluetoothGatt.writeDescriptor(d);
+        }
+    }
+
+    private void enableHeartRateNotification(final BluetoothGatt gatt) {
+        if (mHeartRateMeasurementCharacteristic == null) {
             return;
         }
         gatt.setCharacteristicNotification(mHeartRateMeasurementCharacteristic, true);
@@ -185,8 +220,8 @@ public class EZBLEService extends Service {
         gatt.writeDescriptor(descriptor);
     }
 
-    private void enableTreadmillNotification(final BluetoothGatt gatt){
-        if (mTreadmillCharacteristic == null){
+    private void enableTreadmillNotification(final BluetoothGatt gatt) {
+        if (mTreadmillCharacteristic == null) {
             return;
         }
         gatt.setCharacteristicNotification(mTreadmillCharacteristic, true);
@@ -195,8 +230,8 @@ public class EZBLEService extends Service {
         gatt.writeDescriptor(d);
     }
 
-    private void enableIndoorBikeNotification(final BluetoothGatt gatt){
-        if (mIndoorBikeCharacteristic == null){
+    private void enableIndoorBikeNotification(final BluetoothGatt gatt) {
+        if (mIndoorBikeCharacteristic == null) {
             return;
         }
         gatt.setCharacteristicNotification(mIndoorBikeCharacteristic, true);
@@ -230,10 +265,10 @@ public class EZBLEService extends Service {
             Log.d(TAG, String.format("Received heart rate: %d", heartRate));
             intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
         } else if (EZGattService.BLE_CHAR_INDOOR_BIKE_DATA.equals(characteristic.getUuid())) {
-            final int flags = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0);
+            final int flags = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 0);
             Log.e(TAG, "BLE_CHAR_INDOOR_BIKE_DATA: " + "inininiin" + flags);
         } else if (EZGattService.BLE_CHAR_TREADMILL_DATA.equals(characteristic.getUuid())) {
-            final int flags = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16,0);
+            final int flags = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 0);
             Log.e(TAG, "BLE_FITNESS_MACHINE: " + "inininiin" + flags);
         } else {
             // For all other profiles, writes the data formatted in HEX.
@@ -419,7 +454,7 @@ public class EZBLEService extends Service {
                 e.printStackTrace();
             }
             mBluetoothGatt.writeDescriptor(descriptor);
-        } else if (EZGattService.BLE_CHAR_INDOOR_BIKE_DATA.equals(characteristic.getUuid())){
+        } else if (EZGattService.BLE_CHAR_INDOOR_BIKE_DATA.equals(characteristic.getUuid())) {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(EZGattService.CLIENT_CHARACTERISTIC_CONFIG));
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             try {
@@ -428,7 +463,7 @@ public class EZBLEService extends Service {
                 e.printStackTrace();
             }
             mBluetoothGatt.writeDescriptor(descriptor);
-        } else if (EZGattService.BLE_CHAR_TREADMILL_DATA.equals(characteristic.getUuid())){
+        } else if (EZGattService.BLE_CHAR_TREADMILL_DATA.equals(characteristic.getUuid())) {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(EZGattService.CLIENT_CHARACTERISTIC_CONFIG));
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             try {
