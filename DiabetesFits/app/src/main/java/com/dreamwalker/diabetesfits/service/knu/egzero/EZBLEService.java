@@ -63,12 +63,14 @@ public class EZBLEService extends Service {
     public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString(EZGattService.HEART_RATE_MEASUREMENT);
 
 
-    private BluetoothGattCharacteristic mHeartRateMeasurementCharacteristic;
-
+    BluetoothGattCharacteristic mHeartRateMeasurementCharacteristic;
+    BluetoothGattCharacteristic mIndoorBikeCharacteristic;
+    BluetoothGattCharacteristic mTreadmillCharacteristic;
 
     private void initCharacteristics() {
         mHeartRateMeasurementCharacteristic = null;
-
+        mIndoorBikeCharacteristic = null;
+        mTreadmillCharacteristic = null;
     }
 
     // Implements callback methods for GATT events that the app cares about.  For example,
@@ -97,13 +99,16 @@ public class EZBLEService extends Service {
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 initCharacteristics();
-                for (BluetoothGattService service : gatt.getServices()){
-                    Log.e(TAG, "onServicesDiscovered: " + service.getUuid().toString() );
-                   if (EZGattService.BLE_HEART_RATE.equals(service.getUuid())){
-                       mHeartRateMeasurementCharacteristic = service.getCharacteristic(EZGattService.BLE_CHAR_HEART_RATE_MEASUREMENT);
-                       setCharacteristicNotification(mHeartRateMeasurementCharacteristic, true);
-                       //gatt.setCharacteristicNotification(mHeartRateMeasurementCharacteristic, true);
-                   }
+                for (BluetoothGattService service : gatt.getServices()) {
+                    Log.e(TAG, "onServicesDiscovered: " + service.getUuid().toString());
+                    if (EZGattService.BLE_HEART_RATE.equals(service.getUuid())) {
+                        mHeartRateMeasurementCharacteristic = service.getCharacteristic(EZGattService.BLE_CHAR_HEART_RATE_MEASUREMENT);
+                        setCharacteristicNotification(mHeartRateMeasurementCharacteristic, true);
+                        //gatt.setCharacteristicNotification(mHeartRateMeasurementCharacteristic, true);
+                    } else if (EZGattService.BLE_FITNESS_MACHINE.equals(service.getUuid())) {
+                        mIndoorBikeCharacteristic = service.getCharacteristic(EZGattService.BLE_CHAR_INDOOR_BIKE_DATA);
+                        mTreadmillCharacteristic = service.getCharacteristic(EZGattService.BLE_CHAR_TREADMILL_DATA);
+                    }
                 }
                 broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
             } else {
@@ -153,7 +158,7 @@ public class EZBLEService extends Service {
             final byte[] data = characteristic.getValue();
             if (data != null && data.length > 0) {
                 final StringBuilder stringBuilder = new StringBuilder(data.length);
-                for(byte byteChar : data)
+                for (byte byteChar : data)
                     stringBuilder.append(String.format("%02X ", byteChar));
                 intent.putExtra(EXTRA_DATA, new String(data) + "\n" + stringBuilder.toString());
             }
@@ -212,11 +217,10 @@ public class EZBLEService extends Service {
      * Connects to the GATT server hosted on the Bluetooth LE device.
      *
      * @param address The device address of the destination device.
-     *
      * @return Return true if the connection is initiated successfully. The connection result
-     *         is reported asynchronously through the
-     *         {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
-     *         callback.
+     * is reported asynchronously through the
+     * {@code BluetoothGattCallback#onConnectionStateChange(android.bluetooth.BluetoothGatt, int, int)}
+     * callback.
      */
     public boolean connect(final String address) {
         if (mBluetoothAdapter == null || address == null) {
@@ -295,7 +299,7 @@ public class EZBLEService extends Service {
      * Enables or disables notification on a give characteristic.
      *
      * @param characteristic Characteristic to act on.
-     * @param enabled If true, enable notification.  False otherwise.
+     * @param enabled        If true, enable notification.  False otherwise.
      */
     public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enabled) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
