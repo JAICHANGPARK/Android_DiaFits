@@ -11,9 +11,13 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.service.knu.egzero.EZBLEService;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static com.dreamwalker.diabetesfits.consts.IntentConst.REAL_TIME_INDOOR_BIKE_DEVICE;
 
@@ -25,6 +29,9 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
 
     String mDeviceAddress;
     private boolean mConnected = false;
+
+    @BindView(R.id.text_view)
+    TextView textView;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -79,7 +86,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 //displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (EZBLEService.ACTION_DATA_AVAILABLE.equals(action)) {
                 Log.e(TAG, "onReceive: " + intent.getStringExtra(EZBLEService.EXTRA_DATA) );
-                //displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+                displayData(intent.getStringExtra(EZBLEService.EXTRA_DATA));
             }
         }
     };
@@ -88,6 +95,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indoor_bike_real_time);
+        ButterKnife.bind(this);
 
         mDeviceAddress = getIntent().getStringExtra(REAL_TIME_INDOOR_BIKE_DEVICE);
 
@@ -117,6 +125,12 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
         super.onDestroy();
         unbindService(mServiceConnection);
         mBluetoothLeService = null;
+    }
+
+    private void displayData(String data) {
+        if (data != null) {
+            textView.append(data);
+        }
     }
 
 }

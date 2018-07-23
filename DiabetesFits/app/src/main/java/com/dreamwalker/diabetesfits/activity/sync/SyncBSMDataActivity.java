@@ -806,7 +806,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
             }
         }
 
-        ;
+
 
         @Override
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
