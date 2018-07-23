@@ -741,8 +741,10 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                         mDeviceSoftwareRevisionCharacteristic = service.getCharacteristic(PremierNConst.BLE_CHAR_SOFTWARE_REVISION); //2A28
                     } else if (PremierNConst.BLE_SERVICE_CUSTOM.equals(service.getUuid())) {//FFF0
                         mCustomTimeCharacteristic = service.getCharacteristic(PremierNConst.BLE_CHAR_CUSTOM_TIME);//FFF1
-                        if (mCustomTimeCharacteristic != null)
+                        if (mCustomTimeCharacteristic != null){
                             gatt.setCharacteristicNotification(mCustomTimeCharacteristic, true);
+                        }
+
                     }
                 }
                 // Validate the device for required characteristics

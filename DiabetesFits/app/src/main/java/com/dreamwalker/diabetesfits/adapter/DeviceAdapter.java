@@ -33,12 +33,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.activity.chart.IndoorBikeRealTimeActivity;
 import com.dreamwalker.diabetesfits.activity.sync.SyncBSMDataActivity;
 import com.dreamwalker.diabetesfits.consts.isens.PremierNConst;
+import com.dreamwalker.diabetesfits.device.knu.egzero.EGZeroConst;
 import com.dreamwalker.diabetesfits.model.Device;
 
 import java.util.List;
 
+import static com.dreamwalker.diabetesfits.consts.IntentConst.REAL_TIME_INDOOR_BIKE_DEVICE;
 import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_BSM_DEVICE;
 
 
@@ -219,6 +222,17 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         holder.showActivityTracks.setOnClickListener(new View.OnClickListener() {
                                                          @Override
                                                          public void onClick(View v) {
+
+                                                             switch (deviceName) {
+                                                                 case EGZeroConst.DEVICE_NAME:
+                                                                     Log.e("클릭됨", "onClick: 클릭툄" );
+                                                                     Intent bsmIntent = new Intent(context, IndoorBikeRealTimeActivity.class);
+                                                                     bsmIntent.putExtra(REAL_TIME_INDOOR_BIKE_DEVICE, deviceAddress);
+                                                                     context.startActivity(bsmIntent);
+                                                                     break;
+                                                                 default:
+                                                                     break;
+                                                             }
 //                                                             Intent startIntent;
 //                                                             startIntent = new Intent(context, ActivitySummariesActivity.class);
 //                                                             startIntent.putExtra(GBDevice.EXTRA_DEVICE, device);

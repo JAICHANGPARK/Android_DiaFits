@@ -58,21 +58,24 @@
         <activity
             android:name=".activity.BSMScanActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ShopTheme"></activity>
+            android:theme="@style/ShopTheme" />
         <activity
             android:name=".activity.MachineScanActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:theme="@style/ShopTheme"
             android:name=".activity.sync.SyncBSMDataActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme" />
         <activity
             android:name=".activity.sync.SyncBMSResultActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.chart.AnalysisBSActivity" />
-        <activity android:name=".activity.chart.ChartActivity"></activity>
+        <activity android:name=".activity.chart.ChartActivity" />
+        <activity android:name=".activity.chart.IndoorBikeRealTimeActivity"></activity>
+
+        <service android:name=".service.knu.egzero.EZBLEService" android:enabled="true"/>
+
     </application>
 
 </manifest>

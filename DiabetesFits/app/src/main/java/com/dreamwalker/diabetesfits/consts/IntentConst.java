@@ -7,4 +7,6 @@ public class IntentConst {
 
     public static final String SYNC_BSM_DEVICE = "SYNC_BSM_DEVICE";
 
+    public static final String REAL_TIME_INDOOR_BIKE_DEVICE = "REAL_TIME_INDOOR_BIKE_DEVICE";
+
 }
