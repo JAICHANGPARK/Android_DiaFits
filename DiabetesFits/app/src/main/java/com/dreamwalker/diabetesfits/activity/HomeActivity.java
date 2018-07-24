@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.chart.ChartActivity;
+import com.dreamwalker.diabetesfits.activity.diary.WriteBSActivity;
 import com.dreamwalker.diabetesfits.adapter.DeviceAdapter;
 import com.dreamwalker.diabetesfits.consts.PageConst;
 import com.dreamwalker.diabetesfits.model.Device;
@@ -132,7 +133,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     break;
                 case R.id.ftb_menu_new_chat:
-
+                    startActivity(new Intent(HomeActivity.this, WriteBSActivity.class));
                     break;
             }
             return false;
