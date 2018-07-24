@@ -26,7 +26,8 @@ public class EGDataConverter {
 
         float floatVal;
 
-        final int intVal = (data[4] << 16) & 0xff0000 | (data[3] & 0x00ff00) | (data[2] & 0xff);
+
+        final int intVal = (data[4] << 16) & 0xff0000 | (data[3] << 8) & 0x00ff00 | (data[2] & 0xff);
         return String.format("%d m", intVal);
     }
 }

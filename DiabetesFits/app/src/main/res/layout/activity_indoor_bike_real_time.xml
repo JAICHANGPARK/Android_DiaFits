@@ -150,7 +150,7 @@
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
         android:elevation="10dp"
-        android:text="TextView"
+        android:text="심박수"
         android:textAlignment="textStart"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -180,6 +180,15 @@
             app:wave_length="middle">
 
         </com.dreamwalker.waveviewlib.WaveView>
+
+        <Chronometer
+            android:layout_margin="8dp"
+            android:id="@+id/chronometer"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:fontFamily="@font/grobold"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
 
 

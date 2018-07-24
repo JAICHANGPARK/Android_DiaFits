@@ -2,6 +2,7 @@ package com.dreamwalker.diabetesfits.activity;
 
 import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -61,12 +62,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
     String userPassword;
     String userUUID;
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Paper.init(this);
-
+        progressDialog = new ProgressDialog(this);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -78,7 +81,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
         String id = Paper.book("user").read("userID");
         String pwd = Paper.book("user").read("userPassword");
-
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage("Loading..");
+        progressDialog.show();
         if (id != null && pwd != null) {
             Call<Validate> autoLoginQueue = service.userLogin(id, pwd);
             autoLoginQueue.enqueue(new Callback<Validate>() {
@@ -88,6 +93,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     Log.e(TAG, "onResponse: " + response.body().getSuccess());
                     String result = response.body().getSuccess();
                     if (result.equals("true")) {
+                        progressDialog.dismiss();
                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                         finish();
                     } else {
@@ -103,8 +109,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                 @Override
                 public void onFailure(Call<Validate> call, Throwable t) {
                     Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 }
             });
+        }else {
+            progressDialog.dismiss();
         }
 
         final MaterialLoginView loginView = (MaterialLoginView) findViewById(R.id.login);

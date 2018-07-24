@@ -7,11 +7,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -48,6 +50,10 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     @BindView(R.id.textView13)
     TextView heartRateTextView;
 
+    @BindView(R.id.chronometer)
+    Chronometer chronometer;
+
+    private boolean startIndicator = false;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -75,7 +81,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
         intentFilter.addAction(EZBLEService.ACTION_GATT_DISCONNECTED);
         intentFilter.addAction(EZBLEService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(EZBLEService.ACTION_DATA_AVAILABLE);
-        intentFilter.addAction(EZBLEService.ACTION_HEARTRATE_AVAILABLE);
+        intentFilter.addAction(EZBLEService.ACTION_HEART_RATE_AVAILABLE);
         intentFilter.addAction(EZBLEService.ACTION_INDOOR_BIKE_AVAILABLE);
         intentFilter.addAction(EZBLEService.ACTION_TREADMILL_AVAILABLE);
         return intentFilter;
@@ -97,22 +103,30 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 invalidateOptionsMenu();
             } else if (EZBLEService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
+
+                chronometer.stop();
                 //updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
                 //clearUI();
             } else if (EZBLEService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
+                // TODO: 2018-07-24 서비스와 연결되엉ㅅ을때 방송되어 받아지는 리시버 - 박제창
+                startIndicator = true;
+                //chronometer.start();
                 //displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (EZBLEService.ACTION_DATA_AVAILABLE.equals(action)) {
                 Log.e(TAG, "onReceive: " + intent.getStringExtra(EZBLEService.EXTRA_DATA));
                 displayData(intent.getStringExtra(EZBLEService.EXTRA_DATA));
-            } else if (EZBLEService.ACTION_HEARTRATE_AVAILABLE.equals(action)) {
+            } else if (EZBLEService.ACTION_HEART_RATE_AVAILABLE.equals(action)) {
+                Log.e(TAG, "onReceive:  실시간 화면에서 심박수 받앗어요 " );
                 String hr = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 heartRateTextView.setText(hr);
             } else if (EZBLEService.ACTION_INDOOR_BIKE_AVAILABLE.equals(action)) {
+
                 String nowSpeed = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 nowSpeedTextView.setText(nowSpeed);
             } else if (EZBLEService.ACTION_TREADMILL_AVAILABLE.equals(action)) {
+
                 String totalDistance = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 totalDistanceTextView.setText(totalDistance);
             }
@@ -123,7 +137,12 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_indoor_bike_real_time);
+
         ButterKnife.bind(this);
+        // TODO: 2018-07-24 폰트 설정
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/grobold.ttf");
+        chronometer.setTypeface(font, Typeface.NORMAL);
+        chronometer.setTextSize(80);
 
         final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(-2, -2);
         lp.gravity = Gravity.BOTTOM | Gravity.CENTER;
@@ -133,7 +152,12 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
         Intent gattServiceIntent = new Intent(this, EZBLEService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        chronometer.start();
     }
 
     @Override
@@ -144,11 +168,14 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
             final boolean result = mBluetoothLeService.connect(mDeviceAddress);
             Log.d(TAG, "Connect request result=" + result);
         }
+
+        chronometer.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        chronometer.stop();
         unregisterReceiver(mGattUpdateReceiver);
     }
 
