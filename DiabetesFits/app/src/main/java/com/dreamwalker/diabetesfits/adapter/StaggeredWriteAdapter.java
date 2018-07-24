@@ -14,10 +14,13 @@ import com.dreamwalker.diabetesfits.R;
 
 import java.util.ArrayList;
 
-public class StaggeredWriteAdapter extends RecyclerView.Adapter<StaggeredWriteAdapter.StaggerWriteViewHoler>{
+public class StaggeredWriteAdapter extends
+        RecyclerView.Adapter<StaggeredWriteAdapter.StaggerWriteViewHoler> {
     Context context;
     private ArrayList<String> nName = new ArrayList<>();
     private ArrayList<Integer> mImageUrls = new ArrayList<>();
+
+    private CustomItemClickListener clickListener;
 
     public StaggeredWriteAdapter(Context context, ArrayList<String> nName, ArrayList<Integer> mImageUrls) {
         this.context = context;
@@ -44,6 +47,13 @@ public class StaggeredWriteAdapter extends RecyclerView.Adapter<StaggeredWriteAd
             }
         });
 
+//        holder.setCustomItemClickListener(new CustomItemClickListener() {
+//            @Override
+//            public void onItemClick(View v, int position) {
+//
+//            }
+//        });
+
     }
 
     @Override
@@ -51,15 +61,32 @@ public class StaggeredWriteAdapter extends RecyclerView.Adapter<StaggeredWriteAd
         return nName.size();
     }
 
+    public void setCustomItemClickListener(CustomItemClickListener listener){
+        this.clickListener = listener;
+    }
 
-    public class StaggerWriteViewHoler extends RecyclerView.ViewHolder{
+
+    public class StaggerWriteViewHoler extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView gridTextView;
         ImageView imageView;
+//        CustomItemClickListener customItemClickListener;
 
         public StaggerWriteViewHoler(View itemView) {
             super(itemView);
             this.gridTextView = itemView.findViewById(R.id.grid_text_view);
             this.imageView = itemView.findViewById(R.id.grid_image_view);
+            itemView.setOnClickListener(this);
+        }
+
+
+
+        @Override
+        public void onClick(View v) {
+            if (clickListener != null){
+              clickListener.onItemClick(v, getAdapterPosition());
+            }
+//            customItemClickListener.onItemClick(v, getAdapterPosition());
         }
     }
+
 }

@@ -34,6 +34,7 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:gridlayout-v7:27.1.1'
     implementation 'com.github.armcha:Vertical-Intro:2.0.0'
     //vertical intro
     implementation 'com.airbnb.android:lottie:2.5.5'
@@ -66,6 +67,16 @@ dependencies {
     implementation 'com.github.zzz40500:AndroidSweetSheet:1.1.0'
     //AndroidSweetSheet
     implementation 'org.apache.poi:poi:3.9'
+
+
+    // Recommended BottomSheetPickers
+    implementation('com.philliphsu:bottomsheetpickers:2.4.1') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design'
+        exclude group: 'com.android.support', module: 'gridlayout-v7'
+    }
+
+    implementation 'com.kevalpatel2106:ruler-picker:1.1'  // Android Ruler Picker
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
