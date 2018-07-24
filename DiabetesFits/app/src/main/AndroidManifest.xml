@@ -72,7 +72,9 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.chart.AnalysisBSActivity" />
         <activity android:name=".activity.chart.ChartActivity" />
-        <activity android:name=".activity.chart.IndoorBikeRealTimeActivity"></activity>
+        <activity android:name=".activity.chart.IndoorBikeRealTimeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme"></activity>
 
         <service android:name=".service.knu.egzero.EZBLEService" android:enabled="true"/>
 

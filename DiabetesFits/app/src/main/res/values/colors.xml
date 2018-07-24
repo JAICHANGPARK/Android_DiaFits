@@ -66,4 +66,14 @@
     <color name="line">#e2e2e2</color>
     <color name="light_grey">#ededed</color>
 
+
+    <color name="wave_gradient_winter_neva_01">#A1C4FD</color>
+    <color name="wave_gradient_winter_neva_02">#C2E9FB</color>
+    <color name="wave_gradient_deep_blue_01">#e0c3fc</color>
+    <color name="wave_gradient_deep_blue_02">#8ec5fc</color>
+    <color name="wave_gradient_malibu_blue_01">#4facfe</color>
+    <color name="wave_gradient_malibu_blue_02">#00f2fe</color>
+
+
+
 </resources>

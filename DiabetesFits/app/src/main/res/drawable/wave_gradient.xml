@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <gradient
+                android:angle="135"
+                android:startColor="@color/wave_gradient_winter_neva_02"
+                android:endColor="@color/wave_gradient_winter_neva_01"
+                android:type="linear" />
+        </shape>
+    </item>
+</selector>

@@ -10,11 +10,13 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- *  물결 흐름 처리
- *  EDITED BY JAICHANGPARK (DREAMWALKER)
+ * 물결 흐름 처리
+ * EDITED BY JAICHANGPARK (DREAMWALKER)
  */
 
 public class CustomWaveView extends View {
+
+    private static final int STRENGTH = 10;
 
     private android.graphics.Path mAbovePath, mBelowWavePath;
     private Paint mAboveWavePaint, mBelowWavePaint;
@@ -86,8 +88,16 @@ public class CustomWaveView extends View {
             mAbovePath.lineTo(x, y);
             mBelowWavePath.lineTo(x, y2);
             //回调 把y坐标的值传出去(在activity里面接收让小机器人随波浪一起摇摆)
-            mWaveAnimationListener.OnWaveAnimation(y);
+            //mWaveAnimationListener.OnWaveAnimation(y);
         }
+//        mAbovePath.lineTo(getRight(), getBottom());
+//        mBelowWavePath.lineTo(getRight(), getBottom());
+
+        float xCenter = (float) (getWidth() * 0.5);
+        float yCenter = (float) (8 * Math.cos(omega * xCenter + angle));
+        //yResult是距离view底部的距离
+        float yResult = getHeight() - yCenter;
+        mWaveAnimationListener.OnWaveAnimation(yResult);
         mAbovePath.lineTo(getRight(), getBottom());
         mBelowWavePath.lineTo(getRight(), getBottom());
 

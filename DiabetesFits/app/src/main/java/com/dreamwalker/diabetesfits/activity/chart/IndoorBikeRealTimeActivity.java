@@ -11,10 +11,13 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.service.knu.egzero.EZBLEService;
+import com.dreamwalker.waveviewlib.WaveView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +35,9 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
 
     @BindView(R.id.text_view)
     TextView textView;
+
+    @BindView(R.id.wave_view)
+    WaveView customWaveView;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -85,7 +91,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 // Show all the supported services and characteristics on the user interface.
                 //displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (EZBLEService.ACTION_DATA_AVAILABLE.equals(action)) {
-                Log.e(TAG, "onReceive: " + intent.getStringExtra(EZBLEService.EXTRA_DATA) );
+                Log.e(TAG, "onReceive: " + intent.getStringExtra(EZBLEService.EXTRA_DATA));
                 displayData(intent.getStringExtra(EZBLEService.EXTRA_DATA));
             }
         }
@@ -97,10 +103,14 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_indoor_bike_real_time);
         ButterKnife.bind(this);
 
+        final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(-2, -2);
+        lp.gravity = Gravity.BOTTOM | Gravity.CENTER;
+
         mDeviceAddress = getIntent().getStringExtra(REAL_TIME_INDOOR_BIKE_DEVICE);
 
         Intent gattServiceIntent = new Intent(this, EZBLEService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+
 
     }
 
