@@ -32,9 +32,11 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.dreamwalker.diabetesfits.device.knu.egzero.EGDataConverter;
 import com.dreamwalker.diabetesfits.device.knu.egzero.EZGattService;
 
 import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -60,10 +62,15 @@ public class EZBLEService extends Service {
     private static final int STATE_CONNECTING = 1;
     private static final int STATE_CONNECTED = 2;
 
-    public final static String ACTION_GATT_CONNECTED = "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
-    public final static String ACTION_GATT_DISCONNECTED = "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
-    public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
-    public final static String ACTION_DATA_AVAILABLE = "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
+    public final static String ACTION_GATT_CONNECTED = "com.dreamwalker.diabetesfits.service.knu.egzero.ACTION_GATT_CONNECTED";
+    public final static String ACTION_GATT_DISCONNECTED = "com.dreamwalker.diabetesfits.service.knu.egzero.ACTION_GATT_DISCONNECTED";
+    public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.dreamwalker.diabetesfits.service.knu.egzero.ACTION_GATT_SERVICES_DISCOVERED";
+    public final static String ACTION_DATA_AVAILABLE = "com.dreamwalker.diabetesfits.service.knu.egzero.ACTION_DATA_AVAILABLE";
+
+    public final static String ACTION_HEARTRATE_AVAILABLE = "com.dreamwalker.diabetesfits.service.knu.egzero.ACTION_HEARTRATE_AVAILABLE";
+    public final static String ACTION_INDOOR_BIKE_AVAILABLE = "com.dreamwalker.diabetesfits.service.knu.egzero.ACTION_INDOOR_BIKE_AVAILABLE";
+    public final static String ACTION_TREADMILL_AVAILABLE = "com.dreamwalker.diabetesfits.service.knu.egzero.ACTION_TREADMILL_AVAILABLE";
+
     public final static String EXTRA_DATA = "com.example.bluetooth.le.EXTRA_DATA";
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString(EZGattService.HEART_RATE_MEASUREMENT);
@@ -151,13 +158,6 @@ public class EZBLEService extends Service {
         }
 
         @Override
-        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            UUID uuid = characteristic.getUuid();
-            Log.e(TAG, "onCharacteristicChanged: " + uuid.toString());
-            broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
-        }
-
-        @Override
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -171,13 +171,11 @@ public class EZBLEService extends Service {
                 if (heartRateDescriptor) {
                     indoorBikeDescriptor = enableIndoorBikeNotification(gatt);
                     heartRateDescriptor = false;
-                }
-                else if (indoorBikeDescriptor) {
+                } else if (indoorBikeDescriptor) {
                     treadmillDescriptor = enableTreadmillNotification(gatt);
                     indoorBikeDescriptor = false;
-                }
-                else if (treadmillDescriptor){
-                    Log.e(TAG, "onDescriptorWrite: " + "------- All Descriptor Write Done" );
+                } else if (treadmillDescriptor) {
+                    Log.e(TAG, "onDescriptorWrite: " + "------- All Descriptor Write Done");
                 }
             } else {
                 Log.d(TAG, "Callback: Error writing GATT Descriptor: " + status);
@@ -205,6 +203,23 @@ public class EZBLEService extends Service {
 //                }
 //            }
         }
+
+        @Override
+        public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
+            UUID uuid = characteristic.getUuid();
+            Log.e(TAG, "onCharacteristicChanged: " + uuid.toString());
+            if (EZGattService.BLE_CHAR_INDOOR_BIKE_DATA.equals(uuid)) {
+                broadcastBikeUpdate(ACTION_INDOOR_BIKE_AVAILABLE, characteristic);
+            } else if (EZGattService.BLE_CHAR_TREADMILL_DATA.equals(uuid)) {
+                broadcastTreadmillUpdate(ACTION_TREADMILL_AVAILABLE, characteristic);
+            } else if (EZGattService.BLE_CHAR_HEART_RATE_MEASUREMENT.equals(uuid)) {
+                broadcastHeartRateUpdate(ACTION_HEARTRATE_AVAILABLE, characteristic);
+            } else {
+                //broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
+            }
+        }
+
+
     };
 
     public void readCharacteristic(String characteristicName) {
@@ -266,9 +281,74 @@ public class EZBLEService extends Service {
     }
 
 
-
     private void broadcastUpdate(final String action) {
         final Intent intent = new Intent(action);
+        sendBroadcast(intent);
+    }
+
+    private void broadcastHeartRateUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
+        final Intent intent = new Intent(action);
+        int flag = characteristic.getProperties();
+        int format = -1;
+        if ((flag & 0x01) != 0) {
+            format = BluetoothGattCharacteristic.FORMAT_UINT16;
+            Log.d(TAG, "Heart rate format UINT16.");
+        } else {
+            format = BluetoothGattCharacteristic.FORMAT_UINT8;
+            Log.d(TAG, "Heart rate format UINT8.");
+        }
+        final int heartRate = characteristic.getIntValue(format, 1);
+        Log.d(TAG, String.format("Received heart rate: %d", heartRate));
+        intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+
+    }
+
+    private void broadcastTreadmillUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
+        final Intent intent = new Intent(action);
+        final int flags = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 0);
+        Log.e(TAG, "BLE_CHAR_TREADMILL_DATA: " + "Flag--> " + flags);
+        //int distance = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 2);
+        //Log.e(TAG, "broadcastUpdate distance --> : " + distance);
+
+        final byte[] data = characteristic.getValue();
+
+        String dis = EGDataConverter.parseTreadmillData(data);
+        Log.e(TAG, "broadcastUpdate distance --> : " + dis);
+//            int distance = (data[2] >> 16) | (data[3] >> 8 ) | (data[4] & 0xFF);
+//            Log.e(TAG, "broadcastUpdate distance --> : " + distance);
+
+        if (data != null && data.length > 0) {
+            final StringBuilder stringBuilder = new StringBuilder(data.length);
+            for (byte byteChar : data) {
+                stringBuilder.append(String.format("%02X ", byteChar));
+            }
+            //intent.putExtra(EXTRA_DATA, "distance : " + stringBuilder.toString() + "\n");
+        }
+
+        intent.putExtra(EXTRA_DATA, dis);
+        sendBroadcast(intent);
+    }
+
+    private void broadcastBikeUpdate(final String action, final BluetoothGattCharacteristic characteristic) {
+        final Intent intent = new Intent(action);
+
+        final int flags = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT16, 0);
+        Log.e(TAG, "BLE_CHAR_INDOOR_BIKE_DATA: " + " flag -->  " + flags);
+//            int speed = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 2);
+        final byte[] data = characteristic.getValue();
+
+        String result = EGDataConverter.parseBluetoothData(data);
+        //float speedFloat = bytearray2float(tmp);
+        Log.e(TAG, "broadcastUpdate: parseSpeed --> " + result);
+
+        if (data != null && data.length > 0) {
+            final StringBuilder stringBuilder = new StringBuilder(data.length);
+            for (byte byteChar : data) {
+                stringBuilder.append(String.format("%02X ", byteChar));
+            }
+            //intent.putExtra(EXTRA_DATA, "speed : " + stringBuilder.toString() + "\n");
+        }
+        intent.putExtra(EXTRA_DATA, result);
         sendBroadcast(intent);
     }
 
@@ -293,20 +373,45 @@ public class EZBLEService extends Service {
             intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
         } else if (EZGattService.BLE_CHAR_INDOOR_BIKE_DATA.equals(characteristic.getUuid())) {
             final int flags = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT16, 0);
-            int speed = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 2);
-            intent.putExtra(EXTRA_DATA, "속도 : " + String.valueOf(speed) + "\n");
-            Log.e(TAG, "BLE_CHAR_INDOOR_BIKE_DATA: " + "inininiin  " + flags);
+            Log.e(TAG, "BLE_CHAR_INDOOR_BIKE_DATA: " + " flag -->  " + flags);
+//            int speed = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 2);
+            final byte[] data = characteristic.getValue();
+
+            String result = EGDataConverter.parseBluetoothData(data);
+            //float speedFloat = bytearray2float(tmp);
+            Log.e(TAG, "broadcastUpdate: parseSpeed --> " + result);
+
+            if (data != null && data.length > 0) {
+                final StringBuilder stringBuilder = new StringBuilder(data.length);
+                for (byte byteChar : data) {
+                    stringBuilder.append(String.format("%02X ", byteChar));
+                }
+                intent.putExtra(EXTRA_DATA, "speed : " + stringBuilder.toString() + "\n");
+            }
+//            intent.putExtra(EXTRA_DATA, "속도 : " + String.valueOf(speed) + "\n");
+
 
         } else if (EZGattService.BLE_CHAR_TREADMILL_DATA.equals(characteristic.getUuid())) {
             final int flags = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, 0);
+            Log.e(TAG, "BLE_CHAR_TREADMILL_DATA: " + "Flag--> " + flags);
+            //int distance = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT32, 2);
+            //Log.e(TAG, "broadcastUpdate distance --> : " + distance);
+
             final byte[] data = characteristic.getValue();
+
+            String dis = EGDataConverter.parseTreadmillData(data);
+            Log.e(TAG, "broadcastUpdate distance --> : " + dis);
+//            int distance = (data[2] >> 16) | (data[3] >> 8 ) | (data[4] & 0xFF);
+//            Log.e(TAG, "broadcastUpdate distance --> : " + distance);
+
             if (data != null && data.length > 0) {
                 final StringBuilder stringBuilder = new StringBuilder(data.length);
-                for (byte byteChar : data)
+                for (byte byteChar : data) {
                     stringBuilder.append(String.format("%02X ", byteChar));
-                intent.putExtra(EXTRA_DATA, "distance : " + stringBuilder.toString()+ "\n");
+                }
+                intent.putExtra(EXTRA_DATA, "distance : " + stringBuilder.toString() + "\n");
             }
-            Log.e(TAG, "BLE_CHAR_TREADMILL_DATA: " + "inininiin  " + flags);
+
         } else {
             // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();
@@ -318,6 +423,12 @@ public class EZBLEService extends Service {
             }
         }
         sendBroadcast(intent);
+    }
+
+    public static float bytearray2float(byte[] b) {
+        ByteBuffer buf = ByteBuffer.wrap(b);
+
+        return buf.getFloat();
     }
 
     public class LocalBinder extends Binder {

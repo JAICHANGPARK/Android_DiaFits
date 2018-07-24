@@ -39,6 +39,16 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     @BindView(R.id.wave_view)
     WaveView customWaveView;
 
+    @BindView(R.id.textView3)
+    TextView nowSpeedTextView;
+
+    @BindView(R.id.textView9)
+    TextView totalDistanceTextView;
+
+    @BindView(R.id.textView13)
+    TextView heartRateTextView;
+
+
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -65,6 +75,9 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
         intentFilter.addAction(EZBLEService.ACTION_GATT_DISCONNECTED);
         intentFilter.addAction(EZBLEService.ACTION_GATT_SERVICES_DISCOVERED);
         intentFilter.addAction(EZBLEService.ACTION_DATA_AVAILABLE);
+        intentFilter.addAction(EZBLEService.ACTION_HEARTRATE_AVAILABLE);
+        intentFilter.addAction(EZBLEService.ACTION_INDOOR_BIKE_AVAILABLE);
+        intentFilter.addAction(EZBLEService.ACTION_TREADMILL_AVAILABLE);
         return intentFilter;
     }
 
@@ -93,6 +106,15 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
             } else if (EZBLEService.ACTION_DATA_AVAILABLE.equals(action)) {
                 Log.e(TAG, "onReceive: " + intent.getStringExtra(EZBLEService.EXTRA_DATA));
                 displayData(intent.getStringExtra(EZBLEService.EXTRA_DATA));
+            } else if (EZBLEService.ACTION_HEARTRATE_AVAILABLE.equals(action)) {
+                String hr = intent.getStringExtra(EZBLEService.EXTRA_DATA);
+                heartRateTextView.setText(hr);
+            } else if (EZBLEService.ACTION_INDOOR_BIKE_AVAILABLE.equals(action)) {
+                String nowSpeed = intent.getStringExtra(EZBLEService.EXTRA_DATA);
+                nowSpeedTextView.setText(nowSpeed);
+            } else if (EZBLEService.ACTION_TREADMILL_AVAILABLE.equals(action)) {
+                String totalDistance = intent.getStringExtra(EZBLEService.EXTRA_DATA);
+                totalDistanceTextView.setText(totalDistance);
             }
         }
     };
