@@ -1,5 +1,6 @@
 package com.dreamwalker.diabetesfits.common;
 
+import com.dreamwalker.diabetesfits.remote.IUploadAPI;
 import com.dreamwalker.diabetesfits.remote.IWriteAPI;
 import com.dreamwalker.diabetesfits.remote.RetrofitClient;
 
@@ -14,5 +15,9 @@ public class Common {
 
     public static IWriteAPI getGlucoseWriteServie(){
         return RetrofitClient.getClient(BASE_URL).create(IWriteAPI.class);
+    }
+
+    public static IUploadAPI getUploadService(){
+        return RetrofitClient.getClient(BASE_URL).create(IUploadAPI.class);
     }
 }

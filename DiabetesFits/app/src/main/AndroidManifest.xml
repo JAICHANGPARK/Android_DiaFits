@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -80,16 +81,16 @@
             android:name=".activity.diary.WriteBSActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-
-        <activity android:name=".activity.diary.WriteCheckActivity"
+        <activity
+            android:name=".activity.diary.WriteCheckActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ShopTheme"/>
+            android:theme="@style/ShopTheme" />
 
         <service
             android:name=".service.knu.egzero.EZBLEService"
             android:enabled="true" />
 
-
+        <activity android:name=".activity.GlucoseFeedActivity"></activity>
     </application>
 
 </manifest>
