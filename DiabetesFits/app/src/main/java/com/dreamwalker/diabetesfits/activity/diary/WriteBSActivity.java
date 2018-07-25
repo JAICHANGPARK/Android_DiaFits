@@ -30,10 +30,14 @@ import com.philliphsu.bottomsheetpickers.time.numberpad.NumberPadTimePickerDialo
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.dreamwalker.diabetesfits.consts.IntentConst.USER_WRITE_GLUCOSE;
 
 public class WriteBSActivity extends AppCompatActivity implements CustomItemClickListener,
         BottomSheetTimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
@@ -69,15 +73,39 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
 
     DatePickerDialog dateDialog;
     GridTimePickerDialog gridTimeDialog;
+
+    int y, m, d;
+    int h, min;
+
+    HashMap<String, String> userInputMap = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_bs);
         ButterKnife.bind(this);
 
+        initData();
+        setDefaultValue();
+        setBottomSheetPicker();
+        setRulerValuePicker();
+        setBottomSheetBehavior();
+        setRecyclerView();
+
+        floatingActionButton.setVisibility(View.GONE);
+//        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+//            floatingActionButton.setVisibility(View.GONE);
+//        }
+
+    }
+
+    private void setBottomSheetPicker() {
+
+
         Calendar now = Calendar.getInstance();
-// As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
-         dateDialog = DatePickerDialog.newInstance(
+
+        // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
+        dateDialog = DatePickerDialog.newInstance(
                 WriteBSActivity.this,
                 now.get(Calendar.YEAR),
                 now.get(Calendar.MONTH),
@@ -92,14 +120,17 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
         // Configured according to the system preference for 24-hour time.
         pad = NumberPadTimePickerDialog.newInstance(WriteBSActivity.this);
 
+    }
 
+    private void setRulerValuePicker() {
         rulerValuePicker.selectValue(100 /* Initial value */);
 
         rulerValuePicker.setValuePickerListener(new RulerValuePickerListener() {
             @Override
             public void onValueChange(int selectedValue) {
-//                String value = String.valueOf(selectedValue);
-//                glucoseValueTextView.setText(value);
+                String gluValue = String.valueOf(selectedValue);
+                //glucoseValueTextView.setText(gluValue);
+                userInputMap.put("userGlucose", gluValue);
             }
 
             @Override
@@ -109,7 +140,9 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
 
             }
         });
+    }
 
+    private void setBottomSheetBehavior() {
         bottomSheetBehavior = BottomSheetBehavior.from(mBottomSheet);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -122,18 +155,15 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
 
             }
         });
-        initData();
+    }
+
+    private void setRecyclerView() {
+
         adapter = new StaggeredWriteAdapter(this, name, imageList);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setAdapter(adapter);
         adapter.setCustomItemClickListener(this);
-
-        floatingActionButton.setVisibility(View.GONE);
-//        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
-//            floatingActionButton.setVisibility(View.GONE);
-//        }
-
     }
 
     @OnClick(R.id.fab)
@@ -144,10 +174,14 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
     }
 
     @OnClick(R.id.glucose_button)
-    public void glucoButtonClicked(){
+    public void glucoButtonClicked() {
 //        pad.show(getSupportFragmentManager(), "1");
 
         dateDialog.show(getSupportFragmentManager(), "2");
+    }
+
+    private void setDefaultValue(){
+        userInputMap.put("userGlucose", "100");
     }
 
     private void initData() {
@@ -199,20 +233,48 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
         bottomSheetBehavior.setPeekHeight(300);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+
+        String type = name.get(position);
+        userInputMap.put("userType", type);
+
+
     }
 
     @Override
     public void onTimeSet(ViewGroup viewGroup, int hourOfDay, int minute) {
-        Log.e(TAG, "onTimeSet: " + hourOfDay + ", "+ minute  );
+        Log.e(TAG, "onTimeSet: " + hourOfDay + ", " + minute);
+        h = hourOfDay;
+        min = minute;
+
+        GregorianCalendar gregorianCalendar = new GregorianCalendar(y, m, d, h, min);
+        Log.e(TAG, "onTimeSet: " + gregorianCalendar.getTime());
+        Log.e(TAG, "onTimeSet: " + gregorianCalendar.getTimeInMillis());
+
+        userInputMap.put("hourOfDay", String.valueOf(hourOfDay));
+        userInputMap.put("minute", String.valueOf(minute));
+        userInputMap.put("timestamp", String.valueOf(gregorianCalendar.getTimeInMillis()));
 
         Intent intent = new Intent(WriteBSActivity.this, WriteCheckActivity.class);
+        intent.putExtra(USER_WRITE_GLUCOSE, userInputMap);
         startActivity(intent);
 
     }
 
+
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        Log.e(TAG, "onDateSet: " + year + "|" + monthOfYear + "|" + dayOfMonth );
-        gridTimeDialog.show(getSupportFragmentManager(),"3");
+        Log.e(TAG, "onDateSet: " + year + "|" + monthOfYear + "|" + dayOfMonth);
+
+        //
+        y = year;
+        m = monthOfYear;
+        d = dayOfMonth;
+
+        userInputMap.put("year", String.valueOf(year));
+        userInputMap.put("monthOfYear", String.valueOf(monthOfYear));
+        userInputMap.put("dayOfMonth", String.valueOf(dayOfMonth));
+
+        gridTimeDialog.show(getSupportFragmentManager(), "3");
+
     }
 }

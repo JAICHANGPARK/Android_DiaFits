@@ -4,34 +4,141 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".activity.diary.WriteCheckActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/top_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
+            android:gravity="center"
+            android:text="Check"
+            android:textColor="@color/black"
+            android:textSize="28sp" />
+
         <com.dreamwalker.receiptview.ReceiptView
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/submit_button"
+            android:layout_below="@+id/top_label"
             android:layout_centerInParent="true"
-            app:zigzagBackgroundColor="@color/white"
+            android:layout_margin="16dp"
+            app:zigzagBackgroundColor="@color/default_background"
             app:zigzagElevation="8dp"
             app:zigzagHeight="10dp"
-            app:zigzagPaddingContent="8dp"
+            app:zigzagPaddingContent="24dp"
             app:zigzagShadowAlpha="0.9"
             app:zigzagSides="top|bottom">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_marginBottom="8dp"
+                    android:weightSum="2"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/date_text_view"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text="2018-07-25"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/time_text_view"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="12:00"
+                        android:textColor="@color/black"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="@color/black" />
+
+                <LinearLayout
+                    android:layout_margin="8dp"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:fontFamily="@font/noto_sans"
+                        android:gravity="center"
+                        android:text="Glucose(mm/dL)"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/glucose_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:fontFamily="@font/grobold"
+                        android:gravity="center"
+                        android:text="75"
+                        android:textColor="@color/black"
+                        android:textSize="80sp" />
+
+                    <TextView
+                        android:id="@+id/type_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="공복"
+                        android:textColor="@color/black"
+                        android:textSize="48sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="@color/black" />
+
+                    <TextView
+                        android:layout_margin="8dp"
+                        android:textColor="@color/black"
+                        android:gravity="center"
+                        android:textSize="18sp"
+                        android:text="@string/app_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </LinearLayout>
+
         </com.dreamwalker.receiptview.ReceiptView>
 
-
         <com.dreamwalker.progresssubmitbutton.SubmitButton
-            android:id="@+id/sbtn_loading"
+            android:id="@+id/submit_button"
             android:layout_width="200dp"
             android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="16dp"
             app:buttonText="Submit"
-            app:buttonTextSize="25sp" />
+            app:buttonTextSize="20sp" />
+
     </RelativeLayout>
 
 

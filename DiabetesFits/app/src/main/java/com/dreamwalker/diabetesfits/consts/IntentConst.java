@@ -9,4 +9,6 @@ public class IntentConst {
 
     public static final String REAL_TIME_INDOOR_BIKE_DEVICE = "REAL_TIME_INDOOR_BIKE_DEVICE";
 
+    public static final String USER_WRITE_GLUCOSE = "USER_WRITE_GLUCOSE";
+
 }
