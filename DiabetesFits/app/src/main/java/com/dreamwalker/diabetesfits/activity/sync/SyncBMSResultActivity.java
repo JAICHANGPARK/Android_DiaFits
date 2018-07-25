@@ -1,6 +1,8 @@
 package com.dreamwalker.diabetesfits.activity.sync;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -20,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -27,7 +30,10 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.chart.AnalysisBSActivity;
+import com.dreamwalker.diabetesfits.adapter.CustomItemClickListener;
 import com.dreamwalker.diabetesfits.adapter.isens.BSMSyncAdapter;
+import com.dreamwalker.diabetesfits.consts.GlucoseType;
+import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.dreamwalker.diabetesfits.model.isens.BloodSugar;
 import com.mingle.entity.MenuEntity;
 import com.mingle.sweetpick.BlurEffect;
@@ -41,14 +47,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.paperdb.Paper;
+import io.realm.Realm;
 
-public class SyncBMSResultActivity extends AppCompatActivity {
+public class SyncBMSResultActivity extends AppCompatActivity implements CustomItemClickListener {
 
     private static final String TAG = "SyncBMSResultActivity";
 
@@ -64,6 +76,12 @@ public class SyncBMSResultActivity extends AppCompatActivity {
     LottieAnimationView lottieAnimationView;
     @BindView(R.id.animationLayout)
     LinearLayout animationLayout;
+
+    @BindView(R.id.save)
+    ImageView saveImageView;
+
+    @BindView(R.id.home)
+    ImageView homeImageView;
 
 //    @BindView(R.id.tapBarMenu)
 //    TapBarMenu tapBarMenu;
@@ -90,6 +108,14 @@ public class SyncBMSResultActivity extends AppCompatActivity {
     String[] time;
     ArrayList<BloodSugar> subList;
 
+    ArrayList<Glucose> copyList = new ArrayList<>();
+
+    CharSequence[] values = {GlucoseType.FASTING, GlucoseType.SLEEP, GlucoseType.BREAKFAST_BEFORE,
+            GlucoseType.BREAKFAST_AFTER, GlucoseType.LUNCH_BEFORE, GlucoseType.LUNCH_AFTER, GlucoseType.DINNER_BEFORE,
+            GlucoseType.DINNER_AFTER, GlucoseType.FITNESS_BEFORE, GlucoseType.FITNESS_AFTER};
+
+    Realm realm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,11 +124,15 @@ public class SyncBMSResultActivity extends AppCompatActivity {
         Paper.init(this);
         setSupportActionBar(myToolbar);
         setStatusBar();
+
+        Realm.init(this);
+
+
         myToolbar.inflateMenu(R.menu.sync_bsm_menu);
         myToolbar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.save:
-                    Snackbar.make(getWindow().getDecorView().getRootView(),"툴바저장버튼", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(getWindow().getDecorView().getRootView(), "툴바저장버튼", Snackbar.LENGTH_SHORT).show();
                     return false;
                 case R.id.analysis:
 //                    startActivity(new Intent(SyncBMSResultActivity.this, AnalysisBSActivity.class));
@@ -170,6 +200,7 @@ public class SyncBMSResultActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+
         if (Paper.book("syncBms").read("data") == null) {
             Snackbar.make(getWindow().getDecorView().getRootView(), "데이터가 없어요", Snackbar.LENGTH_SHORT).show();
         } else {
@@ -192,10 +223,11 @@ public class SyncBMSResultActivity extends AppCompatActivity {
             Log.e(TAG, "init: oldIndex -  " + oldIndex);
         }
 
-        subIndex = newIndex - oldIndex;
+        subIndex = newIndex - oldIndex; // 새로운 데이터와 기존 데이터 양의 차를 구해 새로 추가해야하는 개수를 구한다. - 박제창
+
         Log.e(TAG, "init: subIndex -  " + subIndex);
         if (subIndex == 0) {
-            runOnUiThread(()->{
+            runOnUiThread(() -> {
                 animationLayout.setVisibility(View.VISIBLE);
                 lottieAnimationView.playAnimation();
                 fab.setVisibility(View.GONE);
@@ -230,7 +262,7 @@ public class SyncBMSResultActivity extends AppCompatActivity {
             Log.e(TAG, "새로운 데이터가 더 많다면");
             //List<BloodSugar> subList =  mBSList.subList(oldIndex, newIndex);
             subList = new ArrayList<>(mBSList.subList(oldIndex, newIndex));
-           // subList.add(mBSList.get(mBSList.size() - 1));
+            // subList.add(mBSList.get(mBSList.size() - 1));
             for (int i = 0; i < subList.size(); i++) {
                 Log.e(TAG, "subList - " + subList.get(i).getBsValue());
             }
@@ -243,6 +275,8 @@ public class SyncBMSResultActivity extends AppCompatActivity {
 
             adapter = new BSMSyncAdapter(this, subList);
             recyclerView.setAdapter(adapter);
+            // TODO: 2018-07-25 객체 생성하고 리스너 추가
+            adapter.setCustomItemClickListener(this);
 
         } else if (subIndex < 0) {
             // TODO: 2018-02-27 기존 데이터가 더 많다면 ( 경우가 없을 듯)
@@ -328,9 +362,9 @@ public class SyncBMSResultActivity extends AppCompatActivity {
                             bsdbHelper.insertBSData("공복", subList.get(k).getBsValue(), date[k], time[k]);
                         }
                     }*/
-                   new BackgroundTask().execute();
+                    new BackgroundTask().execute();
                     Paper.book("syncBms").write("ptr", newIndex);
-                   // Snackbar.make(getWindow().getDecorView().getRootView(),"저장완료", Snackbar.LENGTH_SHORT).show();
+                    // Snackbar.make(getWindow().getDecorView().getRootView(),"저장완료", Snackbar.LENGTH_SHORT).show();
                     mSweetSheet.dismiss();
                     break;
                 case 1:
@@ -374,7 +408,7 @@ public class SyncBMSResultActivity extends AppCompatActivity {
         }
     }
 
-    public void sqliteExport(){
+    public void sqliteExport() {
         //Context ctx = this; // for Activity, or Service. Otherwise simply get the context.
         //String dbname = "mydb.db";
         // dbpath = ctx.getDatabasePath(dbname);
@@ -398,7 +432,7 @@ public class SyncBMSResultActivity extends AppCompatActivity {
                     src.close();
                     dst.close();
                 }
-                if(backupDB.exists()){
+                if (backupDB.exists()) {
                     Toast.makeText(this, "DB Export Complete!!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -407,9 +441,54 @@ public class SyncBMSResultActivity extends AppCompatActivity {
         }
     }
 
+    int itemPosition;
+
+    /**
+     * public BloodSugar(String bsValue, String bsTime, int typeValue) {
+     * this.bsValue = bsValue;
+     * this.bsTime = bsTime;
+     * this.typeValue = typeValue;
+     * }
+     *
+     * @param v
+     * @param position
+     */
+    @Override
+    public void onItemClick(View v, int position) {
+
+        //Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+        itemPosition = position;
+        String value = subList.get(position).getBsValue();
+        int type = subList.get(position).getTypeValue();
+        String dt = subList.get(position).getBsTime();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("유형 선택");
+        builder.setSingleChoiceItems(values, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Toast.makeText(SyncBMSResultActivity.this, "" + which, Toast.LENGTH_SHORT).show();
+
+                int reIndexingTypeValue = which + 10;
+
+                subList.set(position, new BloodSugar(value, dt, reIndexingTypeValue));
+                adapter.notifyDataSetChanged();
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+
+    }
+
+    @OnClick(R.id.save)
+    public void onSaveClicked() {
+        new BackgroundTask().execute();
+    }
+
     // TODO: 2018-02-27 저장했을 경우와 저장 안했을 경우를 생각해야함
 
-    class BackgroundTask extends AsyncTask<Void,Void,Void> {
+    class BackgroundTask extends AsyncTask<Void, Void, Void> {
 
         ProgressDialog progressDialog;
 
@@ -429,17 +508,89 @@ public class SyncBMSResultActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            for (int k = 0; k < subList.size(); k++) {
-                if (subList.get(k).getTypeValue() == 0) {
-                   // bsdbHelper.insertBSData("Unknown", subList.get(k).getBsValue(), date[k], time[k]);
-                } else if (subList.get(k).getTypeValue() == 1) {
-                    //bsdbHelper.insertBSData("식전", subList.get(k).getBsValue(), date[k], time[k]);
-                } else if (subList.get(k).getTypeValue() == 2) {
-                    //bsdbHelper.insertBSData("식후", subList.get(k).getBsValue(), date[k], time[k]);
-                } else if (subList.get(k).getTypeValue() == 3) {
-                   // bsdbHelper.insertBSData("공복", subList.get(k).getBsValue(), date[k], time[k]);
+            realm = Realm.getDefaultInstance();
+
+            String tmpDateTime;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
+            String changeStringKind = null;
+            String ts = null;
+            for (int i = 0; i < subList.size(); i++) {
+                // TODO: 2018-07-26 혈당 처리  
+                String gValue = subList.get(i).getBsValue();
+                // TODO: 2018-07-26 시간 처리
+                tmpDateTime = subList.get(i).getBsTime();
+                String[] splitDateTime = tmpDateTime.split(",");
+                String d = splitDateTime[0];
+                String t = splitDateTime[1];
+                Log.e(TAG, "tmpDateTime Before -->  " + tmpDateTime);
+                tmpDateTime = tmpDateTime.replace(",", " ");
+                Log.e(TAG, "tmpDateTime After --> " + tmpDateTime);
+                try {
+                    Date date = formatter.parse(tmpDateTime);
+                    Log.e(TAG, "date.getTime() -->  " + date.getTime());
+                    ts = String.valueOf(date.getTime());
+                    Timestamp timestamp = new Timestamp(date.getTime());
+
+                    Log.e(TAG, "timestamp -->  " + timestamp);
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
+
+                // TODO: 2018-07-26 유형 처리 
+
+                if (subList.get(i).getTypeValue() == 0) {
+                    changeStringKind = "Unknown";
+                    // bsdbHelper.insertBSData("Unknown", subList.get(k).getBsValue(), date[k], time[k]);
+                } else if (subList.get(i).getTypeValue() == 1) {
+                    changeStringKind = "식전";
+                    //bsdbHelper.insertBSData("식전", subList.get(k).getBsValue(), date[k], time[k]);
+                } else if (subList.get(i).getTypeValue() == 2) {
+                    changeStringKind = "식후";
+                    //bsdbHelper.insertBSData("식후", subList.get(k).getBsValue(), date[k], time[k]);
+                } else if (subList.get(i).getTypeValue() == 3) {
+                    changeStringKind = "공복";
+                    // bsdbHelper.insertBSData("공복", subList.get(k).getBsValue(), date[k], time[k]);
+                }
+
+                // TODO: 2018-07-25 수정 및 추가 리사이클러 업데이트를 위해서  - 박제창
+                else if (subList.get(i).getTypeValue() == GlucoseType.TYPE_FASTING) {
+                    changeStringKind = GlucoseType.FASTING;
+                } else if (subList.get(i).getTypeValue() == GlucoseType.TYPE_SLEEP) {
+                    changeStringKind = GlucoseType.SLEEP;
+                } else if (subList.get(i).getTypeValue() == GlucoseType.TYPE_BREAKFAST_BEFORE) {
+                    changeStringKind = GlucoseType.BREAKFAST_BEFORE;
+                } else if (subList.get(i).getTypeValue() == GlucoseType.TYPE_BREAKFAST_AFTER) {
+                    changeStringKind = GlucoseType.BREAKFAST_AFTER;
+                } else if (subList.get(i).getTypeValue() == GlucoseType.TYPE_LUNCH_BEFORE) {
+                    changeStringKind = GlucoseType.LUNCH_BEFORE;
+                } else if (subList.get(i).getTypeValue() == GlucoseType.TYPE_LUNCH_AFTER) {
+                    changeStringKind = GlucoseType.LUNCH_AFTER;
+                } else if (subList.get(i).getTypeValue() == GlucoseType.TYPE_DINNER_BEFORE) {
+                    changeStringKind = GlucoseType.DINNER_BEFORE;
+                } else if (subList.get(i).getTypeValue() == GlucoseType.TYPE_DINNER_AFTER) {
+                    changeStringKind = GlucoseType.DINNER_AFTER;
+                } else if (subList.get(i).getTypeValue() == GlucoseType.TYPE_FITNESS_BEFORE) {
+                    changeStringKind = GlucoseType.FITNESS_BEFORE;
+                } else if (subList.get(i).getTypeValue() == GlucoseType.TYPE_FITNESS_AFTER) {
+                    changeStringKind = GlucoseType.FITNESS_AFTER;
+                }
+
+                String finalChangeStringKind = changeStringKind;
+                String finalTs = ts;
+
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        Glucose glucose = realm.createObject(Glucose.class);
+                        glucose.setValue(gValue);
+                        glucose.setType(finalChangeStringKind);
+                        glucose.setDate(d);
+                        glucose.setTime(t);
+                        glucose.setTimestamp(finalTs);
+                    }
+                });
             }
+
             return null;
         }
 
@@ -451,7 +602,6 @@ public class SyncBMSResultActivity extends AppCompatActivity {
             super.onPostExecute(aVoid);
         }
     }
-
 
 
 }

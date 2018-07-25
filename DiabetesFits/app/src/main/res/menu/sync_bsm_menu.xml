@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.dreamwalker.knu2018.dteacher.BSMSync.SyncBMSResultActivity">
     <item
+
         android:id="@+id/save"
         android:title="저장하기"
         app:showAsAction="always" />

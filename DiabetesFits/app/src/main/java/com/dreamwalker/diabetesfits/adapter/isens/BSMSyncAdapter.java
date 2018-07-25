@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.adapter.CustomItemClickListener;
+import com.dreamwalker.diabetesfits.consts.GlucoseType;
 import com.dreamwalker.diabetesfits.model.isens.BloodSugar;
 
 import java.util.ArrayList;
@@ -19,10 +21,11 @@ import java.util.ArrayList;
  */
 
 
-
 public class BSMSyncAdapter extends RecyclerView.Adapter<BSMSyncAdapter.BSMSyncViewHolder> {
+
     Context context;
     ArrayList<BloodSugar> bloodSugarArrayList;
+    CustomItemClickListener customItemClickListener;
 
 
     public BSMSyncAdapter(Context context, ArrayList<BloodSugar> bloodSugarArrayList) {
@@ -58,6 +61,57 @@ public class BSMSyncAdapter extends RecyclerView.Adapter<BSMSyncAdapter.BSMSyncV
             Glide.with(context).load(R.drawable.img_wake_up).into(holder.categoryImage);
             holder.typeText.setText("공복");
         }
+        // TODO: 2018-07-25 수정 및 추가 리사이클러 업데이트를 위해서  - 박제창
+        else if (bsType == GlucoseType.TYPE_FASTING) {
+            holder.typeText.setText(GlucoseType.FASTING);
+            Glide.with(context).load(R.drawable.img_wake_up).into(holder.categoryImage);
+        }
+
+        else if (bsType == GlucoseType.TYPE_SLEEP) {
+            holder.typeText.setText(GlucoseType.SLEEP);
+            Glide.with(context).load(R.drawable.img_wake_up).into(holder.categoryImage);
+        }
+
+        else if (bsType == GlucoseType.TYPE_BREAKFAST_BEFORE) {
+            holder.typeText.setText(GlucoseType.BREAKFAST_BEFORE);
+            Glide.with(context).load(R.drawable.apple_before).into(holder.categoryImage);
+        }
+
+        else if (bsType == GlucoseType.TYPE_BREAKFAST_AFTER) {
+            holder.typeText.setText(GlucoseType.BREAKFAST_AFTER);
+            Glide.with(context).load(R.drawable.apple_after).into(holder.categoryImage);
+        }
+
+        else if (bsType == GlucoseType.TYPE_LUNCH_BEFORE) {
+            holder.typeText.setText(GlucoseType.LUNCH_BEFORE);
+            Glide.with(context).load(R.drawable.apple_before).into(holder.categoryImage);
+        }
+
+        else if (bsType == GlucoseType.TYPE_LUNCH_AFTER) {
+            holder.typeText.setText(GlucoseType.LUNCH_AFTER);
+            Glide.with(context).load(R.drawable.apple_after).into(holder.categoryImage);
+        }
+
+        else if (bsType == GlucoseType.TYPE_DINNER_BEFORE) {
+            holder.typeText.setText(GlucoseType.DINNER_BEFORE);
+            Glide.with(context).load(R.drawable.apple_before).into(holder.categoryImage);
+        }
+
+        else if (bsType == GlucoseType.TYPE_DINNER_AFTER) {
+            holder.typeText.setText(GlucoseType.DINNER_AFTER);
+            Glide.with(context).load(R.drawable.apple_after).into(holder.categoryImage);
+        }
+
+        else if (bsType == GlucoseType.TYPE_FITNESS_BEFORE) {
+            holder.typeText.setText(GlucoseType.FITNESS_BEFORE);
+            Glide.with(context).load(R.drawable.apple_after).into(holder.categoryImage);
+        }
+
+        else if (bsType == GlucoseType.TYPE_FITNESS_AFTER) {
+            holder.typeText.setText(GlucoseType.FITNESS_AFTER);
+            Glide.with(context).load(R.drawable.apple_after).into(holder.categoryImage);
+        }
+
 
         holder.valueText.setText(bloodSugarArrayList.get(position).getBsValue());
         holder.dateTextValue.setText(bloodSugarArrayList.get(position).getBsTime());
@@ -69,8 +123,12 @@ public class BSMSyncAdapter extends RecyclerView.Adapter<BSMSyncAdapter.BSMSyncV
         return bloodSugarArrayList.size();
     }
 
+    public void setCustomItemClickListener(CustomItemClickListener listener) {
+        this.customItemClickListener = listener;
+    }
 
-    public class BSMSyncViewHolder extends RecyclerView.ViewHolder {
+
+    public class BSMSyncViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView categoryImage;
         //    TextView subjectText, typeText;
 //    TextView valueTitleText, valueText;
@@ -89,6 +147,16 @@ public class BSMSyncAdapter extends RecyclerView.Adapter<BSMSyncAdapter.BSMSyncV
             valueText = itemView.findViewById(R.id.valueText);
             //dateText = itemView.findViewById(R.id.dateText);
             dateTextValue = itemView.findViewById(R.id.dateTextValue);
+
+            itemView.setOnClickListener(this);
+        }
+
+        // TODO: 2018-07-25 리사이클러 데이터 수정을 위해서 리스너 추가합니다. - 박제창
+        @Override
+        public void onClick(View v) {
+            if (customItemClickListener != null) {
+                customItemClickListener.onItemClick(v, getAdapterPosition());
+            }
         }
     }
 }

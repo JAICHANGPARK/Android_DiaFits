@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,6 +55,7 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 
 
     RealmResults<Glucose> glucose;
+    RealmResults<Glucose> forChartGlucose;
     DashboardAdapter adapter;
 
     ArrayList<String> labelList = new ArrayList<>();
@@ -75,6 +78,15 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 
         Realm realm = Realm.getDefaultInstance();
 
+        Calendar now = Calendar.getInstance();
+
+        long s = now.getTimeInMillis();
+        long oneDay = 60 * 60 * 24;
+        long e = s - oneDay;
+
+        Log.e(TAG, "start --> " + s );
+        Log.e(TAG, "Oneday --> " + oneDay );
+        Log.e(TAG, "end --> " + e );
         glucose = realm.where(Glucose.class).findAll();
 
 // TODO: 2018-07-25 등록된 데이터 없을 떄
@@ -125,11 +137,18 @@ public class GlucoseFeedActivity extends AppCompatActivity {
                         break;
                 }
 //                Log.e(TAG, "onCreate: " + glucose.get(i).getType());
-//                Log.e(TAG, "before: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
+                Log.e(TAG, "before: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
             }
 
             // TODO: 2018-07-25 재 정렬
             glucose = glucose.sort("timestamp", Sort.ASCENDING);
+
+            forChartGlucose = realm.where(Glucose.class).contains("timestamp", String.valueOf(e)).contains("timestamp", String.valueOf(s)).findAll();
+
+            for (int i = 0; i < forChartGlucose.size(); i++) {
+                Log.e(TAG, "Search --> " + forChartGlucose.get(i).getValue() + " | " + forChartGlucose.get(i).getTimestamp());
+
+            }
 //            glucose.max("userValue").floatValue();
 //            for (int i = 0; i < glucose.size(); i++) {
 //                Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
@@ -145,7 +164,18 @@ public class GlucoseFeedActivity extends AppCompatActivity {
             ArrayList<Integer> integerArrayList = new ArrayList<>();
 
             for (Glucose g : arrayList) {
-                integerArrayList.add(Integer.valueOf(g.getValue()));
+
+                // TODO: 2018-07-26 소수점으로 인한  NumberFormatException 수정 - 박제창
+                String tmp = g.getValue();
+                if (tmp.length() == 5){
+                    tmp = tmp.substring(0,3);
+                    integerArrayList.add(Integer.valueOf(tmp));
+                }else if (tmp.length() == 3){
+                    integerArrayList.add(Integer.valueOf(tmp));
+                }
+
+                //Log.e(TAG, "onCreate: tmp --> " + tmp);
+
             }
 
 //            Log.e(TAG, "onCreate: min Value " + Collections.min(integerArrayList));

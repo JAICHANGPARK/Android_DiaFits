@@ -63,6 +63,10 @@ import io.paperdb.Paper;
 import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_BSM_DEVICE;
 
 
+/**
+ * 동기화하여 데이터를 처리하는 액티비티
+ * 박제창
+ */
 public class SyncBSMDataActivity extends AppCompatActivity {
     private static final String TAG = "SyncBSMDataActivity";
 
