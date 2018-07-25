@@ -24,6 +24,7 @@ import com.dreamwalker.diabetesfits.remote.IUploadAPI;
 import com.dreamwalker.diabetesfits.remote.IWriteAPI;
 import com.dreamwalker.progresssubmitbutton.SubmitButton;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -72,6 +73,9 @@ public class WriteCheckActivity extends AppCompatActivity {
     Vibrator vibrator;
 
     Realm realm;
+
+    Date userDateTimes;
+    long userTs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +127,17 @@ public class WriteCheckActivity extends AppCompatActivity {
 
         String timestamp = userInputMap.get("timestamp");
         Date date = new Date(Long.valueOf(timestamp));
+        userTs = Long.valueOf(timestamp) / 1000;
+
         String newDate = simpleDateFormat.format(date);
+
+        try {
+            userDateTimes = simpleDateFormat.parse(newDate);
+            Log.e(TAG, "onCreate: " + userDateTimes );
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         dateTime = newDate.split(" ");
         dateTextView.setText(dateTime[0]);
         timeTextView.setText(dateTime[1]);
@@ -156,6 +170,8 @@ public class WriteCheckActivity extends AppCompatActivity {
                             glucose.setDate(dateTime[0]);
                             glucose.setTime(dateTime[1]);
                             glucose.setTimestamp(userInputMap.get("timestamp"));
+                            glucose.setLongTs(userTs);
+                            glucose.setDatetime(userDateTimes);
                         }
                     });
 

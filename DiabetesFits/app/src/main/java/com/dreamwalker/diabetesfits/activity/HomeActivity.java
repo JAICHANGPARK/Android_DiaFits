@@ -199,7 +199,8 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayout feedLayout = guillotineMenu.findViewById(R.id.feed_group);
 
         settingLayout.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+            Intent intent = new Intent(HomeActivity.this, SettingActivityV2.class);
+//            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
             startActivity(intent);
         });
         activityLayout.setOnClickListener(v -> {

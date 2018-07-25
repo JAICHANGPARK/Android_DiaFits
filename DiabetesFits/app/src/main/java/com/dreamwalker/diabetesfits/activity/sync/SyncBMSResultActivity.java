@@ -512,8 +512,11 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
 
             String tmpDateTime;
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
+
             String changeStringKind = null;
             String ts = null;
+            Date userDate = null;
+             long userTs = 0;
             for (int i = 0; i < subList.size(); i++) {
                 // TODO: 2018-07-26 혈당 처리  
                 String gValue = subList.get(i).getBsValue();
@@ -527,10 +530,11 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
                 Log.e(TAG, "tmpDateTime After --> " + tmpDateTime);
                 try {
                     Date date = formatter.parse(tmpDateTime);
+                    userDate = formatter.parse(tmpDateTime);
+                    userTs = date.getTime() / 1000;
                     Log.e(TAG, "date.getTime() -->  " + date.getTime());
                     ts = String.valueOf(date.getTime());
                     Timestamp timestamp = new Timestamp(date.getTime());
-
                     Log.e(TAG, "timestamp -->  " + timestamp);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -577,6 +581,8 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
 
                 String finalChangeStringKind = changeStringKind;
                 String finalTs = ts;
+                Date finalUserDate = userDate;
+                long finalUserTs = userTs;
 
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
@@ -587,6 +593,8 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
                         glucose.setDate(d);
                         glucose.setTime(t);
                         glucose.setTimestamp(finalTs);
+                        glucose.setLongTs(finalUserTs);
+                        glucose.setDatetime(finalUserDate);
                     }
                 });
             }

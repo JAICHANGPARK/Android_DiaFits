@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -81,13 +82,14 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         Calendar now = Calendar.getInstance();
 
         long s = now.getTimeInMillis();
-        long oneDay = 60 * 60 * 24;
+        long oneDay = 3 * (60 * 60 * 24);
         long e = s - oneDay;
-
-        Log.e(TAG, "start --> " + s );
-        Log.e(TAG, "Oneday --> " + oneDay );
-        Log.e(TAG, "end --> " + e );
-        glucose = realm.where(Glucose.class).findAll();
+        Date startDate = new Date(s);
+        Date endDate = new Date(e);
+        Log.e(TAG, "start --> " + s);
+        Log.e(TAG, "Oneday --> " + oneDay);
+        Log.e(TAG, "end --> " + e);
+        glucose = realm.where(Glucose.class).greaterThanOrEqualTo("longTs", e).lessThan("longTs", s).findAll();
 
 // TODO: 2018-07-25 등록된 데이터 없을 떄
         if (glucose.size() == 0) {
@@ -143,13 +145,12 @@ public class GlucoseFeedActivity extends AppCompatActivity {
             // TODO: 2018-07-25 재 정렬
             glucose = glucose.sort("timestamp", Sort.ASCENDING);
 
-            forChartGlucose = realm.where(Glucose.class).contains("timestamp", String.valueOf(e)).contains("timestamp", String.valueOf(s)).findAll();
-
-            for (int i = 0; i < forChartGlucose.size(); i++) {
-                Log.e(TAG, "Search --> " + forChartGlucose.get(i).getValue() + " | " + forChartGlucose.get(i).getTimestamp());
-
-            }
-//            glucose.max("userValue").floatValue();
+//            forChartGlucose = realm.where(Glucose.class).between("datetime", endDate, startDate).findAll();
+//
+//            for (int i = 0; i < forChartGlucose.size(); i++) {
+//                Log.e(TAG, "Search --> " + forChartGlucose.get(i).getValue() + " | " + forChartGlucose.get(i).getTimestamp());
+//            }
+////            glucose.max("userValue").floatValue();
 //            for (int i = 0; i < glucose.size(); i++) {
 //                Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
 //            }
@@ -167,10 +168,10 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 
                 // TODO: 2018-07-26 소수점으로 인한  NumberFormatException 수정 - 박제창
                 String tmp = g.getValue();
-                if (tmp.length() == 5){
-                    tmp = tmp.substring(0,3);
+                if (tmp.length() == 5) {
+                    tmp = tmp.substring(0, 3);
                     integerArrayList.add(Integer.valueOf(tmp));
-                }else if (tmp.length() == 3){
+                } else if (tmp.length() == 3) {
                     integerArrayList.add(Integer.valueOf(tmp));
                 }
 
@@ -216,7 +217,6 @@ public class GlucoseFeedActivity extends AppCompatActivity {
             valueList.add(String.valueOf(kindCount[8]));
             labelList.add("운동 후");
             valueList.add(String.valueOf(kindCount[9]));
-
 
 
         }

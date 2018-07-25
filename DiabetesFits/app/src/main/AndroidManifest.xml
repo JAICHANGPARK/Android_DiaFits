@@ -94,7 +94,9 @@
             android:name=".activity.GlucoseFeedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-        <activity android:name=".activity.SettingActivityV2"></activity>
+        <activity android:name=".activity.SettingActivityV2"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme"/>
     </application>
 
 </manifest>
