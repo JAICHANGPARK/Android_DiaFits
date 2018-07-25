@@ -35,6 +35,7 @@ import butterknife.ButterKnife;
 import client.yalantis.com.foldingtabbar.FoldingTabBar;
 import de.cketti.library.changelog.ChangeLog;
 import io.paperdb.Paper;
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -89,6 +90,9 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         Paper.init(this);
+
+        Realm.init(this);
+
 
         ConnectivityManager manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mobile = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);

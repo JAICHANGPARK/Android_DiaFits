@@ -5,12 +5,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.adapter.DashboardAdapter;
+import com.dreamwalker.diabetesfits.consts.GlucoseType;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.dreamwalker.diabetesfits.utils.timeago.ZamanTextView;
 import com.github.mikephil.charting.charts.LineChart;
@@ -19,6 +23,8 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +48,18 @@ public class GlucoseFeedActivity extends AppCompatActivity {
     @BindView(R.id.line_chart)
     LineChart lineChart;
 
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
+
+
     RealmResults<Glucose> glucose;
+    DashboardAdapter adapter;
+
+    ArrayList<String> labelList = new ArrayList<>();
+    ArrayList<String> valueList = new ArrayList<>();
+
+    int dbSize;
+    int[] kindCount = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,29 +70,70 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         Paper.init(this);
         Realm.init(this);
 
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+
         Realm realm = Realm.getDefaultInstance();
+
         glucose = realm.where(Glucose.class).findAll();
 
 // TODO: 2018-07-25 등록된 데이터 없을 떄
-        if (glucose.size() == 0){
+        if (glucose.size() == 0) {
 
             recentValueTextView.setText("Empty");
             recentTypeTextView.setText("Empty");
 
-        }else {
+        } else {
 
             // TODO: 2018-07-25 등록된 데이터 있을 때
             int lastIndex = glucose.size() - 1;
+            dbSize = glucose.size();
 
-            for (int i = 0;  i < glucose.size(); i++){
-                Log.e(TAG, "before: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
+            for (int i = 0; i < glucose.size(); i++) {
+                switch (glucose.get(i).getType()) {
+                    case GlucoseType.FASTING:
+                        kindCount[0] = kindCount[0] + 1;
+                        break;
+                    case GlucoseType.SLEEP:
+                        kindCount[1] = kindCount[1] + 1;
+                        break;
+                    case GlucoseType.BREAKFAST_BEFORE:
+                        kindCount[2] = kindCount[2] + 1;
+                        break;
+                    case GlucoseType.BREAKFAST_AFTER:
+                        kindCount[3] = kindCount[3] + 1;
+                        break;
+                    case GlucoseType.LUNCH_BEFORE:
+                        kindCount[4] = kindCount[4] + 1;
+                        break;
+                    case GlucoseType.LUNCH_AFTER:
+                        kindCount[5] = kindCount[5] + 1;
+                        break;
+                    case GlucoseType.DINNER_BEFORE:
+                        kindCount[6] = kindCount[6] + 1;
+                        break;
+                    case GlucoseType.DINNER_AFTER:
+                        kindCount[7] = kindCount[7] + 1;
+                        break;
+                    case GlucoseType.FITNESS_BEFORE:
+                        kindCount[8] = kindCount[8] + 1;
+                        break;
+                    case GlucoseType.FITNESS_AFTER:
+                        kindCount[9] = kindCount[9] + 1;
+                        break;
+                    default:
+                        break;
+                }
+//                Log.e(TAG, "onCreate: " + glucose.get(i).getType());
+//                Log.e(TAG, "before: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
             }
+
             // TODO: 2018-07-25 재 정렬
             glucose = glucose.sort("timestamp", Sort.ASCENDING);
-
-            for (int i = 0;  i < glucose.size(); i++){
-                Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
-            }
+//            glucose.max("userValue").floatValue();
+//            for (int i = 0; i < glucose.size(); i++) {
+//                Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
+//            }
 
             String lastValue = glucose.get(lastIndex).getValue() + " " + "mm/dL";
             String lastType = glucose.get(lastIndex).getType();
@@ -83,23 +141,81 @@ public class GlucoseFeedActivity extends AppCompatActivity {
             recentValueTextView.setText(lastValue);
             recentTypeTextView.setText(lastType);
 
-            Log.e(TAG, "onCreate: avg " + glucose.average("value"));
-            Log.e(TAG, "onCreate: min " + glucose.min("value") );
-            Log.e(TAG, "onCreate: max " + glucose.max("value") );
+            List<Glucose> arrayList = realm.copyFromRealm(glucose);
+            ArrayList<Integer> integerArrayList = new ArrayList<>();
+
+            for (Glucose g : arrayList) {
+                integerArrayList.add(Integer.valueOf(g.getValue()));
+            }
+
+//            Log.e(TAG, "onCreate: min Value " + Collections.min(integerArrayList));
+//            Log.e(TAG, "onCreate: avg Value " + Math.round(calculateAverage(integerArrayList)));
+//            Log.e(TAG, "onCreate: max Value " + Collections.max(integerArrayList));
+            //Log.e(TAG, "onCreate: avg " + glucose.average("value"));
+
+            labelList.add("평균 혈당");
+            valueList.add(String.valueOf(Math.round(calculateAverage(integerArrayList))));
+            labelList.add("최대 혈당");
+            valueList.add(String.valueOf(Collections.max(integerArrayList)));
+            labelList.add("최소 혈당");
+            valueList.add(String.valueOf(Collections.min(integerArrayList)));
+            labelList.add("총 기록수");
+            valueList.add(String.valueOf(dbSize));
+
+            labelList.add("공복 기록 수");
+            valueList.add(String.valueOf(kindCount[0]));
+            labelList.add("취침 전");
+            valueList.add(String.valueOf(kindCount[1]));
+
+            labelList.add("아침 식전");
+            valueList.add(String.valueOf(kindCount[2]));
+            labelList.add("아침 식후");
+            valueList.add(String.valueOf(kindCount[3]));
+
+            labelList.add("점심 식전");
+            valueList.add(String.valueOf(kindCount[4]));
+            labelList.add("점심 식후");
+            valueList.add(String.valueOf(kindCount[5]));
+
+            labelList.add("저녁 식전");
+            valueList.add(String.valueOf(kindCount[6]));
+            labelList.add("저녁 식후");
+            valueList.add(String.valueOf(kindCount[7]));
+
+            labelList.add("운동 전");
+            valueList.add(String.valueOf(kindCount[8]));
+            labelList.add("운동 후");
+            valueList.add(String.valueOf(kindCount[9]));
+
 
 
         }
 
+        adapter = new DashboardAdapter(this, labelList, valueList);
+        recyclerView.setAdapter(adapter);
         setLineGraph();
     }
-    private void setLineGraph(){
+
+
+    private double calculateAverage(List<Integer> marks) {
+        Integer sum = 0;
+        if (!marks.isEmpty()) {
+            for (Integer mark : marks) {
+                sum += mark;
+            }
+            return sum.doubleValue() / marks.size();
+        }
+        return sum;
+    }
+
+    private void setLineGraph() {
 
         ArrayList<Entry> lineEntry = new ArrayList<>();
-        for (int i = 0;  i < glucose.size(); i++){
+        for (int i = 0; i < glucose.size(); i++) {
 
             lineEntry.add(new Entry(i, Float.valueOf(glucose.get(i).getValue())));
 
-            Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
+//            Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
         }
 
         lineChart.setDragEnabled(false);
@@ -125,15 +241,13 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         lineDataSet.setHighLightColor(Color.BLACK);
         lineDataSet.setDrawFilled(true);
 
-        Drawable drawable = ContextCompat.getDrawable(this,R.drawable.dashboard_gradient);
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.dashboard_gradient);
         lineDataSet.setFillDrawable(drawable);
         //lineDataSet.setFillColor(getResources().getColor(R.color.wave_gradient_amy_crisp_02));
         lineDataSet.setFillAlpha(80);
 
 
-
         LineData lineData = new LineData(lineDataSet);
-
 
 
         lineChart.setData(lineData);

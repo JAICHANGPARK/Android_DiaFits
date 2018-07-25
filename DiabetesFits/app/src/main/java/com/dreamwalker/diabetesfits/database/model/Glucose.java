@@ -4,7 +4,7 @@ import io.realm.RealmObject;
 
 public class Glucose extends RealmObject {
 
-    private String value;
+    private String userValue;
     private String type;
     private String date;
     private String time;
@@ -14,7 +14,7 @@ public class Glucose extends RealmObject {
     }
 
     public Glucose(String value, String type, String date, String time, String timestamp) {
-        this.value = value;
+        this.userValue = value;
         this.type = type;
         this.date = date;
         this.time = time;
@@ -22,11 +22,11 @@ public class Glucose extends RealmObject {
     }
 
     public String getValue() {
-        return value;
+        return userValue;
     }
 
     public void setValue(String value) {
-        this.value = value;
+        this.userValue = value;
     }
 
     public String getType() {

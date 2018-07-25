@@ -84,7 +84,6 @@ public class WriteCheckActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
 
 
-
         handler = new Handler();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
