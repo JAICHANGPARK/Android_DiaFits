@@ -40,7 +40,7 @@
 
         <com.dreamwalker.diabetesfits.widget.CanaroTextView
             style="@style/TextView.GuillotineItem"
-            android:text="@string/feed" />
+            android:text="@string/dashboard" />
     </LinearLayout>
 
     <LinearLayout

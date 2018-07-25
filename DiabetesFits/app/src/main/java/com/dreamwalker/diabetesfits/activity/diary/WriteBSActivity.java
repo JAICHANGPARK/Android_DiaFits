@@ -14,9 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.CustomItemClickListener;
@@ -43,6 +43,9 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
         BottomSheetTimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "WriteBSActivity";
+
+    @BindView(R.id.home)
+    ImageView imageView;
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
@@ -232,7 +235,7 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
         floatingActionButton.setVisibility(View.VISIBLE);
         bottomSheetBehavior.setPeekHeight(300);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
 
         String type = name.get(position);
         userInputMap.put("userType", type);
@@ -276,5 +279,11 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
 
         gridTimeDialog.show(getSupportFragmentManager(), "3");
 
+    }
+
+
+    @OnClick(R.id.home)
+    public void onClickBackButton(){
+        finish();
     }
 }

@@ -25,6 +25,5 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         for (int i = 0;  i < glucose.size(); i++){
             Log.e(TAG, "onCreate: " + glucose.get(i).getValue());
         }
-
     }
 }

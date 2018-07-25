@@ -90,7 +90,9 @@
             android:name=".service.knu.egzero.EZBLEService"
             android:enabled="true" />
 
-        <activity android:name=".activity.GlucoseFeedActivity"></activity>
+        <activity android:name=".activity.GlucoseFeedActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme" ></activity>
     </application>
 
 </manifest>
