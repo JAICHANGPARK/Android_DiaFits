@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -94,6 +97,7 @@ public class SyncBMSResultActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Paper.init(this);
         setSupportActionBar(myToolbar);
+        setStatusBar();
         myToolbar.inflateMenu(R.menu.sync_bsm_menu);
         myToolbar.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()){
@@ -126,6 +130,13 @@ public class SyncBMSResultActivity extends AppCompatActivity {
 //    public void onMenuButtonClick() {
 //        tapBarMenu.toggle();
 //    }
+
+    private void setStatusBar() {
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+    }
 
     @OnClick(R.id.fab)
     public void onFabClicked() {

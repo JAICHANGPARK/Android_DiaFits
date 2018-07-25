@@ -10,6 +10,7 @@
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -17,15 +18,28 @@
             android:id="@+id/appbar_add_contacts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:theme="@style/AppTheme.AppBarOverlay">
+
+            <ImageView
+                android:id="@+id/home"
+                style="@style/ClickableImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="8dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
+                android:background="@color/white"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:title="동기화 결과" />
+                app:title="동기화 결과"
+                app:titleTextColor="@color/black" />
+
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView
@@ -34,7 +48,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="60dp" />
+            android:layout_marginTop="120dp" />
 
         <LinearLayout
             android:id="@+id/animationLayout"
@@ -67,13 +81,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            android:backgroundTint="@color/colorAccent"
             android:clickable="true"
             android:src="@drawable/ic_add_black_24dp"
+            app:backgroundTint="@color/shopAccent"
             app:elevation="6dp"
             app:layout_anchor="@+id/bsm_recycler_view"
             app:layout_anchorGravity="bottom|end"
-            app:rippleColor="@color/colorAccent" />
+            app:rippleColor="@color/shopAccent" />
 
         <!--<FrameLayout-->
         <!--android:id="@+id/fragment_container"-->

@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.0.2" versioncode="3">
+        <change>Date : 2018-07-25</change>
+        <change>Glucose Write Added</change>
+        <change>Dashboard Screen Added</change>
+        <change>BSM Sync UI change --> be more modern</change>
+        <change>Realm Database added</change>
+        <change>Maid by JAICHANGPARK(DREAMWALKER)</change>
+    </release>
+
     <release version="1.0.1" versioncode="2">
         <change>Date : 2018-07-22</change>
         <change>Home UI change</change>
