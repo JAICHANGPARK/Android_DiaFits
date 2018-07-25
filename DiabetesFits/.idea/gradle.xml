@@ -10,6 +10,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/materiallogin" />
+            <option value="$PROJECT_DIR$/progresssubmitbutton" />
+            <option value="$PROJECT_DIR$/receiptview" />
             <option value="$PROJECT_DIR$/waveviewlib" />
           </set>
         </option>

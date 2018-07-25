@@ -1,5 +1,6 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -9,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -201,11 +203,16 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
 
     @Override
     public void onTimeSet(ViewGroup viewGroup, int hourOfDay, int minute) {
+        Log.e(TAG, "onTimeSet: " + hourOfDay + ", "+ minute  );
+
+        Intent intent = new Intent(WriteBSActivity.this, WriteCheckActivity.class);
+        startActivity(intent);
 
     }
 
     @Override
     public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+        Log.e(TAG, "onDateSet: " + year + "|" + monthOfYear + "|" + dayOfMonth );
         gridTimeDialog.show(getSupportFragmentManager(),"3");
     }
 }

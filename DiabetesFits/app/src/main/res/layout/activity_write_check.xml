@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.diary.WriteCheckActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.dreamwalker.receiptview.ReceiptView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_centerInParent="true"
+            app:zigzagBackgroundColor="@color/white"
+            app:zigzagElevation="8dp"
+            app:zigzagHeight="10dp"
+            app:zigzagPaddingContent="8dp"
+            app:zigzagShadowAlpha="0.9"
+            app:zigzagSides="top|bottom">
+
+        </com.dreamwalker.receiptview.ReceiptView>
+
+
+        <com.dreamwalker.progresssubmitbutton.SubmitButton
+            android:id="@+id/sbtn_loading"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            app:buttonText="Submit"
+            app:buttonTextSize="25sp" />
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

@@ -76,10 +76,14 @@
             android:name=".activity.chart.IndoorBikeRealTimeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-
-        <activity android:name=".activity.diary.WriteBSActivity"
+        <activity
+            android:name=".activity.diary.WriteBSActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ShopTheme"></activity>
+            android:theme="@style/ShopTheme" />
+
+        <activity android:name=".activity.diary.WriteCheckActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme"/>
 
         <service
             android:name=".service.knu.egzero.EZBLEService"
