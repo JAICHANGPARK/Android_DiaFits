@@ -74,6 +74,12 @@
     <color name="wave_gradient_malibu_blue_01">#4facfe</color>
     <color name="wave_gradient_malibu_blue_02">#00f2fe</color>
 
+    <color name="wave_gradient_amy_crisp_02">#f68084</color>
+
+    <color name="wave_gradient_spring_warmth_01">#fad0c4</color>
+    <color name="wave_gradient_spring_warmth_02">#ffd1ff</color>
+
+
 
 
 </resources>

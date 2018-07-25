@@ -6,36 +6,185 @@
     android:layout_height="match_parent"
     tools:context=".activity.GlucoseFeedActivity">
 
+
     <LinearLayout
         android:id="@+id/top_layout"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_margin="8dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:fontFamily="@font/noto_sans"
-            android:textSize="28sp"
-            android:text="Dashboard"
-            android:padding="8dp"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/dashboard_gradient"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:padding="8dp"
+                    android:text="Dashboard"
+                    android:textColor="@color/white"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:padding="8dp"
+                    android:text="목표혈당을 설정해주세요. "
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:text="최근 기록" />
+
+                        <com.dreamwalker.diabetesfits.utils.timeago.ZamanTextView
+                            android:id="@+id/time_ago_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="8dp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_weight="1"
+                            app:cardBackgroundColor="#fff1eb"
+                            app:cardCornerRadius="4dp"
+                            app:cardElevation="0dp">
+
+                            <!--<ImageView-->
+                            <!--android:src="@drawable/dash_card_gradient"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:scaleType="fitXY"/>-->
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:src="@drawable/ic_bubble_chart_black_24dp"
+                                    android:tint="@color/guillotine_background" />
+
+                                <TextView
+                                    android:id="@+id/recent_value_text_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="134 mm/dL" />
+                            </LinearLayout>
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:layout_weight="1"
+                            app:cardBackgroundColor="#fff1eb"
+                            app:cardCornerRadius="4dp"
+                            app:cardElevation="0dp">
+
+                            <!--<ImageView-->
+                            <!--android:src="@drawable/dash_card_gradient"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="match_parent"-->
+                            <!--android:scaleType="fitXY"/>-->
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="4dp"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:layout_width="30dp"
+                                    android:layout_height="30dp"
+                                    android:src="@drawable/ic_fiber_smart_record_black_24dp"
+                                    android:tint="@color/guillotine_background" />
+
+                                <TextView
+                                    android:id="@+id/recent_type_text_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="운동 전" />
+                            </LinearLayout>
+                        </android.support.v7.widget.CardView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/line_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_margin="8dp">
+                </com.github.mikephil.charting.charts.LineChart>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
         <!--<ImageView-->
-            <!--android:id="@+id/home"-->
-            <!--style="@style/ClickableImageView"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="start"-->
-            <!--android:layout_margin="8dp"-->
-            <!--android:padding="8dp"-->
-            <!--android:src="@drawable/ic_arrow_back_black_24dp" />-->
-
+        <!--android:id="@+id/home"-->
+        <!--style="@style/ClickableImageView"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="start"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:padding="8dp"-->
+        <!--android:src="@drawable/ic_arrow_back_black_24dp" />-->
 
 
     </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>
