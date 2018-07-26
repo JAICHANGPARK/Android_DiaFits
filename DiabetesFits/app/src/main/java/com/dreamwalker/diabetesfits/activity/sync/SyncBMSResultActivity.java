@@ -481,6 +481,11 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
 
     }
 
+    @Override
+    public void onItemLongClick(View v, int position) {
+
+    }
+
     @OnClick(R.id.save)
     public void onSaveClicked() {
 

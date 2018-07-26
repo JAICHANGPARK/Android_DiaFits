@@ -197,7 +197,15 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayout settingLayout = guillotineMenu.findViewById(R.id.settings_group);
         LinearLayout activityLayout = guillotineMenu.findViewById(R.id.activity_group);
         LinearLayout feedLayout = guillotineMenu.findViewById(R.id.feed_group);
+        LinearLayout profileLayout = guillotineMenu.findViewById(R.id.profile_group);
 
+
+        profileLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeActivity.this, ProfileActivity .class);
+//            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+            startActivity(intent);
+
+        });
         settingLayout.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, SettingActivityV2.class);
 //            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);

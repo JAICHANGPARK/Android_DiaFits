@@ -74,6 +74,14 @@ public class SettingActivityV2 extends AppCompatActivity {
     public void onClickDatabaseButton(){
         startActivity(new Intent(SettingActivityV2.this, DBManagementActivity.class));
     }
+
+
+    @OnClick(R.id.about_app_button)
+    public void onClickedAboutAppButton(){
+
+        startActivity(new Intent(SettingActivityV2.this, AboutAppActivity.class));
+
+    }
     @OnClick(R.id.licenses_button)
     public void onClickLicenseButton(){
         startActivity(new Intent(SettingActivityV2.this, OpenSourceLicenseActivity.class));

@@ -86,6 +86,9 @@ dependencies {
 
     implementation 'com.github.mukeshsolanki:MarkdownView-Android:1.0.5' //MarkdownView
 
+    implementation 'com.eightbitlab:blurview:1.4.0'//BlurView
+    implementation 'jp.wasabeef:blurry:2.1.1' //blurry
+
     // Android Ruler Picker
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

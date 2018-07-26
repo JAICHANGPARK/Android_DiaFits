@@ -20,13 +20,15 @@ import io.realm.Realm;
 
 public class DBManagementActivity extends AppCompatActivity {
 
+    private static final int PERMISSION_REQUEST_READ_EXTERNEL = 1000;
+    private static final int PERMISSION_REQUEST_WRITE_EXTERNEL = 1001;
+
     @BindView(R.id.export_button)
     Button exportButton;
     @BindView(R.id.backup_button)
     Button backupButton;
     @BindView(R.id.delete_button)
     Button deleteButton;
-
     @BindView(R.id.home)
     ImageView backImageView;
 
@@ -57,6 +59,7 @@ public class DBManagementActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Warning");
         builder.setMessage("All Data will be erase");
+        builder.setCancelable(false);
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

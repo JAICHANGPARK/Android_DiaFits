@@ -80,6 +80,12 @@
     <color name="wave_gradient_spring_warmth_02">#ffd1ff</color>
 
 
+    <color name="line_color_morning">#fda085</color>
+    <color name="line_color_afternoon">#ace0f9</color>
+    <color name="line_color_evening">#f68084</color>
+    <color name="line_color_night">#330867</color>
+
+    <color name="colorOverlay">#78ffffff</color>
 
 
 </resources>

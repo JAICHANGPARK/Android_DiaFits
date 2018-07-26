@@ -244,6 +244,11 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
     }
 
     @Override
+    public void onItemLongClick(View v, int position) {
+
+    }
+
+    @Override
     public void onTimeSet(ViewGroup viewGroup, int hourOfDay, int minute) {
         Log.e(TAG, "onTimeSet: " + hourOfDay + ", " + minute);
         h = hourOfDay;
