@@ -1,69 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".activity.ProfileActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/information_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@android:color/white"
         android:orientation="vertical"
         tools:context=".activity.ProfileActivity">
 
-        <ImageView
-            android:id="@+id/home"
-            style="@style/ClickableImageView"
-            android:layout_width="wrap_content"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/information_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:padding="8dp"
-            android:src="@drawable/ic_arrow_back_black_24dp" />
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            tools:context=".activity.ProfileActivity">
+
+            <ImageView
+                android:id="@+id/home"
+                style="@style/ClickableImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
+
+            <TextView
+                android:id="@+id/name_text"
+                style="@style/ClickableImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/noto_sans"
+                android:padding="8dp"
+                android:text="Hi! . ID"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
 
         <TextView
-            android:id="@+id/name_text"
-            style="@style/ClickableImageView"
+            android:id="@+id/personal_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginStart="8dp"
-            android:fontFamily="@font/noto_sans"
-            android:padding="8dp"
-            android:text="Hi! . ID"
-            android:textColor="@color/black"
-            android:textSize="24sp" />
+            android:layout_below="@id/information_layout"
+            android:layout_margin="16dp"
+            android:text="Personal Information" />
 
-    </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/personal_label"
+            android:background="@android:color/transparent"
+            android:elevation="10dp"/>
 
-
-    <TextView
-        android:id="@+id/personal_label"
-        android:layout_margin="16dp"
-        android:layout_below="@id/information_layout"
-        android:text="Personal Information"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <android.support.v7.widget.RecyclerView
-        android:elevation="10dp"
-        android:background="@android:color/transparent"
-        android:id="@+id/recycler_view"
-        android:layout_below="@+id/personal_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
-
-    <!--<HorizontalScrollView-->
+        <!--<HorizontalScrollView-->
         <!--android:background="@color/white"-->
         <!--android:elevation="10dp"-->
         <!--android:scrollbars="none"-->
@@ -71,108 +77,181 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="200dp">-->
         <!--<LinearLayout-->
-            <!--android:orientation="horizontal"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content">-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-            <!--<android.support.v7.widget.CardView-->
-                <!--android:layout_marginStart="16dp"-->
-                <!--android:id="@+id/card_view"-->
-                <!--android:layout_width="180dp"-->
-                <!--android:layout_height="180dp"-->
-                <!--app:cardBackgroundColor="@color/line_color_afternoon"-->
-                <!--app:cardCornerRadius="18dp"-->
-                <!--app:cardElevation="6dp">-->
+        <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:id="@+id/card_view"-->
+        <!--android:layout_width="180dp"-->
+        <!--android:layout_height="180dp"-->
+        <!--app:cardBackgroundColor="@color/line_color_afternoon"-->
+        <!--app:cardCornerRadius="18dp"-->
+        <!--app:cardElevation="6dp">-->
 
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_margin="8dp"-->
-                    <!--android:orientation="vertical">-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:orientation="vertical">-->
 
-                    <!--<TextView-->
-                        <!--android:layout_width="150dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="hello" />-->
+        <!--<TextView-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="hello" />-->
 
-                    <!--<TextView-->
-                        <!--android:layout_width="150dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="world" />-->
+        <!--<TextView-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="world" />-->
 
-                <!--</LinearLayout>-->
-            <!--</android.support.v7.widget.CardView>-->
+        <!--</LinearLayout>-->
+        <!--</android.support.v7.widget.CardView>-->
 
-            <!--<android.support.v7.widget.CardView-->
-                <!--android:layout_marginStart="16dp"-->
-                <!--android:id="@+id/card_view1"-->
-                <!--android:layout_width="180dp"-->
-                <!--android:layout_height="180dp"-->
-                <!--android:background="@drawable/morning_chart"-->
-                <!--app:cardBackgroundColor="@color/line_color_afternoon"-->
-                <!--app:cardCornerRadius="8dp"-->
-                <!--app:cardElevation="0dp">-->
+        <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:id="@+id/card_view1"-->
+        <!--android:layout_width="180dp"-->
+        <!--android:layout_height="180dp"-->
+        <!--android:background="@drawable/morning_chart"-->
+        <!--app:cardBackgroundColor="@color/line_color_afternoon"-->
+        <!--app:cardCornerRadius="8dp"-->
+        <!--app:cardElevation="0dp">-->
 
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_margin="8dp"-->
-                    <!--android:orientation="vertical">-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:orientation="vertical">-->
 
-                    <!--<TextView-->
-                        <!--android:layout_width="150dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="hello" />-->
+        <!--<TextView-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="hello" />-->
 
-                    <!--<TextView-->
-                        <!--android:layout_width="150dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="world" />-->
+        <!--<TextView-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="world" />-->
 
-                <!--</LinearLayout>-->
-            <!--</android.support.v7.widget.CardView>-->
-            <!--<android.support.v7.widget.CardView-->
-                <!--android:layout_marginStart="16dp"-->
-                <!--android:id="@+id/card_view2"-->
-                <!--android:layout_width="150dp"-->
-                <!--android:layout_height="150dp"-->
-                <!--app:cardBackgroundColor="@color/secondarytext"-->
-                <!--app:cardCornerRadius="8dp"-->
-                <!--app:cardElevation="0dp">-->
+        <!--</LinearLayout>-->
+        <!--</android.support.v7.widget.CardView>-->
+        <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:id="@+id/card_view2"-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="150dp"-->
+        <!--app:cardBackgroundColor="@color/secondarytext"-->
+        <!--app:cardCornerRadius="8dp"-->
+        <!--app:cardElevation="0dp">-->
 
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_margin="8dp"-->
-                    <!--android:orientation="vertical">-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:orientation="vertical">-->
 
-                    <!--<TextView-->
-                        <!--android:layout_width="150dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="hello" />-->
+        <!--<TextView-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="hello" />-->
 
-                    <!--<TextView-->
-                        <!--android:layout_width="150dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="world" />-->
+        <!--<TextView-->
+        <!--android:layout_width="150dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="world" />-->
 
-                <!--</LinearLayout>-->
-            <!--</android.support.v7.widget.CardView>-->
+        <!--</LinearLayout>-->
+        <!--</android.support.v7.widget.CardView>-->
         <!--</LinearLayout>-->
 
 
+        <!--</HorizontalScrollView>-->
 
 
-    <!--</HorizontalScrollView>-->
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/line_chart"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_alignParentBottom="true">
+
+        </com.github.mikephil.charting.charts.LineChart>
 
 
+    </RelativeLayout>
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/line_chart"
+    <LinearLayout
+        android:id="@+id/bottomSheet"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentBottom="true">
-    </com.github.mikephil.charting.charts.LineChart>
+        android:layout_height="wrap_content"
+        android:background="#EEE"
+        android:orientation="vertical"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/noto_sans"
+            android:padding="16dp"
+            android:text="Glucose Value"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/gluecose_value_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/grobold"
+                android:gravity="end"
+                android:text="74"
+                android:textColor="@color/black"
+                android:textSize="74sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/grobold"
+                android:gravity="start"
+                android:text="mm/dL"
+                android:textColor="@color/secondarytext"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <com.kevalpatel2106.rulerpicker.RulerValuePicker
+            android:id="@+id/ruler_picker"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/holo_orange_dark"
+            app:indicator_color="@android:color/white"
+            app:indicator_interval="14dp"
+            app:indicator_width="2dp"
+            app:max_value="400"
+            app:min_value="35"
+            app:notch_color="@android:color/white"
+            app:ruler_text_size="6sp" />
+
+        <Button
+            android:id="@+id/glucose_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/selected_item_color"
+            android:text="CHECK" />
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

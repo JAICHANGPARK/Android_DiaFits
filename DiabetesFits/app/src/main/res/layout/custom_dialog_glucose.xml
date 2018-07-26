@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_margin="24dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/gluecose_value_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/grobold"
+                android:gravity="end"
+                android:text="74"
+                android:textColor="@color/black"
+                android:textSize="74sp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/grobold"
+                android:gravity="start"
+                android:text="mm/dL"
+                android:textColor="@color/secondarytext"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+
+        <com.github.shchurov.horizontalwheelview.HorizontalWheelView
+            android:layout_gravity="center"
+            android:id="@+id/horizontalWheelView"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginTop="24dp"
+            app:activeColor="@color/shopAccent"
+            app:normalColor="@color/white"/>
+    </LinearLayout>
+
+</RelativeLayout>

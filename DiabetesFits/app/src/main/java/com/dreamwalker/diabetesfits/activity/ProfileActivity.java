@@ -1,19 +1,24 @@
 package com.dreamwalker.diabetesfits.activity;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.CustomItemClickListener;
@@ -23,12 +28,14 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +44,7 @@ import io.paperdb.Paper;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class ProfileActivity extends AppCompatActivity implements CustomItemClickListener{
+public class ProfileActivity extends AppCompatActivity implements CustomItemClickListener {
 
     private static final String TAG = "ProfileActivity";
     @BindView(R.id.name_text)
@@ -55,6 +62,9 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+
+    @BindView(R.id.bottomSheet)
+    LinearLayout mBottomSheet;
 
     String userName;
     String helloMessage;
@@ -76,6 +86,8 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
     String userHeight, userWeight;
 
 
+    BottomSheetBehavior bottomSheetBehavior;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +95,21 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
         ButterKnife.bind(this);
         Paper.init(this);
         Realm.init(this);
+
+        setBottomSheetBehavior();
+
+
+//        Blurry.with(this)
+//
+//                //style the blur with your color and effects with radius and sampling
+//                .radius(10)
+//                .sampling(8)
+//                .color(Color.argb(66, 255, 255, 0))
+//
+//                .animate(500) //optional
+//                //always use ViewGroup instance, avoid casting other view to viewgroup, it wont work
+//                .onto(mBottomSheet); //Use your bottom sheet layout's rootview here.
+
         setTitleTextView();
 
 
@@ -95,22 +122,21 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
         userWeight = Paper.book("user").read("userWeight");
 
 
-        if (userGlucoseMin == null){
+        if (userGlucoseMin == null) {
             userGlucoseMin = "None";
         }
 
-        if (userGlucoseMax == null){
+        if (userGlucoseMax == null) {
             userGlucoseMax = "None";
         }
 
-        if (userHeight == null){
+        if (userHeight == null) {
             userHeight = "None";
         }
 
-        if (userWeight == null){
+        if (userWeight == null) {
             userWeight = "None";
         }
-
 
 
         setProfileData();
@@ -139,7 +165,26 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 
     }
 
-    private void setProfileData(){
+
+
+    private void setBottomSheetBehavior() {
+
+
+        bottomSheetBehavior = BottomSheetBehavior.from(mBottomSheet);
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+    }
+
+    private void setProfileData() {
         labelList.add("최소목표혈당");
         valueList.add(userGlucoseMin);
 
@@ -300,8 +345,40 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
         Snackbar.make(getWindow().getDecorView().getRootView(), "길게 눌러 수정하기", Snackbar.LENGTH_SHORT).show();
     }
 
+    HorizontalWheelView horizontalWheelView;
+
     @Override
     public void onItemLongClick(View v, int position) {
-        Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+
+        LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.custom_dialog_glucose,null);
+        horizontalWheelView = (HorizontalWheelView)view.findViewById(R.id.horizontalWheelView);
+        TextView textView = (TextView)view.findViewById(R.id.gluecose_value_text_view);
+        Typeface font = Typeface.createFromAsset(getAssets(), "fonts/grobold.ttf");
+        textView.setTypeface(font, Typeface.NORMAL);
+        textView.setTextSize(60);
+        horizontalWheelView.setListener(new HorizontalWheelView.Listener() {
+            @Override
+            public void onRotationChanged(double radians) {
+                float angle = 100 + (float) horizontalWheelView.getDegreesAngle();
+                String text = String.format(Locale.US, "%.0f", angle);
+                textView.setText(text);
+            }
+        });
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+        builder.setView(view);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+//        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+//        //floatingActionButton.setVisibility(View.GONE);
+//        Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
     }
 }

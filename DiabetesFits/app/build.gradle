@@ -88,6 +88,7 @@ dependencies {
 
     implementation 'com.eightbitlab:blurview:1.4.0'//BlurView
     implementation 'jp.wasabeef:blurry:2.1.1' //blurry
+    implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
 
     // Android Ruler Picker
     testImplementation 'junit:junit:4.12'
