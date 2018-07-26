@@ -483,6 +483,10 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
 
     @OnClick(R.id.save)
     public void onSaveClicked() {
+
+        // TODO: 2018-07-26 데이터베이스 인덱스 저장하여 새로운 데이터가 들어오면 새로운 데이터만 받을수있도록- 박제창
+        Paper.book("syncBms").write("ptr", newIndex);
+        // TODO: 2018-07-26 Realm 데이터베이스 저장 처리 -박제창
         new BackgroundTask().execute();
     }
 
@@ -491,7 +495,6 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
     class BackgroundTask extends AsyncTask<Void, Void, Void> {
 
         ProgressDialog progressDialog;
-
 
         @Override
         protected void onPreExecute() {
@@ -504,6 +507,7 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
             progressDialog.show();
             super.onPreExecute();
         }
+
 
         @Override
         protected Void doInBackground(Void... voids) {

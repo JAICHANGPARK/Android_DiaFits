@@ -116,6 +116,7 @@ public class ChartActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(ChartActivity.this);
         builder.setTitle("알림");
         builder.setMessage("등록된 혈당 데이터가 없습니다. 혈당계를 사용해 데이터를 동기화 하세요");
+        builder.setCancelable(false);
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

@@ -6,17 +6,20 @@
 애플리케이션에 대한 자료는 제작자 페이지 [Github](https://github.com/JAICHANGPARK/Android_DiaFits)에 방문하여 
 확인하시길 바랍니다. 문의 사항은 문의하기로 개별 문의 부탁합니다.
 
+- Copyright © 2018 **JAICHANGPARK** 
+- [Developer Site](https://github.com/JAICHANGPARK)
+
 ***
 ### Apache 2.0 
 
 #### Lottie (Airbnb)
-- [Github](https://github.com/airbnb/lottie-android) 
-- https://github.com/falnatsheh/MarkdownView
+  1. [Github](https://github.com/airbnb/lottie-android) 
+  2. https://github.com/falnatsheh/MarkdownView
 
 
 #### Butterknife (JakeWharton)
-- [Github](https://github.com/JakeWharton/butterknife) 
-- https://github.com/JakeWharton/butterknife
+1. [Github](https://github.com/JakeWharton/butterknife) 
+2. https://github.com/JakeWharton/butterknife
 
 
 #### MPAndroidChart (Philipp Jahoda)
@@ -64,10 +67,30 @@
 - [Github](https://github.com/zzz40500/AndroidSweetSheet)
 - https://github.com/zzz40500/AndroidSweetSheet
 
+#### android-ruler-picker (Keval Patel)
+- [Github](https://github.com/kevalpatel2106/android-ruler-picker)
 
-#### WoWoViewPager (Nightonke)
-- [Github](https://github.com/Nightonke/WoWoViewPager)
-- https://github.com/Nightonke/WoWoViewPager
+#### spots-dialog (Maxim Dybarsky)
+- [Github](https://github.com/d-max/spots-dialog)
+
+#### BottomSheetPickers (Phillip Hsu)
+- [Github](https://github.com/philliphsu/BottomSheetPickers)
+
+#### DiscreteScrollView 
+- Yaroslav Shevchuk
+- [Github](https://github.com/yarolegovich/DiscreteScrollView)
+
+#### OfficialFoldingTabBar.Android 
+- Yalantis
+- [Github](https://github.com/Yalantis/OfficialFoldingTabBar.Android)
+
+#### GuillotineMenu-Android 
+- Yalantis
+- [Github](https://github.com/Yalantis/GuillotineMenu-Android)
+
+#### Vertical-Intro 
+- Arman Chatikyan
+- [Github](https://github.com/armcha/Vertical-Intro)
 
 
 ***

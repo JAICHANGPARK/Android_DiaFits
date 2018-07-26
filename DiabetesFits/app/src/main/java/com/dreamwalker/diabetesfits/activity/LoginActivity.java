@@ -229,7 +229,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                    // TODO: 2018-07-26 로그인 성공시에만 저장하도록 변경합니다. - 박제창 
+                                    // TODO: 2018-07-26 로그인 성공시에만 저장하도록 변경합니다. - 박제창
                                     //Paper.book().write("userName", userName);
                                     //Paper.book().write("userPassword", userPassword);
 
