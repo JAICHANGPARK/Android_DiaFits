@@ -11,4 +11,7 @@ public class IntentConst {
 
     public static final String USER_WRITE_GLUCOSE = "USER_WRITE_GLUCOSE";
 
+    public static final String WEB_URL = "WEB_URL";
+
+
 }

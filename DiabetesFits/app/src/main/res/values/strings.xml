@@ -146,5 +146,20 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+
+    <string name="setting_my_info_title">Account</string>
+    <string name="setting_my_info_menu_0">Edit Profile</string>
+    <string name="setting_my_info_menu_1">Feedback</string>
+
+    <string name="setting_databases_title">Databases</string>
+    <string name="setting_databases_menu_1">Management</string>
+
+    <string name="setting_more_title">More</string>
+    <string name="setting_more_menu_0">About App</string>
+    <string name="setting_more_menu_1">Licenses</string>
+    <string name="setting_more_menu_2">Developer</string>
+
+
 </resources>
 

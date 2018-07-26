@@ -2,6 +2,10 @@ package com.dreamwalker.diabetesfits.consts;
 
 public class GlucoseType {
 
+    public static final String BSM_UNKNOWN = "Unknown";
+    public static final String BSM_BEFORE_MEAL = "식전";
+    public static final String BSM_AFTER_MEAL = "식후";
+
     public static final String FASTING = "공복";
 
     public static final String BREAKFAST_BEFORE = "아침 식전";

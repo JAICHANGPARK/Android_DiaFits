@@ -94,8 +94,23 @@
             android:name=".activity.GlucoseFeedActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-        <activity android:name=".activity.SettingActivityV2"
+        <activity
+            android:name=".activity.SettingActivityV2"
             android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme" />
+        <activity
+            android:name=".activity.FeedbackActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme" />
+        <activity
+            android:name=".activity.DeveloperActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme" />
+        <activity android:name=".activity.DBManagementActivity" />
+        <activity
+            android:name=".activity.WebActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.OpenSourceLicenseActivity"
             android:theme="@style/ShopTheme"/>
     </application>
 

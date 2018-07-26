@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
 
         String id = Paper.book("user").read("userID");
         String pwd = Paper.book("user").read("userPassword");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setMessage("Loading..");
         progressDialog.show();
         if (id != null && pwd != null) {
@@ -147,6 +147,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     String result = response.body().getSuccess();
                     if (result.equals("true")) {
                         // TODO: 2018-07-22 로그인 성공
+                        // TODO: 2018-07-26 로그인 성공 시 캐시 저장 - 박제창
                         Paper.book("user").write("userID", user);
                         Paper.book("user").write("userPassword", pass);
 
@@ -228,9 +229,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-
-                                    Paper.book().write("userName", userName);
-                                    Paper.book().write("userPassword", userPassword);
+                                    // TODO: 2018-07-26 로그인 성공시에만 저장하도록 변경합니다. - 박제창 
+                                    //Paper.book().write("userName", userName);
+                                    //Paper.book().write("userPassword", userPassword);
 
                                     Snackbar.make(loginView, "Register success!", Snackbar.LENGTH_LONG).show();
 

@@ -73,7 +73,12 @@ dependencies {
         exclude group: 'com.android.support', module: 'design'
         exclude group: 'com.android.support', module: 'gridlayout-v7'
     }
-    implementation 'com.kevalpatel2106:ruler-picker:1.1'
+    implementation 'com.kevalpatel2106:ruler-picker:1.1' //ruler-picke
+
+    implementation 'com.github.d-max:spots-dialog:0.7@aar' // Spot Dialog
+
+    implementation 'com.github.mukeshsolanki:MarkdownView-Android:1.0.5' //MarkdownView
+
     // Android Ruler Picker
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
