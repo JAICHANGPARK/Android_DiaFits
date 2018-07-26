@@ -112,6 +112,7 @@
             android:name=".activity.DeveloperActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
+
         <activity
             android:name=".activity.DBManagementActivity"
             android:theme="@style/ShopTheme" />
@@ -120,6 +121,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.OpenSourceLicenseActivity"
+            android:theme="@style/ShopTheme" />
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
     </application>
 

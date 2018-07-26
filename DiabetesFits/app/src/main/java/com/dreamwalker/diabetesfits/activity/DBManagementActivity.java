@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.dreamwalker.diabetesfits.R;
 
@@ -25,6 +26,9 @@ public class DBManagementActivity extends AppCompatActivity {
     Button backupButton;
     @BindView(R.id.delete_button)
     Button deleteButton;
+
+    @BindView(R.id.home)
+    ImageView backImageView;
 
 
     @Override
@@ -69,6 +73,11 @@ public class DBManagementActivity extends AppCompatActivity {
         builder.show();
 
 
+    }
+
+    @OnClick(R.id.home)
+    public void onClickedBackImageButton(){
+        finish();
     }
 
 
