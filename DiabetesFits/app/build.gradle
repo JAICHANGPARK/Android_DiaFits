@@ -90,6 +90,8 @@ dependencies {
     implementation 'jp.wasabeef:blurry:2.1.1' //blurry
     implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
 
+    implementation "org.slf4j:slf4j-api:1.7.12"
+
     // Android Ruler Picker
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

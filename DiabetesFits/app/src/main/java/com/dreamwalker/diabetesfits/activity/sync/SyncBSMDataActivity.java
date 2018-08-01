@@ -870,13 +870,13 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                 record.flag_context = 0;
                 offset += 2;
 
-                final int year = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, offset + 0);
-                final int month = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset + 2);
-                final int day = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset + 3);
+                final int year = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT16, offset + 0); //3
+                final int month = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset + 2);  //5
+                final int day = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset + 3);  //6
                 final int hours = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset + 4);
                 final int minutes = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset + 5);
-                final int seconds = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset + 6);
-                offset += 7;
+                final int seconds = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, offset + 6); //9
+                offset += 7;  // 9 + 7 = 16
 
                 final Calendar calendar = Calendar.getInstance();
                 calendar.set(year, month - 1, day, hours, minutes, seconds);
@@ -885,7 +885,7 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                 if (timeOffsetPresent) {
                     record.timeoffset = characteristic.getIntValue(BluetoothGattCharacteristic.FORMAT_SINT16, offset);
                     record.time = record.time + (record.timeoffset * 60);
-                    offset += 2;
+                    offset += 2; // 16 + 2 == 18
                 }
 
                 if (typeAndLocationPresent) {
