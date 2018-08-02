@@ -496,7 +496,6 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
     }
 
     // TODO: 2018-02-27 저장했을 경우와 저장 안했을 경우를 생각해야함
-
     class BackgroundTask extends AsyncTask<Void, Void, Void> {
 
         ProgressDialog progressDialog;
@@ -525,7 +524,7 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
             String changeStringKind = null;
             String ts = null;
             Date userDate = null;
-             long userTs = 0;
+            long userTs = 0;
             for (int i = 0; i < subList.size(); i++) {
                 // TODO: 2018-07-26 혈당 처리  
                 String gValue = subList.get(i).getBsValue();
