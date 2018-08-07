@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.chart.ChartActivity;
+import com.dreamwalker.diabetesfits.activity.diary.DiaryActivity;
 import com.dreamwalker.diabetesfits.activity.diary.WriteBSActivity;
 import com.dreamwalker.diabetesfits.adapter.DeviceAdapter;
 import com.dreamwalker.diabetesfits.consts.PageConst;
@@ -198,7 +199,14 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayout activityLayout = guillotineMenu.findViewById(R.id.activity_group);
         LinearLayout feedLayout = guillotineMenu.findViewById(R.id.feed_group);
         LinearLayout profileLayout = guillotineMenu.findViewById(R.id.profile_group);
+        LinearLayout diaryLayout = guillotineMenu.findViewById(R.id.activity_diary);
 
+
+        diaryLayout.setOnClickListener(view -> {
+            Intent intent = new Intent(HomeActivity.this, DiaryActivity.class);
+//            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        });
 
         profileLayout.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, ProfileActivity .class);
