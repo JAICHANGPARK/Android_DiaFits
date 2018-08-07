@@ -41,7 +41,7 @@ public class DiaryActivity extends AppCompatActivity {
     MonthPager monthPager;
     RecyclerView rvToDoList;
     TextView scrollSwitch;
-    TextView themeSwitch;
+    //TextView themeSwitch;
     TextView nextMonthBtn;
     TextView lastMonthBtn;
 
@@ -131,7 +131,7 @@ public class DiaryActivity extends AppCompatActivity {
         tvMonth = (TextView) findViewById(R.id.show_month_view);
         backToday = (TextView) findViewById(R.id.back_today_button);
         scrollSwitch = (TextView) findViewById(R.id.scroll_switch);
-        themeSwitch = (TextView) findViewById(R.id.theme_switch);
+        //themeSwitch = (TextView) findViewById(R.id.theme_switch);
         nextMonthBtn = (TextView) findViewById(R.id.next_month);
         lastMonthBtn = (TextView) findViewById(R.id.last_month);
         rvToDoList = (RecyclerView) findViewById(R.id.list);
