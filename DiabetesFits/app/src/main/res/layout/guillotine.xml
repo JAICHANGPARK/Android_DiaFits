@@ -56,6 +56,19 @@
             android:text="@string/activity" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/activity_diary"
+        style="@style/LinearLayout.GuillotineItem">
+
+        <ImageView
+            style="@style/ImageView.GuillotineItem"
+            android:src="@drawable/ic_content_paste_white_24dp" />
+
+        <com.dreamwalker.diabetesfits.widget.CanaroTextView
+            style="@style/TextView.GuillotineItem"
+            android:text="@string/activity" />
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/guillotine_divider_height" />

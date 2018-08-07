@@ -129,6 +129,7 @@
             android:name=".activity.AboutAppActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
+        <activity android:name=".activity.diary.DiaryActivity"></activity>
     </application>
 
 </manifest>
