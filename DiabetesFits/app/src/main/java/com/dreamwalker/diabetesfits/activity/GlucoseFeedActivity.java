@@ -39,6 +39,10 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
+
+/**
+ * 제작 : 박제창
+ */
 public class GlucoseFeedActivity extends AppCompatActivity {
     private static final String TAG = "GlucoseFeedActivity";
 
@@ -71,8 +75,8 @@ public class GlucoseFeedActivity extends AppCompatActivity {
     ArrayList<String> valueList = new ArrayList<>();
 
     int dbSize;
-    // TODO: 2018-07-26    0,      1,    2 , 3,   4  ,5  ,6  ,7  ,8  ,9,  10
-    // TODO: 2018-07-26 FASTING, SLEEP, BB, BA , LB, LA, DB, DA, FB, FA, UNKNOWN  
+    // TODO: 2018-07-26    0,      1,    2 , 3,   4  ,5  ,6  ,7  ,8  ,9,  10  - 박제창
+    // TODO: 2018-07-26 FASTING, SLEEP, BB, BA , LB, LA, DB, DA, FB, FA, UNKNOWN   -- 박제창
     int[] kindCount = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     @Override
@@ -126,7 +130,7 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 // TODO: 2018-07-25 등록된 데이터 없을 떄
         try {
 
-            if (glucose.size() == 0) {
+            if (glucose.size() == 0 && forChartGlucose.size() == 0) {
 
                 recentValueTextView.setText("Empty");
                 recentTypeTextView.setText("Empty");
@@ -296,7 +300,7 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         adapter = new DashboardAdapter(this, labelList, valueList);
         recyclerView.setAdapter(adapter);
         
-        if (glucose.size() != 0){
+        if (forChartGlucose.size() != 0){
             setLineGraph();
         }else {
             // TODO: 2018-07-26 예외처리
@@ -325,12 +329,19 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 ////            Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
 //        }
 
-        for (int i = 0; i < forChartGlucose.size(); i++) {
+        if (forChartGlucose.size() != 0){
+            for (int i = 0; i < forChartGlucose.size(); i++) {
 
-            lineEntry.add(new Entry(i, Float.valueOf(forChartGlucose.get(i).getValue())));
+                lineEntry.add(new Entry(i, Float.valueOf(forChartGlucose.get(i).getValue())));
 
 //            Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
+            }
         }
+        else {
+            // TODO: 2018-08-07 PASS 
+        }
+
+     
 
 
         lineChart.setDragEnabled(false);

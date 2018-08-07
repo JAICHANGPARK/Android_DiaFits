@@ -113,4 +113,14 @@
         <item name="android:layout_height">1dip</item>
         <item name="android:background">#e2e2e2</item>
     </style>
+
+
+    <style name="weekIndicatorStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">#ff25adff</item>
+    </style>
 </resources>
