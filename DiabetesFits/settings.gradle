@@ -1,1 +1,1 @@
-include ':app', ':materiallogin', ':waveviewlib', ':receiptview', ':progresssubmitbutton', ':supercalendar'
+include ':app', ':materiallogin', ':waveviewlib', ':receiptview', ':progresssubmitbutton', ':supercalendar', ':expandablerecyclerview', ':expandablecheckrecyclerview', ':photoview'

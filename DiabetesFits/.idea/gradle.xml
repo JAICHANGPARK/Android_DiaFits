@@ -9,7 +9,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/expandablecheckrecyclerview" />
+            <option value="$PROJECT_DIR$/expandablerecyclerview" />
             <option value="$PROJECT_DIR$/materiallogin" />
+            <option value="$PROJECT_DIR$/photoview" />
             <option value="$PROJECT_DIR$/progresssubmitbutton" />
             <option value="$PROJECT_DIR$/receiptview" />
             <option value="$PROJECT_DIR$/supercalendar" />

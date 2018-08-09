@@ -200,6 +200,7 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayout feedLayout = guillotineMenu.findViewById(R.id.feed_group);
         LinearLayout profileLayout = guillotineMenu.findViewById(R.id.profile_group);
         LinearLayout diaryLayout = guillotineMenu.findViewById(R.id.activity_diary);
+        LinearLayout educationLayout = guillotineMenu.findViewById(R.id.activity_education);
 
 
         diaryLayout.setOnClickListener(view -> {
