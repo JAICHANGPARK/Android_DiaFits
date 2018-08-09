@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/top_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.education.KADNEHomeActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_add_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/default_background"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <ImageView
+            android:id="@+id/home"
+            style="@style/ClickableImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="8dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_arrow_back_black_24dp" />
+
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/default_background"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="KDANE EDUCATION"
+            app:titleTextColor="@color/black" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+    <!--android:id="@+id/fab"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="@dimen/fab_margin"-->
+    <!--android:clickable="true"-->
+    <!--android:src="@drawable/ic_add_black_24dp"-->
+    <!--app:backgroundTint="@color/shopAccent"-->
+    <!--app:elevation="6dp"-->
+    <!--&lt;!&ndash;app:layout_anchor="@+id/bsm_recycler_view"&ndash;&gt;-->
+    <!--app:layout_anchorGravity="bottom|end"-->
+    <!--app:rippleColor="@color/shopAccent" />-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_view"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="120dp" />
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+
+

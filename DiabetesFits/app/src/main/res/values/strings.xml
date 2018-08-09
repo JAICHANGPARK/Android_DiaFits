@@ -162,6 +162,65 @@
     <string name="setting_more_menu_1">Licenses</string>
     <string name="setting_more_menu_2">Developer</string>
 
+<!--교육 스트링 리소스   박제창 -->
+    <string name="kdane_parent_0">당뇨병이란?</string>
+    <string name="kdane_parent_1">혈당 측정 및 관리</string>
+    <string name="kdane_parent_2">올바른 식사요법</string>
+    <string name="kdane_parent_3">올바른 운동요법</string>
+    <string name="kdane_parent_4">경구용 혈당 강하제</string>
+    <string name="kdane_parent_5">인슐린 주사법</string>
+    <string name="kdane_parent_6">저혈당 관리</string>
+    <string name="kdane_parent_7">아픈날의 관리</string>
+    <string name="kdane_parent_8">건강한 발 관리방법</string>
+
+    <string name="kdane_child_parent_00">당뇨병의 종류와 원인</string>
+    <string name="kdane_child_parent_01">당뇨병 이란?</string>
+    <string name="kdane_child_parent_02">당뇨병의 증상</string>
+    <string name="kdane_child_parent_03">당뇨병의 정기검진</string>
+    <string name="kdane_child_parent_04">당뇨병의 진단</string>
+
+    <string name="kdane_child_parent_10">자가혈당 측정을 해야하는 이유</string>
+    <string name="kdane_child_parent_11">혈당측정법</string>
+    <string name="kdane_child_parent_12">혈당 조절 목표</string>
+    <string name="kdane_child_parent_13">혈당 검사 시간</string>
+
+    <string name="kdane_child_parent_20">식사요법의 3원칙</string>
+    <string name="kdane_child_parent_21">나의 표준체중과 1일 필요열량</string>
+    <string name="kdane_child_parent_22">식품교환표</string>
+    <string name="kdane_child_parent_23">당뇨식 상차림의 예</string>
+
+    <string name="kdane_child_parent_30">운동전 평가</string>
+    <string name="kdane_child_parent_31">운동방법</string>
+    <string name="kdane_child_parent_32">효과적인 운동을 위하여 알아둘 점</string>
+
+
+    <string name="kdane_child_parent_40">설폰요소계</string>
+    <string name="kdane_child_parent_41">비구아나이드계</string>
+    <string name="kdane_child_parent_42">알파글루코시다제억제제</string>
+    <string name="kdane_child_parent_43">치아졸리딘디온계</string>
+    <string name="kdane_child_parent_44">인크레틴제제</string>
+    <string name="kdane_child_parent_45">약물상호작용</string>
+
+    <string name="kdane_child_parent_50">인슐린이란?</string>
+    <string name="kdane_child_parent_51">인슐린의 종류와 작용시간</string>
+    <string name="kdane_child_parent_52">인슐린주사시간과 모양</string>
+    <string name="kdane_child_parent_53">인슐린 주사부위</string>
+    <string name="kdane_child_parent_54">인슐린의 보관방법</string>
+    <string name="kdane_child_parent_55">인슐린주사시 주의사항</string>
+    <string name="kdane_child_parent_56">인슐린 펌프</string>
+
+    <string name="kdane_child_parent_60">저혈당이란?</string>
+    <string name="kdane_child_parent_61">저혈당의 증상</string>
+    <string name="kdane_child_parent_62">저혈당의 대처방법</string>
+    <string name="kdane_child_parent_63">야간 저혈당</string>
+
+    <string name="kdane_child_parent_70">아픈날의 몸의 변화</string>
+    <string name="kdane_child_parent_71">아픈날의 관리방법</string>
+
+    <string name="kdane_child_parent_80">발관리의 중요성</string>
+    <string name="kdane_child_parent_81">발관리 방법</string>
+    <string name="kdane_child_parent_82">발의 피부상태 관찰하기</string>
+    <string name="kdane_child_parent_83">당뇨병성 발의 합병증 예방을 위한 지침</string>
 
 </resources>
 

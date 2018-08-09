@@ -129,11 +129,13 @@
             android:name=".activity.AboutAppActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-
-        <activity android:name=".activity.diary.DiaryActivity"
-            android:theme="@style/ShopTheme"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".activity.diary.DiaryActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme" />
+        <activity android:name=".activity.education.KADNEHomeActivity"
+            android:theme="@style/ShopTheme" />
+        <activity android:name=".activity.education.KADNEImageActivity"></activity>
     </application>
 
 </manifest>
