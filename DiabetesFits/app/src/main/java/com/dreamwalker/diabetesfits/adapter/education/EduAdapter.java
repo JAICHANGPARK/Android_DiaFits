@@ -26,6 +26,10 @@ import com.dreamwalker.expandablerecyclerview.models.ExpandableGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dreamwalker.diabetesfits.consts.IntentConst.EDUCATION_PART;
+import static com.dreamwalker.diabetesfits.consts.IntentConst.EDUCATION_PART_NAME;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_ONE;
+
 public class EduAdapter extends ExpandableRecyclerViewAdapter<ParentViewHolder, ChildViewHolder> {
     Context context;
     ArrayList<String> parantList;
@@ -70,13 +74,16 @@ public class EduAdapter extends ExpandableRecyclerViewAdapter<ParentViewHolder, 
     public void onBindChildViewHolder(final ChildViewHolder holder, int flatPosition, ExpandableGroup group, int childIndex) {
         final Child artist = ((Parent) group).getItems().get(childIndex);
         holder.setArtistName(artist.getName());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                context.startActivity(new Intent(context, KADNEImageActivity.class));
-
-                Log.e(TAG, "onClick: " + artist.getName() );
+        holder.itemView.setOnClickListener(view -> {
+            String touchString = artist.getName();
+            Intent intent = new Intent(context, KADNEImageActivity.class);
+            if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_00))){
+              intent.putExtra(EDUCATION_PART, KDANE_PART_ONE_ONE);
+              intent.putExtra(EDUCATION_PART_NAME, artist.getName());
             }
+            context.startActivity(intent);
+
+            Log.e(TAG, "onClick: " + artist.getName());
         });
         //holder.binData(artist, listener);
 

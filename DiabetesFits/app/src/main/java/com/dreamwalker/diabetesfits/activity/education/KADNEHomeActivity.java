@@ -42,6 +42,9 @@ public class KADNEHomeActivity extends AppCompatActivity {
             ((DefaultItemAnimator) animator).setSupportsChangeAnimations(false);
         }
 
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+//                layoutManager.getOrientation());
+//        recyclerView.addItemDecoration(dividerItemDecoration);
 
         adapter = new EduAdapter(this, new KDANEListMaker(this).makeGenres());
         recyclerView.setLayoutManager(layoutManager);

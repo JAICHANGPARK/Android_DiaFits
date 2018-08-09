@@ -103,4 +103,12 @@
 ***
 
 
+### Diabetes Education Resources
+
+- KDANE(대한당뇨병교육간호사회)
+- [Link](http://www.kadne.or.kr/) 
+
+***
+
+
 For more information, please visit the project page on [Github](https://github.com/JAICHANGPARK)

@@ -135,7 +135,8 @@
             android:theme="@style/ShopTheme" />
         <activity android:name=".activity.education.KADNEHomeActivity"
             android:theme="@style/ShopTheme" />
-        <activity android:name=".activity.education.KADNEImageActivity"></activity>
+        <activity android:name=".activity.education.KADNEImageActivity"
+            android:theme="@style/ShopTheme"></activity>
     </application>
 
 </manifest>
