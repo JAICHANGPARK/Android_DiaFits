@@ -136,7 +136,12 @@
         <activity android:name=".activity.education.KADNEHomeActivity"
             android:theme="@style/ShopTheme" />
         <activity android:name=".activity.education.KADNEImageActivity"
-            android:theme="@style/ShopTheme"></activity>
+            android:theme="@style/ShopTheme"
+            android:parentActivityName=".activity.education.KADNEHomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.education.KADNEHomeActivity" />
+        </activity>
     </application>
 
 </manifest>

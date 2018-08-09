@@ -60,4 +60,16 @@ public class KADNEHomeActivity extends AppCompatActivity {
     public void onBackButtonClicked(){
         finish();
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        adapter.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        adapter.onRestoreInstanceState(savedInstanceState);
+    }
 }
