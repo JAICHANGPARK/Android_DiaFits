@@ -14,14 +14,39 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 import static com.dreamwalker.diabetesfits.consts.IntentConst.EDUCATION_PART;
 import static com.dreamwalker.diabetesfits.consts.IntentConst.EDUCATION_PART_NAME;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_EIGHT_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_EIGHT_TWO;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_FIVE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_FOUR;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_SIX;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_THREE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_TWO;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FOUR_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FOUR_THREE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FOUR_TWO;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_NINE_FOUR;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_NINE_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_NINE_THREE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_NINE_TWO;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_FIVE;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_FOUR;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_ONE;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_THREE;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_TWO;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SEVEN_FOUR;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SEVEN_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SEVEN_THREE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SEVEN_TWO;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_FIVE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_FOUR;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_SEVEN;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_SIX;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_THREE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_TWO;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_THREE_FOUR;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_THREE_ONE;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_THREE_THREE;
@@ -106,16 +131,95 @@ public class KADNEImageActivity extends AppCompatActivity {
                 imageList.add(R.drawable.image_kdane_23_00);
                 break;
 
+            case KDANE_PART_FOUR_ONE:
+                imageList.add(R.drawable.image_kdane_30_00);
+                break;
+            case KDANE_PART_FOUR_TWO:
+                imageList.add(R.drawable.image_kdane_31_00);
+                break;
+            case KDANE_PART_FOUR_THREE:
+                imageList.add(R.drawable.image_kdane_32_00);
+                break;
 
-            default:
+            case KDANE_PART_FIVE_ONE:
+                imageList.add(R.drawable.image_kdane_40_00);
+                break;
+            case KDANE_PART_FIVE_TWO:
+                imageList.add(R.drawable.image_kdane_41_00);
+                break;
+            case KDANE_PART_FIVE_THREE:
+                imageList.add(R.drawable.image_kdane_42_00);
+                break;
+            case KDANE_PART_FIVE_FOUR:
+                imageList.add(R.drawable.image_kdane_43_00);
+                break;
+            case KDANE_PART_FIVE_FIVE:
+                imageList.add(R.drawable.image_kdane_44_00);
+                break;
+            case KDANE_PART_FIVE_SIX:
+                imageList.add(R.drawable.image_kdane_45_00);
+                break;
+
+            case KDANE_PART_SIX_ONE:
+                imageList.add(R.drawable.image_kdane_50_00);
+                break;
+            case KDANE_PART_SIX_TWO:
+                imageList.add(R.drawable.image_kdane_51_00);
+                break;
+            case KDANE_PART_SIX_THREE:
+                imageList.add(R.drawable.image_kdane_52_00);
+                break;
+            case KDANE_PART_SIX_FOUR:
+                imageList.add(R.drawable.image_kdane_53_00);
+                break;
+            case KDANE_PART_SIX_FIVE:
+                imageList.add(R.drawable.image_kdane_54_00);
+                break;
+            case KDANE_PART_SIX_SIX:
+                imageList.add(R.drawable.image_kdane_55_00);
+                break;
+            case KDANE_PART_SIX_SEVEN:
+                imageList.add(R.drawable.image_kdane_56_00);
                 break;
 
 
-        }
+            case KDANE_PART_SEVEN_ONE:
+                imageList.add(R.drawable.image_kdane_60_00);
+                break;
+            case KDANE_PART_SEVEN_TWO:
+                imageList.add(R.drawable.image_kdane_61_00);
+                break;
+            case KDANE_PART_SEVEN_THREE:
+                imageList.add(R.drawable.image_kdane_62_00);
+                break;
+            case KDANE_PART_SEVEN_FOUR:
+                imageList.add(R.drawable.image_kdane_63_00);
+                break;
 
+            case KDANE_PART_EIGHT_ONE:
+                imageList.add(R.drawable.image_kdane_80_00);
+                break;
+            case KDANE_PART_EIGHT_TWO:
+                imageList.add(R.drawable.image_kdane_81_00);
+                break;
+
+            case KDANE_PART_NINE_ONE:
+                imageList.add(R.drawable.image_kdane_70_00);
+                break;
+            case KDANE_PART_NINE_TWO:
+                imageList.add(R.drawable.image_kdane_71_00);
+                break;
+            case KDANE_PART_NINE_THREE:
+                imageList.add(R.drawable.image_kdane_72_00);
+                break;
+            case KDANE_PART_NINE_FOUR:
+                imageList.add(R.drawable.image_kdane_73_00);
+                break;
+            default:
+                break;
+        }
         adapter = new EduImageAdapter(this, imageList);
         recyclerView.setAdapter(adapter);
-
     }
 
     private void bindAllViews() {

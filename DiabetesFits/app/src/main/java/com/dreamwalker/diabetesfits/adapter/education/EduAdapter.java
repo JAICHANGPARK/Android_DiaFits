@@ -28,11 +28,37 @@ import java.util.List;
 
 import static com.dreamwalker.diabetesfits.consts.IntentConst.EDUCATION_PART;
 import static com.dreamwalker.diabetesfits.consts.IntentConst.EDUCATION_PART_NAME;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_EIGHT_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_EIGHT_TWO;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_FIVE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_FOUR;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_SIX;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_THREE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FIVE_TWO;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FOUR_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FOUR_THREE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_FOUR_TWO;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_NINE_FOUR;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_NINE_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_NINE_THREE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_NINE_TWO;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_FIVE;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_FOUR;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_ONE;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_THREE;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_ONE_TWO;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SEVEN_FOUR;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SEVEN_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SEVEN_THREE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SEVEN_TWO;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_FIVE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_FOUR;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_ONE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_SEVEN;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_SIX;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_THREE;
+import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_SIX_TWO;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_THREE_FOUR;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_THREE_ONE;
 import static com.dreamwalker.diabetesfits.consts.KDANEConst.KDANE_PART_THREE_THREE;
@@ -111,7 +137,7 @@ public class EduAdapter extends ExpandableRecyclerViewAdapter<ParentViewHolder, 
                 intent.putExtra(EDUCATION_PART, KDANE_PART_ONE_FIVE);
                 intent.putExtra(EDUCATION_PART_NAME, touchString);
             }
-
+// TODO: 2018-08-09
             else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_10))){
                 intent.putExtra(EDUCATION_PART, KDANE_PART_TWO_ONE);
                 intent.putExtra(EDUCATION_PART_NAME, touchString);
@@ -128,7 +154,7 @@ public class EduAdapter extends ExpandableRecyclerViewAdapter<ParentViewHolder, 
                 intent.putExtra(EDUCATION_PART, KDANE_PART_TWO_FOUR);
                 intent.putExtra(EDUCATION_PART_NAME, touchString);
             }
-
+// TODO: 2018-08-09
             else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_20))){
                 intent.putExtra(EDUCATION_PART, KDANE_PART_THREE_ONE);
                 intent.putExtra(EDUCATION_PART_NAME, touchString);
@@ -146,6 +172,117 @@ public class EduAdapter extends ExpandableRecyclerViewAdapter<ParentViewHolder, 
                 intent.putExtra(EDUCATION_PART_NAME, touchString);
             }
 
+            // TODO: 2018-08-09
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_30))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_FOUR_ONE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_31))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_FOUR_TWO);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_32))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_FOUR_THREE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            // TODO: 2018-08-09
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_40))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_FIVE_ONE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_41))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_FIVE_TWO);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_42))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_FIVE_THREE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_43))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_FIVE_FOUR);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_44))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_FIVE_FIVE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_45))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_FIVE_SIX);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+
+            // TODO: 2018-08-09
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_50))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SIX_ONE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_51))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SIX_TWO);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_52))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SIX_THREE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_53))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SIX_FOUR);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_54))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SIX_FIVE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_55))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SIX_SIX);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_56))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SIX_SEVEN);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_60))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SEVEN_ONE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_61))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SEVEN_TWO);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_62))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SEVEN_THREE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_63))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_SEVEN_FOUR);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_70))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_EIGHT_ONE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_71))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_EIGHT_TWO);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_80))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_NINE_ONE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_81))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_NINE_TWO);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_82))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_NINE_THREE);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
+            else if (touchString.equals(context.getResources().getString(R.string.kdane_child_parent_83))){
+                intent.putExtra(EDUCATION_PART, KDANE_PART_NINE_FOUR);
+                intent.putExtra(EDUCATION_PART_NAME, touchString);
+            }
 
             context.startActivity(intent);
 
