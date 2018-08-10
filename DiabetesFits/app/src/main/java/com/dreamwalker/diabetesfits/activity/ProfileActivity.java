@@ -169,7 +169,6 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 
     private void setBottomSheetBehavior() {
 
-
         bottomSheetBehavior = BottomSheetBehavior.from(mBottomSheet);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -334,6 +333,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 
     }
 
+
     @OnClick(R.id.home)
     public void onClickedBackButton() {
         finish();
@@ -347,9 +347,11 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 
     HorizontalWheelView horizontalWheelView;
 
+    // TODO: 2018-08-10 각 분야별로 데이터 처리를 다르게 해야합니다 - 박제창  
     @Override
     public void onItemLongClick(View v, int position) {
-
+        Log.e(TAG, "onItemLongClick: " + position );
+        String text = null;
         LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.custom_dialog_glucose,null);
         horizontalWheelView = (HorizontalWheelView)view.findViewById(R.id.horizontalWheelView);
@@ -371,6 +373,9 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                valueList.set(0, text);
+                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
