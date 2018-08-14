@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,9 +22,11 @@ import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.DiaryCalendarAdapter;
+import com.dreamwalker.diabetesfits.fragment.diary.BottomNavigationDrawerFragment;
 import com.dreamwalker.diabetesfits.model.diary.Tag;
 import com.dreamwalker.diabetesfits.widget.CustomDayView;
 import com.dreamwalker.diabetesfits.widget.ThemeDayView;
+import com.dreamwalker.fabulousfilter.AAH_FabulousFragment;
 import com.dreamwalker.searchfilter.adapter.FilterAdapter;
 import com.dreamwalker.searchfilter.listener.FilterListener;
 import com.dreamwalker.searchfilter.widget.Filter;
@@ -40,7 +45,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class DiaryActivity extends AppCompatActivity implements FilterListener<Tag> {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class DiaryActivity extends AppCompatActivity implements FilterListener<Tag> , AAH_FabulousFragment.Callbacks, AAH_FabulousFragment.AnimationListener{
     private static final String TAG = "DiaryActivity";
 
     TextView tvYear;
@@ -53,6 +62,9 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
     //TextView themeSwitch;
     TextView nextMonthBtn;
     TextView lastMonthBtn;
+
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     private ArrayList<Calendar> currentCalendars = new ArrayList<>();
     private CalendarViewAdapter calendarAdapter;
@@ -68,11 +80,14 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
     private int[] mColors;
     private String[] mTitles;
 
+    FilterFragment dialogFrag, dialogFrag1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
+        ButterKnife.bind(this);
         setStatusBar();
         setBottomAppBar();
         initView();
@@ -83,6 +98,7 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
         Log.e("ldf", "OnCreated");
 
         //setFilterInit();
+        setFabulousFilterInit();
     }
 
     private void setStatusBar(){
@@ -133,6 +149,8 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
 
     }
 
+
+
     private void initView(){
         context = this;
         content = (CoordinatorLayout) findViewById(R.id.content);
@@ -155,7 +173,7 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
     }
 
     private void setFilterInit(){
-        filter = (Filter<Tag>)findViewById(R.id.filter);
+        //filter = (Filter<Tag>)findViewById(R.id.filter);
         mColors = getResources().getIntArray(R.array.colors);
         mTitles = getResources().getStringArray(R.array.job_titles);
         filter.setAdapter(new Adapter(getTags()));
@@ -164,6 +182,11 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
         //the text to show when there's no selected items
         filter.setNoSelectedItemText(getString(R.string.str_all_selected));
         filter.build();
+    }
+
+    private void setFabulousFilterInit(){
+        dialogFrag = FilterFragment.newInstance();
+        dialogFrag.setParentFab(fab);
     }
 
     /**
@@ -392,6 +415,8 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
 
     }
 
+
+
     // TODO: 2018-08-14 필터를 위한 이너 클래스 - 박제창
     class Adapter extends FilterAdapter<Tag> {
 
@@ -417,4 +442,54 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
         }
     }
 
+    @OnClick(R.id.fab)
+    public void onClickFloatingActionButton(){
+        dialogFrag.show(getSupportFragmentManager(), dialogFrag.getTag());
+    }
+
+    // TODO: 2018-08-14  fabulousfilter 콜백 리스너
+
+    @Override
+    public void onResult(Object result) {
+
+    }
+
+    @Override
+    public void onOpenAnimationStart() {
+        Log.e(TAG, "onOpenAnimationStart: onOpenAnimationStart");
+
+    }
+
+    @Override
+    public void onOpenAnimationEnd() {
+        Log.e(TAG, "onOpenAnimationStart: onOpenAnimationEnd");
+
+    }
+
+    @Override
+    public void onCloseAnimationStart() {
+        Log.e(TAG, "onOpenAnimationStart: onCloseAnimationStart");
+    }
+
+    @Override
+    public void onCloseAnimationEnd() {
+        Log.e(TAG, "onOpenAnimationStart: onCloseAnimationEnd");
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.home:
+                BottomNavigationDrawerFragment bottomNavigationDrawerFragmen = new BottomNavigationDrawerFragment();
+                bottomNavigationDrawerFragmen.show(getSupportFragmentManager(), bottomNavigationDrawerFragmen.getTag());
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

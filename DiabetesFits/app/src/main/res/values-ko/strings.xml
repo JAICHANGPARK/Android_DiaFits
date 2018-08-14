@@ -59,4 +59,20 @@
     <string name="ValidationWarningPopup_36">No more than 10 registered meters allowed. Please delete unused meters.</string>
     <string name="error_software_revision">The meter\'s software version does not support. Please update the SmartLog.</string>
 
+
+
+    <string name="diary_now">今</string>
+
+    <string name="diary_mon">월</string>
+    <string name="diary_tue">화</string>
+    <string name="diary_wed">수</string>
+    <string name="diary_thu">목</string>
+    <string name="diary_fri">금</string>
+    <string name="diary_sat">토</string>
+    <string name="diary_sun">일</string>
+    <string name="diary_today">오늘</string>
+    <string name="diary_expand">달력펴기</string>
+    <string name="diary_next">다음</string>
+    <string name="diary_before">이전</string>
+
 </resources>

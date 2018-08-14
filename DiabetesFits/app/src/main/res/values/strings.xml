@@ -162,7 +162,7 @@
     <string name="setting_more_menu_1">Licenses</string>
     <string name="setting_more_menu_2">Developer</string>
 
-<!--교육 스트링 리소스   박제창 -->
+    <!--교육 스트링 리소스   박제창 -->
     <string name="kdane_parent_0">당뇨병이란?</string>
     <string name="kdane_parent_1">혈당 측정 및 관리</string>
     <string name="kdane_parent_2">올바른 식사요법</string>
@@ -222,7 +222,7 @@
     <string name="kdane_child_parent_82">발의 피부상태 관찰하기</string>
     <string name="kdane_child_parent_83">당뇨병성 발의 합병증 예방을 위한 지침</string>
 
-<!--필터 적용하기 위한 문자 배열 -->
+    <!--필터 적용하기 위한 문자 배열 -->
     <string-array name="job_titles">
         <item>All categories</item>
         <item>Glucose</item>
@@ -233,5 +233,20 @@
     </string-array>
     <string name="str_all_selected">All categories</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="diary_now">N</string>
+    <string name="diary_mon">Mon</string>
+    <string name="diary_tue">Tue</string>
+    <string name="diary_wed">Wed</string>
+    <string name="diary_thu">Thu</string>
+    <string name="diary_fri">Fri</string>
+    <string name="diary_sat">Sat</string>
+    <string name="diary_sun">Sun</string>
+    <string name="diary_today">Today</string>
+    <string name="diary_expand">Expand</string>
+    <string name="diary_next">Next</string>
+    <string name="diary_before">Before</string>
 </resources>
 

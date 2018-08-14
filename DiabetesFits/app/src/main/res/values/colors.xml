@@ -113,5 +113,7 @@
     <color name="orange">#ff5722</color>
     <color name="brown">#795548</color>
 
+    <color name="diary_bottom_appbar_color">#ff25adff</color>
+
 
 </resources>

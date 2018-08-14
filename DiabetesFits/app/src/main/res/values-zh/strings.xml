@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">당뇨그루-피트니스</string>
+    <string name="app_intro_done">START</string>
+
+
+
+    <string name="diary_now">今</string>
+    <string name="diary_mon">一</string>
+    <string name="diary_tue">二</string>
+    <string name="diary_wed">三</string>
+    <string name="diary_thu">四</string>
+    <string name="diary_fri">五</string>
+    <string name="diary_sat">六</string>
+    <string name="diary_sun">日</string>
+    <string name="diary_today">今天</string>
+    <string name="diary_expand">切换周月</string>
+    <string name="diary_next">下一月</string>
+    <string name="diary_before">上一月</string>
+
+
+
+</resources>
