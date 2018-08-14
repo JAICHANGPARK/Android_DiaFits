@@ -82,7 +82,7 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
         initToolbarClickListener();
         Log.e("ldf", "OnCreated");
 
-        setFilterInit();
+        //setFilterInit();
     }
 
     private void setStatusBar(){
@@ -152,12 +152,10 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
         rvToDoList.setLayoutManager(new LinearLayoutManager(this));
         rvToDoList.setAdapter(new DiaryCalendarAdapter(this));
 
-
-        filter = (Filter<Tag>)findViewById(R.id.filter);
-
     }
 
     private void setFilterInit(){
+        filter = (Filter<Tag>)findViewById(R.id.filter);
         mColors = getResources().getIntArray(R.array.colors);
         mTitles = getResources().getStringArray(R.array.job_titles);
         filter.setAdapter(new Adapter(getTags()));

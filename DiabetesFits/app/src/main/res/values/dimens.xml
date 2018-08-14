@@ -21,4 +21,6 @@
     <dimen name="horizontal_margin">16dp</dimen>
     <dimen name="list_item_left_margin">72dp</dimen>
 
+    <dimen name="card_margin">12dp</dimen>
+
 </resources>

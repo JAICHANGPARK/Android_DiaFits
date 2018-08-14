@@ -20,18 +20,18 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#E4E6E3"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <!--<FrameLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="#E4E6E3"-->
+                <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-                <com.dreamwalker.searchfilter.widget.Filter
-                    android:id="@+id/filter"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                <!--<com.dreamwalker.searchfilter.widget.Filter-->
+                    <!--android:id="@+id/filter"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content" />-->
 
-            </FrameLayout>
+            <!--</FrameLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"
