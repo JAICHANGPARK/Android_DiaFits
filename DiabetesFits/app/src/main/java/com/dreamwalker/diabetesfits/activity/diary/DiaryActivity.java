@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DiaryActivity extends AppCompatActivity {
+    private static final String TAG = "DiaryActivity";
 
     TextView tvYear;
     TextView tvMonth;
@@ -86,21 +87,18 @@ public class DiaryActivity extends AppCompatActivity {
     private void setBottomAppBar(){
         bottomAppBar = findViewById(R.id.bottomAppBar);
         setSupportActionBar(bottomAppBar);
-        bottomAppBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (bottomAppBar.getFabAlignmentMode()) {
-                    case BottomAppBar.FAB_ALIGNMENT_MODE_END:
-                        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                        break;
-                    case BottomAppBar.FAB_ALIGNMENT_MODE_CENTER:
-                        moveToDetail();
-                        //bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-                        break;
-                }
-
-                // Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+        bottomAppBar.setNavigationOnClickListener(view -> {
+            switch (bottomAppBar.getFabAlignmentMode()) {
+                case BottomAppBar.FAB_ALIGNMENT_MODE_END:
+                    bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+                    break;
+                case BottomAppBar.FAB_ALIGNMENT_MODE_CENTER:
+                    moveToDetail();
+                    //bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+                    break;
             }
+
+            // Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -249,6 +247,7 @@ public class DiaryActivity extends AppCompatActivity {
         onSelectDateListener = new OnSelectDateListener() {
             @Override
             public void onSelectDate(CalendarDate date) {
+                Log.e(TAG, "onSelectDate: " + date.day +" | "+ date.month +" | "+ date.year);
                 refreshClickDate(date);
             }
 
