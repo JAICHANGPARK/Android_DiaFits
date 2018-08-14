@@ -82,7 +82,7 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
         initToolbarClickListener();
         Log.e("ldf", "OnCreated");
 
-
+        setFilterInit();
     }
 
     private void setStatusBar(){
@@ -373,7 +373,7 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
         return tags;
     }
 
-    // TODO: 2018-08-14 필터 리스너 4개 추가  
+    // TODO: 2018-08-14 필터 리스너 4개 추가
     @Override
     public void onFiltersSelected(@NotNull ArrayList<Tag> filters) {
         

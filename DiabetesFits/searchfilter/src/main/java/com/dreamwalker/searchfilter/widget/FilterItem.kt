@@ -28,7 +28,7 @@ class FilterItem : FrameLayout, Serializable {
     var isIncreased: Boolean = false
     var startX: Float = 0f
     var startY: Float = 0f
-    @ColorInt var cancelIconTint: Int = resources.getColor(android.R.color.white)
+    @ColorInt var cancelIconTint: Int = android.R.color.white
     @DrawableRes var cancelIcon: Int = R.drawable.ic_cancel
     @ColorInt var color: Int? = null
     @ColorInt var checkedColor: Int? = null
