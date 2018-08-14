@@ -201,6 +201,19 @@
                         android:layout_height="270dp"
                         android:background="#fff"/>
 
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#E4E6E3"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                        <com.dreamwalker.searchfilter.widget.Filter
+                            android:id="@+id/filter"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </FrameLayout>
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/list"
                         android:layout_width="match_parent"

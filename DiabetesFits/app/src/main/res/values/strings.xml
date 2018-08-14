@@ -222,5 +222,16 @@
     <string name="kdane_child_parent_82">발의 피부상태 관찰하기</string>
     <string name="kdane_child_parent_83">당뇨병성 발의 합병증 예방을 위한 지침</string>
 
+<!--필터 적용하기 위한 문자 배열 -->
+    <string-array name="job_titles">
+        <item>All categories</item>
+        <item>Glucose</item>
+        <item>Workout</item>
+        <item>Meal</item>
+        <item>Insulin</item>
+        <item>Other</item>
+    </string-array>
+    <string name="str_all_selected">All categories</string>
+
 </resources>
 

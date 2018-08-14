@@ -19,8 +19,13 @@ import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.DiaryCalendarAdapter;
+import com.dreamwalker.diabetesfits.model.diary.Tag;
 import com.dreamwalker.diabetesfits.widget.CustomDayView;
 import com.dreamwalker.diabetesfits.widget.ThemeDayView;
+import com.dreamwalker.searchfilter.adapter.FilterAdapter;
+import com.dreamwalker.searchfilter.listener.FilterListener;
+import com.dreamwalker.searchfilter.widget.Filter;
+import com.dreamwalker.searchfilter.widget.FilterItem;
 import com.dreamwalker.supercalendar.Utils;
 import com.dreamwalker.supercalendar.component.CalendarAttr;
 import com.dreamwalker.supercalendar.component.CalendarViewAdapter;
@@ -29,10 +34,13 @@ import com.dreamwalker.supercalendar.model.CalendarDate;
 import com.dreamwalker.supercalendar.view.Calendar;
 import com.dreamwalker.supercalendar.view.MonthPager;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class DiaryActivity extends AppCompatActivity {
+public class DiaryActivity extends AppCompatActivity implements FilterListener<Tag> {
     private static final String TAG = "DiaryActivity";
 
     TextView tvYear;
@@ -54,6 +62,11 @@ public class DiaryActivity extends AppCompatActivity {
     private CalendarDate currentDate;
     private boolean initiated = false;
     BottomAppBar bottomAppBar;
+
+
+    Filter<Tag> filter ;
+    private int[] mColors;
+    private String[] mTitles;
 
 
     @Override
@@ -103,6 +116,7 @@ public class DiaryActivity extends AppCompatActivity {
     }
 
     private void moveToDetail() {
+
         bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
         attachFab();
     }
@@ -137,6 +151,21 @@ public class DiaryActivity extends AppCompatActivity {
         //这里用线性显示 类似于listview
         rvToDoList.setLayoutManager(new LinearLayoutManager(this));
         rvToDoList.setAdapter(new DiaryCalendarAdapter(this));
+
+
+        filter = (Filter<Tag>)findViewById(R.id.filter);
+
+    }
+
+    private void setFilterInit(){
+        mColors = getResources().getIntArray(R.array.colors);
+        mTitles = getResources().getStringArray(R.array.job_titles);
+        filter.setAdapter(new Adapter(getTags()));
+        filter.setListener(this);
+
+        //the text to show when there's no selected items
+        filter.setNoSelectedItemText(getString(R.string.str_all_selected));
+        filter.build();
     }
 
     /**
@@ -330,6 +359,64 @@ public class DiaryActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+
+    
+    private List<Tag> getTags() {
+        List<Tag> tags = new ArrayList<>();
+
+        for (int i = 0; i < mTitles.length; ++i) {
+            tags.add(new Tag(mTitles[i], mColors[i]));
+        }
+
+        return tags;
+    }
+
+    // TODO: 2018-08-14 필터 리스너 4개 추가  
+    @Override
+    public void onFiltersSelected(@NotNull ArrayList<Tag> filters) {
+        
+    }
+
+    @Override
+    public void onNothingSelected() {
+
+    }
+
+    @Override
+    public void onFilterSelected(Tag item) {
+
+    }
+
+    @Override
+    public void onFilterDeselected(Tag item) {
+
+    }
+
+    // TODO: 2018-08-14 필터를 위한 이너 클래스 - 박제창
+    class Adapter extends FilterAdapter<Tag> {
+
+        Adapter(@NotNull List<? extends Tag> items) {
+            super(items);
+        }
+
+        @NotNull
+        @Override
+        public FilterItem createView(int position, Tag item) {
+            FilterItem filterItem = new FilterItem(DiaryActivity.this);
+
+            filterItem.setStrokeColor(mColors[0]);
+            filterItem.setTextColor(mColors[0]);
+            filterItem.setCornerRadius(14);
+            filterItem.setCheckedTextColor(ContextCompat.getColor(DiaryActivity.this, android.R.color.white));
+            filterItem.setColor(ContextCompat.getColor(DiaryActivity.this, android.R.color.white));
+            filterItem.setCheckedColor(mColors[position]);
+            filterItem.setText(item.getText());
+            filterItem.deselect();
+
+            return filterItem;
+        }
     }
 
 }
