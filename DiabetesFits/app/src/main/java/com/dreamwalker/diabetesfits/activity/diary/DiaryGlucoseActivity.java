@@ -1,7 +1,9 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+
+import com.dreamwalker.diabetesfits.R;
 
 public class DiaryGlucoseActivity extends AppCompatActivity {
 
