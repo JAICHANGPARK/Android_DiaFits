@@ -1,4 +1,4 @@
-package com.dreamwalker.diabetesfits.activity.diary;
+package com.dreamwalker.diabetesfits.fragment.diary;
 
 import android.app.Dialog;
 import android.os.Bundle;

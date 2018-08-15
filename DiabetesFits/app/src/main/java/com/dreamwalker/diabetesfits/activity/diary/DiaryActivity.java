@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.DiaryCalendarAdapter;
 import com.dreamwalker.diabetesfits.fragment.diary.BottomNavigationDrawerFragment;
+import com.dreamwalker.diabetesfits.fragment.diary.FilterFragment;
 import com.dreamwalker.diabetesfits.model.diary.Tag;
 import com.dreamwalker.diabetesfits.widget.CustomDayView;
 import com.dreamwalker.diabetesfits.widget.ThemeDayView;

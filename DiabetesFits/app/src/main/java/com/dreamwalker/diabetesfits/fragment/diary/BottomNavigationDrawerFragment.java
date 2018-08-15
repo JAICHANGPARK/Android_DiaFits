@@ -1,20 +1,22 @@
 package com.dreamwalker.diabetesfits.fragment.diary;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.NavigationView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dreamwalker.diabetesfits.R;
-import com.dreamwalker.diabetesfits.activity.diary.FilterFragment;
 
 public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
-
+    private static final String TAG = "BottomNavigationDrawerF";
     NavigationView navigationView;
     public BottomNavigationDrawerFragment() {
     }
@@ -45,10 +47,30 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.nav1:
+                        Log.e(TAG, "onNavigationItemSelected: 운동버튼 클릭");
+                        return true;
+                    case R.id.nav2:
+                        Log.e(TAG, "onNavigationItemSelected: 혈당버튼 클릭");
+                }
                 return false;
             }
         });
 
 
+    }
+
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+
+            }
+        });
+        return dialog;
     }
 }

@@ -133,15 +133,19 @@
             android:name=".activity.diary.DiaryActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-        <activity android:name=".activity.education.KADNEHomeActivity"
+        <activity
+            android:name=".activity.education.KADNEHomeActivity"
             android:theme="@style/ShopTheme" />
-        <activity android:name=".activity.education.KADNEImageActivity"
-            android:theme="@style/ShopTheme"
-            android:parentActivityName=".activity.education.KADNEHomeActivity">
+        <activity
+            android:name=".activity.education.KADNEImageActivity"
+            android:parentActivityName=".activity.education.KADNEHomeActivity"
+            android:theme="@style/ShopTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.education.KADNEHomeActivity" />
         </activity>
+        <activity android:name=".activity.diary.DiaryGlucoseActivity" />
+        <activity android:name=".activity.diary.DiaryFitnessActivity"></activity>
     </application>
 
 </manifest>
