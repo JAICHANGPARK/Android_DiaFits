@@ -13,8 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -117,15 +115,17 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
         bottomAppBar = findViewById(R.id.bottomAppBar);
         setSupportActionBar(bottomAppBar);
         bottomAppBar.setNavigationOnClickListener(view -> {
-            switch (bottomAppBar.getFabAlignmentMode()) {
-                case BottomAppBar.FAB_ALIGNMENT_MODE_END:
-                    bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
-                    break;
-                case BottomAppBar.FAB_ALIGNMENT_MODE_CENTER:
-                    moveToDetail();
-                    //bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-                    break;
-            }
+            BottomNavigationDrawerFragment bottomNavigationDrawerFragmen = new BottomNavigationDrawerFragment();
+            bottomNavigationDrawerFragmen.show(getSupportFragmentManager(), bottomNavigationDrawerFragmen.getTag());
+//            switch (bottomAppBar.getFabAlignmentMode()) {
+//                case BottomAppBar.FAB_ALIGNMENT_MODE_END:
+//                    bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+//                    break;
+//                case BottomAppBar.FAB_ALIGNMENT_MODE_CENTER:
+//                    moveToDetail();
+//                    //bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+//                    break;
+//            }
 
             // Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
         });
@@ -476,20 +476,20 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
         Log.e(TAG, "onOpenAnimationStart: onCloseAnimationEnd");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.home:
-                BottomNavigationDrawerFragment bottomNavigationDrawerFragmen = new BottomNavigationDrawerFragment();
-                bottomNavigationDrawerFragmen.show(getSupportFragmentManager(), bottomNavigationDrawerFragmen.getTag());
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.menu_diary, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()){
+//            case R.id.home:
+//                BottomNavigationDrawerFragment bottomNavigationDrawerFragmen = new BottomNavigationDrawerFragment();
+//                bottomNavigationDrawerFragmen.show(getSupportFragmentManager(), bottomNavigationDrawerFragmen.getTag());
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }
