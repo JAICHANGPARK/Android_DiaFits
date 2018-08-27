@@ -46,6 +46,8 @@ import java.util.UUID;
  * Service for managing connection and data communication with a GATT server hosted on a
  * given Bluetooth LE device.
  */
+
+// TODO: 2018-08-27 에르고 미터 서비스 처리  
 public class EZBLEService extends Service {
     private final static String TAG = EZBLEService.class.getSimpleName();
 
