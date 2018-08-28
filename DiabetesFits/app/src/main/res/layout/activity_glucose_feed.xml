@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activity.GlucoseFeedActivity">
 
-
     <LinearLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
@@ -37,6 +36,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/recommend_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"

@@ -1,5 +1,6 @@
 package com.dreamwalker.diabetesfits.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.paperdb.Paper;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -66,6 +68,8 @@ public class GlucoseFeedActivity extends AppCompatActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
+    @BindView(R.id.recommend_text_view)
+    TextView recommendTextView;
 
     RealmResults<Glucose> glucose;
     RealmResults<Glucose> forChartGlucose;
@@ -79,6 +83,11 @@ public class GlucoseFeedActivity extends AppCompatActivity {
     // TODO: 2018-07-26 FASTING, SLEEP, BB, BA , LB, LA, DB, DA, FB, FA, UNKNOWN   -- 박제창
     int[] kindCount = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
+
+    String userGlucoseMin;
+    String userGlucoseMax;
+    boolean userGlucoseValueCheckFlag = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +96,20 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Paper.init(this);
         Realm.init(this);
+
+        userGlucoseMin = Paper.book("user").read("userGlucoseMin");
+        userGlucoseMax = Paper.book("user").read("userGlucoseMax");
+
+        if (userGlucoseMin == null && userGlucoseMax != null) {
+            recommendTextView.setText("프로필에서 최소 목표 혈당을 설정해주세요");
+        }
+        if (userGlucoseMin != null && userGlucoseMax == null) {
+            recommendTextView.setText("프로필에서 최고 목표 혈당을 설정해주세요");
+        }
+        if (userGlucoseMin != null && userGlucoseMax != null) {
+            userGlucoseValueCheckFlag = true;
+        }
+
 
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
@@ -126,7 +149,7 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 
         Log.e(TAG, "all data size --> " + glucose.size());
         Log.e(TAG, "onCreate: forChartGlucose size --> " + forChartGlucose.size());
-        
+
 // TODO: 2018-07-25 등록된 데이터 없을 떄
         try {
 
@@ -229,6 +252,18 @@ public class GlucoseFeedActivity extends AppCompatActivity {
                 recentValueTextView.setText(lastValue);
                 recentTypeTextView.setText(lastType);
 
+                // TODO: 2018-08-28 만약 최소, 최대 목표 혈당이 설정되어 있다면 최근 혈당 수치에 따라 운동추천을 표기한다.-박제창
+                if (userGlucoseValueCheckFlag){
+                    if (Integer.valueOf(lastValue) > Integer.valueOf(userGlucoseMax)){
+                        recommendTextView.setText("현재 측정된 혈당이 목표 최고 혈당 수치보다 높습니다. \n 운동을 수행해 목표 혈당 구간 내 유지가 필요한 시점입니다.");
+                    } else if (Integer.valueOf(lastValue) < Integer.valueOf(userGlucoseMin)){
+                        recommendTextView.setText("최저 목표 혈당 수치보다 높습니다. 저혈당 위험이 있으므로 당분을 섭취하여 목표혈당 구간으로 유지가 필요합니다.");
+                    }
+                }
+                else {
+                    Log.e(TAG, "onCreate: " + "사용자 설정된 혈당 최대, 최소 중 무언가 하나가 빠져있음" );
+                }
+
                 List<Glucose> arrayList = realm.copyFromRealm(glucose);
                 ArrayList<Integer> integerArrayList = new ArrayList<>();
 
@@ -299,14 +334,21 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 
         adapter = new DashboardAdapter(this, labelList, valueList);
         recyclerView.setAdapter(adapter);
-        
-        if (forChartGlucose.size() != 0){
+
+        if (forChartGlucose.size() != 0) {
             setLineGraph();
-        }else {
+        } else {
             // TODO: 2018-07-26 예외처리
         }
     }
 
+
+    private void userGlucoseValue() {
+        String userGlucoseMin = Paper.book("user").read("userGlucoseMin");
+        String userGlucoseMax = Paper.book("user").read("userGlucoseMax");
+//        userHeight = Paper.book("user").read("userHeight");
+//        userWeight = Paper.book("user").read("userWeight");
+    }
 
     private double calculateAverage(List<Integer> marks) {
         Integer sum = 0;
@@ -329,19 +371,16 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 ////            Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
 //        }
 
-        if (forChartGlucose.size() != 0){
+        if (forChartGlucose.size() != 0) {
             for (int i = 0; i < forChartGlucose.size(); i++) {
 
                 lineEntry.add(new Entry(i, Float.valueOf(forChartGlucose.get(i).getValue())));
 
 //            Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
             }
-        }
-        else {
+        } else {
             // TODO: 2018-08-07 PASS 
         }
-
-     
 
 
         lineChart.setDragEnabled(false);
@@ -387,5 +426,11 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 //        window.setStatusBarColor(ContextCompat.getColor(this, R.color.device_scan_background));
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.wave_gradient_amy_crisp_02));
+    }
+
+
+    @OnClick(R.id.recommend_text_view)
+    public void onClickRecommendTextView() {
+        startActivity(new Intent(GlucoseFeedActivity.this, ProfileActivity.class));
     }
 }
