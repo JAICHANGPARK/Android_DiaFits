@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="기록 하기"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/workout_write_button"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:text="운동 기록"
+            app:cornerRadius="50dp"
+            app:icon="@drawable/ic_activity_tracks" />
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/glucose_write_button"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:text="혈당 기록"
+            app:cornerRadius="50dp"
+            app:icon="@drawable/ic_loyalty_black_24dp" />
+
+    </LinearLayout>
+</android.support.design.card.MaterialCardView>

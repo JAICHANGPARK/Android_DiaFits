@@ -2,17 +2,23 @@ package com.dreamwalker.diabetesfits.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.design.button.MaterialButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -36,6 +42,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import client.yalantis.com.foldingtabbar.FoldingTabBar;
 import de.cketti.library.changelog.ChangeLog;
+import es.dmoral.toasty.Toasty;
 import io.paperdb.Paper;
 import io.realm.Realm;
 import retrofit2.Call;
@@ -92,8 +99,9 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         Paper.init(this);
-
         Realm.init(this);
+
+        initToasty();
 
 
         ConnectivityManager manager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -135,11 +143,34 @@ public class HomeActivity extends AppCompatActivity {
                 case R.id.ftb_menu_nearby:
 
                     startActivity(new Intent(HomeActivity.this, DeviceChooseActivity.class));
-
-
                     break;
                 case R.id.ftb_menu_new_chat:
-                    startActivity(new Intent(HomeActivity.this, WriteBSActivity.class));
+                    LayoutInflater inflater = LayoutInflater.from(this);
+                    View writeView = inflater.inflate(R.layout.layout_dialog_home_select, null);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setView(writeView);
+                    MaterialButton fitnessButton = writeView.findViewById(R.id.workout_write_button);
+                    fitnessButton.setOnClickListener(v -> {
+                        Toasty.info(this, "fitnessButton Clicked", Toast.LENGTH_SHORT, true).show();
+                    });
+
+                    MaterialButton glucoseButton = writeView.findViewById(R.id.glucose_write_button);
+                    glucoseButton.setOnClickListener(v -> {
+                        startActivity(new Intent(HomeActivity.this, WriteBSActivity.class));
+                    });
+
+                    AlertDialog alertDialog = builder.create();
+
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    alertDialog.getWindow().setGravity(Gravity.BOTTOM);
+
+                    WindowManager.LayoutParams layoutParams = alertDialog.getWindow().getAttributes();
+                    layoutParams.y = 30; // bottom margin
+                    alertDialog.getWindow().setAttributes(layoutParams);
+
+                    alertDialog.show();
+
+//                    startActivity(new Intent(HomeActivity.this, WriteBSActivity.class));
                     break;
             }
             return false;
@@ -215,7 +246,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         profileLayout.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, ProfileActivity .class);
+            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
 //            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
             startActivity(intent);
 
@@ -236,5 +267,9 @@ public class HomeActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void initToasty() {
+        Toasty.Config.getInstance().apply(); // required
     }
 }

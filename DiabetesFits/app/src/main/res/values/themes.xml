@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme.Main" parent="Theme.Guillotine"/>
+    <style name="AppTheme.Main" parent="Theme.Guillotine2"/>
 
     <style name="Theme.Guillotine" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:colorPrimaryDark">@color/guillotine_background</item>
+        <item name="android:colorPrimary">@color/white</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <style name="Theme.Guillotine2" parent="Theme.MaterialComponents.NoActionBar">
         <item name="android:colorPrimaryDark">@color/guillotine_background</item>
         <item name="android:colorPrimary">@color/white</item>
         <item name="android:windowContentOverlay">@null</item>
