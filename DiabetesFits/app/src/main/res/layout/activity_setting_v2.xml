@@ -62,6 +62,7 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <ScrollView
+        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/coordinator_layout"
@@ -120,6 +121,55 @@
                 android:fontFamily="@font/noto_sans"
                 android:gravity="start|center"
                 android:text="@string/setting_my_info_menu_1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_handyman_tools" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="@string/setting_management_tool_title"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/secondarytext" />
+
+            <Button
+                android:id="@+id/reminder_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:fontFamily="@font/noto_sans"
+                android:gravity="start|center"
+                android:text="@string/setting_management_tool_menu0" />
+
+            <Button
+                android:id="@+id/alarm_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:fontFamily="@font/noto_sans"
+                android:gravity="start|center"
+                android:text="@string/setting_management_tool_menu1" />
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"

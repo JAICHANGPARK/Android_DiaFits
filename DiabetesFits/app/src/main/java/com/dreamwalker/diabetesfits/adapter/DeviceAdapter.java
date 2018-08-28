@@ -18,6 +18,7 @@
 package com.dreamwalker.diabetesfits.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
@@ -224,6 +225,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                                                          public void onClick(View v) {
 
                                                              switch (deviceName) {
+
                                                                  case EGZeroConst.DEVICE_NAME:
                                                                      Log.e("클릭됨", "onClick: 클릭툄" );
                                                                      Intent bsmIntent = new Intent(context, IndoorBikeRealTimeActivity.class);
@@ -255,6 +257,36 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         holder.deviceInfoView.setOnClickListener(new View.OnClickListener() {
                                                      @Override
                                                      public void onClick(View v) {
+
+                                                         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+                                                         switch (deviceName) {
+
+                                                             case PremierNConst.PREMIER_N_BLE:
+                                                                 builder.setTitle(PremierNConst.PREMIER_N_BLE);
+                                                                 builder.setMessage("자가 혈당 측정기기. 채혈을 통한 혈당 수치 측정을 돕는다.");
+                                                                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                                     @Override
+                                                                     public void onClick(DialogInterface dialog, int which) {
+                                                                         dialog.dismiss();
+
+                                                                     }
+                                                                 });
+                                                                 builder.show();
+                                                                 break;
+                                                             case EGZeroConst.DEVICE_NAME:
+                                                                 builder.setTitle(EGZeroConst.DEVICE_NAME);
+                                                                 builder.setMessage("에르고미터(실내자전거). 실내에서 탈 수 있는 자전거.");
+                                                                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                                     @Override
+                                                                     public void onClick(DialogInterface dialog, int which) {
+                                                                         dialog.dismiss();
+                                                                     }
+                                                                 });
+                                                                 builder.show();
+                                                                 break;
+                                                             default:
+                                                                 break;
+                                                         }
 //                                                         expandedDevicePosition = detailsShown ? -1 : position;
 //                                                         TransitionManager.beginDelayedTransition(parent);
 //                                                         notifyDataSetChanged();
