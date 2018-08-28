@@ -9,12 +9,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 import io.paperdb.Paper;
 import io.realm.Realm;
 
@@ -43,15 +45,19 @@ public class DBManagementActivity extends AppCompatActivity {
         setStatusBar();
     }
 
+    private void initToasty(){
+        Toasty.Config.getInstance().apply();
+    }
+
 
     @OnClick(R.id.backup_button)
     public void onClickedBackupButton(){
-
+        Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
     }
 
     @OnClick(R.id.export_button)
     public void onClickedExportButton(){
-
+        Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
     }
 
     @OnClick(R.id.delete_button)
@@ -74,17 +80,12 @@ public class DBManagementActivity extends AppCompatActivity {
         });
 
         builder.show();
-
-
     }
 
     @OnClick(R.id.home)
     public void onClickedBackImageButton(){
         finish();
     }
-
-
-
 
     private void setStatusBar() {
         Window window = this.getWindow();

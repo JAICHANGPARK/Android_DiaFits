@@ -100,6 +100,9 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         userGlucoseMin = Paper.book("user").read("userGlucoseMin");
         userGlucoseMax = Paper.book("user").read("userGlucoseMax");
 
+        Log.e(TAG, "userGlucoseMin --> : " + userGlucoseMin);
+        Log.e(TAG, "userGlucoseMax --> : " + userGlucoseMax);
+
         if (userGlucoseMin == null && userGlucoseMax != null) {
             recommendTextView.setText("프로필에서 최소 목표 혈당을 설정해주세요");
         }
@@ -245,7 +248,7 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 //            for (int i = 0; i < glucose.size(); i++) {
 //                Log.e(TAG, "sort after: " + glucose.get(i).getValue() + " -- > " + glucose.get(i).getTimestamp());
 //            }
-
+                String lastGlucoseValue = glucose.get(lastIndex).getValue();
                 String lastValue = glucose.get(lastIndex).getValue() + " " + "mm/dL";
                 String lastType = glucose.get(lastIndex).getType();
                 timeAgoTextView.setTimeStamp(Long.valueOf(glucose.get(lastIndex).getTimestamp()) / 1000);
@@ -253,15 +256,20 @@ public class GlucoseFeedActivity extends AppCompatActivity {
                 recentTypeTextView.setText(lastType);
 
                 // TODO: 2018-08-28 만약 최소, 최대 목표 혈당이 설정되어 있다면 최근 혈당 수치에 따라 운동추천을 표기한다.-박제창
-                if (userGlucoseValueCheckFlag){
-                    if (Integer.valueOf(lastValue) > Integer.valueOf(userGlucoseMax)){
-                        recommendTextView.setText("현재 측정된 혈당이 목표 최고 혈당 수치보다 높습니다. \n 운동을 수행해 목표 혈당 구간 내 유지가 필요한 시점입니다.");
-                    } else if (Integer.valueOf(lastValue) < Integer.valueOf(userGlucoseMin)){
-                        recommendTextView.setText("최저 목표 혈당 수치보다 높습니다. 저혈당 위험이 있으므로 당분을 섭취하여 목표혈당 구간으로 유지가 필요합니다.");
+                if (userGlucoseValueCheckFlag) {
+                    Log.e(TAG, "userGlucoseValueCheckFlag: " + "플레그 들어옴 ");
+                    if (Integer.valueOf(lastGlucoseValue) > Integer.valueOf(userGlucoseMax)) {
+                        Log.e(TAG, "onCreate: " + "고혈당임 ");
+                        runOnUiThread(() -> recommendTextView.setText("현재 측정된 혈당이 목표 최고 혈당 수치보다 높습니다. \n 운동을 수행해 목표 혈당 구간 내 유지가 필요한 시점입니다."));
+                    } else if (Integer.valueOf(lastGlucoseValue) < Integer.valueOf(userGlucoseMin)) {
+                        Log.e(TAG, "onCreate: " + "저혈당임 ");
+                        runOnUiThread(() -> recommendTextView.setText("최저 목표 혈당 수치보다 높습니다. 저혈당 위험이 있으므로 당분을 섭취하여 목표혈당 구간으로 유지가 필요합니다."));
+                    } else if (Integer.valueOf(lastGlucoseValue) < Integer.valueOf(userGlucoseMax) && Integer.valueOf(lastGlucoseValue) > Integer.valueOf(userGlucoseMin)) {
+                        runOnUiThread(() -> recommendTextView.setText("훌륭해요! 혈당 유지를 잘 실천하고 있습니다. "));
                     }
-                }
-                else {
-                    Log.e(TAG, "onCreate: " + "사용자 설정된 혈당 최대, 최소 중 무언가 하나가 빠져있음" );
+                } else {
+                    Log.e(TAG, "userGlucoseValueCheckFlag: " + "플레그 가 거짓 값임  ");
+                    Log.e(TAG, "onCreate: " + "사용자 설정된 혈당 최대, 최소 중 무언가 하나가 빠져있음");
                 }
 
                 List<Glucose> arrayList = realm.copyFromRealm(glucose);
@@ -431,6 +439,7 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 
     @OnClick(R.id.recommend_text_view)
     public void onClickRecommendTextView() {
+        // TODO: 2018-08-28 개인 추천 페이지로 넘겨줘야 한다.  필수적으로 최대 최소 목표 혈당이 설정되어야 한다는 조건 - 박제창
         startActivity(new Intent(GlucoseFeedActivity.this, ProfileActivity.class));
     }
 }
