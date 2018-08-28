@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.CustomItemClickListener;
@@ -40,6 +41,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 import io.paperdb.Paper;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -164,7 +166,6 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
         }
 
     }
-
 
 
     private void setBottomSheetBehavior() {
@@ -350,32 +351,44 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
     // TODO: 2018-08-10 각 분야별로 데이터 처리를 다르게 해야합니다 - 박제창  
     @Override
     public void onItemLongClick(View v, int position) {
-        Log.e(TAG, "onItemLongClick: " + position );
-        String text = null;
-        LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.custom_dialog_glucose,null);
-        horizontalWheelView = (HorizontalWheelView)view.findViewById(R.id.horizontalWheelView);
-        TextView textView = (TextView)view.findViewById(R.id.gluecose_value_text_view);
+        Log.e(TAG, "onItemLongClick: " + position);
+
+        int selectedPosition = position;
+        final String[] userChooseValue = {null};
+
+        LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.custom_dialog_glucose, null);
+        horizontalWheelView = (HorizontalWheelView) view.findViewById(R.id.horizontalWheelView);
+        TextView textView = (TextView) view.findViewById(R.id.gluecose_value_text_view);
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/grobold.ttf");
         textView.setTypeface(font, Typeface.NORMAL);
         textView.setTextSize(60);
+
         horizontalWheelView.setListener(new HorizontalWheelView.Listener() {
             @Override
             public void onRotationChanged(double radians) {
                 float angle = 100 + (float) horizontalWheelView.getDegreesAngle();
                 String text = String.format(Locale.US, "%.0f", angle);
+                userChooseValue[0] = text;
                 textView.setText(text);
             }
         });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
         builder.setView(view);
+
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (userChooseValue[0] != null) {
+                    if (Integer.valueOf(userChooseValue[0]) < 0) {
+                        Toasty.warning(ProfileActivity.this, "혈당 값이 음수 일 수 없습니다.", Toast.LENGTH_SHORT, true).show();
+                    } else {
+                        valueList.set(selectedPosition, userChooseValue[0]);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
 
-                valueList.set(0, text);
-                adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
         });
@@ -385,5 +398,32 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 //        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 //        //floatingActionButton.setVisibility(View.GONE);
 //        Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("알림");
+        builder.setMessage("정보를 저장하시겠습니까?");
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+
+        builder.show();
+
+//        super.onBackPressed();
     }
 }

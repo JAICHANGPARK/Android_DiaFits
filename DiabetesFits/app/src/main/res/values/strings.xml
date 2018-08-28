@@ -248,5 +248,8 @@
     <string name="diary_expand">Expand</string>
     <string name="diary_next">Next</string>
     <string name="diary_before">Before</string>
+
+    <string name="under_construction">UNDER CONSTRUCTION</string>
+
 </resources>
 

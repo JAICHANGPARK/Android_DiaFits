@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -25,9 +26,10 @@
             style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="8dp"
             android:text="운동 기록"
             app:cornerRadius="50dp"
             app:icon="@drawable/ic_activity_tracks" />
@@ -37,9 +39,10 @@
             style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="8dp"
             android:text="혈당 기록"
             app:cornerRadius="50dp"
             app:icon="@drawable/ic_loyalty_black_24dp" />

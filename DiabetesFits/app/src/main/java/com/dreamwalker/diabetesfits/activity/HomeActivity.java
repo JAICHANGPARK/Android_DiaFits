@@ -93,6 +93,8 @@ public class HomeActivity extends AppCompatActivity {
     Retrofit retrofit;
     IUploadAPI service;
 
+    AlertDialog alertDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -151,15 +153,18 @@ public class HomeActivity extends AppCompatActivity {
                     builder.setView(writeView);
                     MaterialButton fitnessButton = writeView.findViewById(R.id.workout_write_button);
                     fitnessButton.setOnClickListener(v -> {
-                        Toasty.info(this, "fitnessButton Clicked", Toast.LENGTH_SHORT, true).show();
+                        alertDialog.dismiss();
+                        Toasty.info(this,  getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
+
                     });
 
                     MaterialButton glucoseButton = writeView.findViewById(R.id.glucose_write_button);
                     glucoseButton.setOnClickListener(v -> {
+                        alertDialog.dismiss();
                         startActivity(new Intent(HomeActivity.this, WriteBSActivity.class));
                     });
 
-                    AlertDialog alertDialog = builder.create();
+                    alertDialog = builder.create();
 
                     alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     alertDialog.getWindow().setGravity(Gravity.BOTTOM);

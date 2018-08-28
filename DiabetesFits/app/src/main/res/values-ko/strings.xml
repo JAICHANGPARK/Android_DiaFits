@@ -74,5 +74,7 @@
     <string name="diary_expand">달력펴기</string>
     <string name="diary_next">다음</string>
     <string name="diary_before">이전</string>
+    
+    <string name="under_construction">공사중</string>
 
 </resources>

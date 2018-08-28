@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.0.4" versioncode="5">
+        <change>Date : 2018-08-28</change>
+        <change>User Profile Function Change</change>
+        <change>App Info Menu Changed</change>
+        <change>Fitness Write Added</change>
+        <change>Bug Fixed and Crash Fixed</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
+    </release>
+
     <release version="1.0.3" versioncode="4">
         <change>Date : 2018-08-09</change>
         <change>Diary Menu Added</change>
         <change>Diabetes Education Menu Added</change>
         <change>Diabetes Education License Added</change>
         <change>Bug Fixed and Crash Fixed</change>
-        <change>Maid by JAICHANGPARK(DREAMWALKER)</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
     </release>
 
     <release version="1.0.2" versioncode="3">
@@ -17,7 +26,7 @@
         <change>BSM Sync UI change --> be more modern</change>
         <change>Realm Database added</change>
         <change>Bug Fixed and Crash Fixed</change>
-        <change>Maid by JAICHANGPARK(DREAMWALKER)</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
     </release>
 
     <release version="1.0.1" versioncode="2">
@@ -26,13 +35,13 @@
         <change>Device Categories UI Added</change>
         <change>implement Auto Login </change>
         <change>Blood Sugar meter Scan Added </change>
-        <change>Maid by JAICHANGPARK(DREAMWALKER)</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
     </release>
 
     <release version="1.0.0" versioncode="1">
         <change>Date : 2018-07-21</change>
         <change>First release</change>
         <change>Device Scan Function Added</change>
-        <change>Maid by JAICHANGPARK(DREAMWALKER)</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
     </release>
 </changelog>
