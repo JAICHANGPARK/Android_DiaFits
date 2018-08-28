@@ -87,6 +87,9 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
     String userGlucoseMin, userGlucoseMax;
     String userHeight, userWeight;
 
+    String userChangeGlucoseMin, userChangeGlucoseMax;
+    String userChangeHeight, userChangeWeight;
+
 
     BottomSheetBehavior bottomSheetBehavior;
 
@@ -185,6 +188,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
     }
 
     private void setProfileData() {
+
         labelList.add("최소목표혈당");
         valueList.add(userGlucoseMin);
 
@@ -201,7 +205,6 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
         adapter.setCustomItemClickListener(this);
 
         recyclerView.setAdapter(adapter);
-
 
     }
 
@@ -342,7 +345,6 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 
     @Override
     public void onItemClick(View v, int position) {
-
         Snackbar.make(getWindow().getDecorView().getRootView(), "길게 눌러 수정하기", Snackbar.LENGTH_SHORT).show();
     }
 
@@ -360,9 +362,21 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
         View view = inflater.inflate(R.layout.custom_dialog_glucose, null);
         horizontalWheelView = (HorizontalWheelView) view.findViewById(R.id.horizontalWheelView);
         TextView textView = (TextView) view.findViewById(R.id.gluecose_value_text_view);
+        TextView unitTextView = view.findViewById(R.id.unit_text_view);
+
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/grobold.ttf");
         textView.setTypeface(font, Typeface.NORMAL);
         textView.setTextSize(60);
+
+        if (selectedPosition == 0) {
+            unitTextView.setText(" mm/dL");
+        } else if (selectedPosition == 1) {
+            unitTextView.setText(" mm/dL");
+        } else if (selectedPosition == 2) {
+            unitTextView.setText(" kg");
+        } else if (selectedPosition == 3) {
+            unitTextView.setText(" m");
+        }
 
         horizontalWheelView.setListener(new HorizontalWheelView.Listener() {
             @Override
@@ -382,13 +396,59 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
             public void onClick(DialogInterface dialog, int which) {
                 if (userChooseValue[0] != null) {
                     if (Integer.valueOf(userChooseValue[0]) < 0) {
-                        Toasty.warning(ProfileActivity.this, "혈당 값이 음수 일 수 없습니다.", Toast.LENGTH_SHORT, true).show();
+                        Toasty.warning(ProfileActivity.this, "값이 음수 일 수 없습니다.", Toast.LENGTH_SHORT, true).show();
                     } else {
+
+                        if (selectedPosition == 0) {
+
+                            // TODO: 2018-08-28 최소 혈당 값과 최대 혈당 값 설정 값이 같을 수 없음을 사전에 방지해야한다 - 박제창
+
+                            String tempValue = userChooseValue[0];
+
+                            if (userChangeGlucoseMax != null) {
+                                Log.e(TAG, "onClick: " + tempValue + " | " + userChangeGlucoseMax);
+                                if (userChangeGlucoseMax.equals(tempValue)) {
+                                    Toasty.error(ProfileActivity.this, "최고 혈당과 같을 수 없습니다.", Toast.LENGTH_SHORT, true).show();
+                                } else if (Integer.valueOf(userChangeGlucoseMax) < Integer.valueOf(tempValue)) {
+                                    Toasty.error(ProfileActivity.this, "최소 혈당이 최고 혈당보다 클 수 없습니다..", Toast.LENGTH_SHORT, true).show();
+                                } else {
+                                    userChangeGlucoseMin = userChooseValue[0];
+                                }
+                            } else {
+                                Toasty.error(ProfileActivity.this, "최고 혈당을 설정해주세요", Toast.LENGTH_SHORT, true).show();
+                            }
+
+                        } else if (selectedPosition == 1) {
+
+                            String tempValue = userChooseValue[0];
+                            // TODO: 2018-08-28 최소 혈당 값과 최대 혈당 값 설정 값이 같을 수 없음을 사전에 방지해야한다 - 박제창
+
+                            if (userChangeGlucoseMin != null) {
+                                Log.e(TAG, "onClick: " + tempValue + " | " + userChangeGlucoseMin);
+                                if (userChangeGlucoseMin.equals(tempValue)) {
+                                    Toasty.error(ProfileActivity.this, "최소 혈당과 같을 수 없습니다.", Toast.LENGTH_SHORT, true).show();
+                                }
+                                else if (Integer.valueOf(userChangeGlucoseMin) > Integer.valueOf(tempValue)) {
+                                    Toasty.error(ProfileActivity.this, "최고 혈당이 최소 혈당보다 작을 수 없습니다.", Toast.LENGTH_SHORT, true).show();
+                                }
+
+                                else {
+                                    userChangeGlucoseMax = userChooseValue[0];
+                                }
+                            } else {
+                                Toasty.error(ProfileActivity.this, "최소 혈당을 설정해주세요", Toast.LENGTH_SHORT, true).show();
+                            }
+
+                        } else if (selectedPosition == 2) {
+                            userChangeWeight = userChooseValue[0];
+                        } else if (selectedPosition == 3) {
+                            userChangeHeight = userChooseValue[0];
+                        }
+
                         valueList.set(selectedPosition, userChooseValue[0]);
                         adapter.notifyDataSetChanged();
                     }
                 }
-
                 dialog.dismiss();
             }
         });
@@ -403,26 +463,111 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
     @Override
     public void onBackPressed() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("알림");
-        builder.setMessage("정보를 저장하시겠습니까?");
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
-            }
-        });
+        userGlucoseMin = Paper.book("user").read("userGlucoseMin");
+        userGlucoseMax = Paper.book("user").read("userGlucoseMax");
+        userHeight = Paper.book("user").read("userHeight");
+        userWeight = Paper.book("user").read("userWeight");
 
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                finish();
-            }
-        });
+        // TODO: 2018-08-28 변경된 정보가 없을 때 
+        if (userChangeGlucoseMin == null && userChangeGlucoseMax == null && userChangeWeight == null && userChangeHeight == null) {
+            Toasty.error(ProfileActivity.this, "변경된 정보 없음", Toast.LENGTH_SHORT, true).show();
+        }
+        // TODO: 2018-08-28 만약 정보가 변경되었다면
+        else {
 
-        builder.show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("알림");
+            builder.setMessage("정보를 저장하시겠습니까?");
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    if (!userGlucoseMin.equals(userChangeGlucoseMin)) {
+                        Paper.book("user").write("userGlucoseMin", userChangeGlucoseMin);
+                    }
+                    if (!userGlucoseMax.equals(userChangeGlucoseMax)) {
+                        Paper.book("user").write("userGlucoseMax", userChangeGlucoseMin);
+                    }
+                    if (!userHeight.equals(userChangeHeight)) {
+                        Paper.book("user").write("userHeight", userChangeHeight);
+                    }
+                    if (!userWeight.equals(userChangeWeight)) {
+                        Paper.book("user").write("userWeight", userChangeWeight);
+                    }
+
+                    dialog.dismiss();
+                    finish();
+
+                }
+            });
+
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+
+            builder.show();
+
+
+        }
+
+
+//        if ((userChangeGlucoseMin == null && userChangeGlucoseMax == null && userChangeHeight == null && userChangeWeight == null)
+//                && (userGlucoseMin == null && userGlucoseMax == null && userHeight == null && userWeight == null)) {
+//            Toasty.error(ProfileActivity.this, "정보 변경사항 없음", Toast.LENGTH_SHORT, true).show();
+//        } else {
+//
+//            if ( userGlucoseMin != null && userChangeGlucoseMin != null ) {
+//                if (userGlucoseMin.equals(userChangeGlucoseMin) && userGlucoseMax.equals(userChangeGlucoseMax) && userWeight.equals(userChangeWeight) && userHeight.equals(userChangeHeight)) {
+//                    Toasty.error(ProfileActivity.this, "모두 값이 같은 것이 존재함 ", Toast.LENGTH_SHORT, true).show();
+//                } else {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                    builder.setTitle("알림");
+//                    builder.setMessage("정보를 저장하시겠습니까?");
+//                    builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            if (userGlucoseMin.equals(userGlucoseMax) || userChangeGlucoseMin.equals(userChangeGlucoseMax)) {
+//                                Toasty.error(ProfileActivity.this, "최소값과 최대값이 같을 수 없습니다. ", Toast.LENGTH_SHORT, true).show();
+//                            } else {
+//                                if (!userGlucoseMin.equals(userChangeGlucoseMin)) {
+//                                    Paper.book("user").write("userGlucoseMin", userChangeGlucoseMin);
+//                                }
+//                                if (!userGlucoseMax.equals(userChangeGlucoseMax)) {
+//                                    Paper.book("user").write("userGlucoseMax", userChangeGlucoseMin);
+//                                }
+//                                if (!userHeight.equals(userChangeHeight)) {
+//                                    Paper.book("user").write("userHeight", userChangeHeight);
+//                                }
+//                                if (!userWeight.equals(userChangeWeight)) {
+//                                    Paper.book("user").write("userWeight", userChangeWeight);
+//                                }
+//
+//                                dialog.dismiss();
+//                                finish();
+//                            }
+//
+//                        }
+//                    });
+//
+//                    builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                            finish();
+//                        }
+//                    });
+//
+//                    builder.show();
+//                }
+//
+//
+//            }
+//        }
+
 
 //        super.onBackPressed();
     }

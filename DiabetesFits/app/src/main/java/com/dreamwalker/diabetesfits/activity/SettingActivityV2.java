@@ -16,6 +16,7 @@ import com.dreamwalker.diabetesfits.activity.appinfo.DetailAppMenuActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 import io.paperdb.Paper;
 
 public class SettingActivityV2 extends AppCompatActivity {
@@ -46,12 +47,17 @@ public class SettingActivityV2 extends AppCompatActivity {
         setStatusBar();
         bindView();
         Paper.init(this);
+        initToasty();
 
 
     }
 
     private void bindView(){
         ButterKnife.bind(this);
+    }
+
+    private void initToasty(){
+        Toasty.Config.getInstance().apply();
     }
 
     private void setStatusBar() {
@@ -63,6 +69,8 @@ public class SettingActivityV2 extends AppCompatActivity {
 
     @OnClick(R.id.edit_profile_button)
     public void onClickEditProfileButton(){
+        Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
+//        startActivity(new Intent(SettingActivityV2.this, ProfileActivity.class));
 
     }
 
