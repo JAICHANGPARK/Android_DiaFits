@@ -1,8 +1,10 @@
 package com.dreamwalker.diabetesfits.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
@@ -36,6 +38,11 @@ public class SettingActivityV2 extends AppCompatActivity {
     Button developerButton;
     @BindView(R.id.logout_button)
     Button logoutButton;
+
+    @BindView(R.id.reminder_button)
+    Button reminderButton;
+    @BindView(R.id.alarm_button)
+    Button alarmButton;
 
     @BindView(R.id.home)
     ImageView imageView;
@@ -103,14 +110,32 @@ public class SettingActivityV2 extends AppCompatActivity {
     @OnClick(R.id.logout_button)
     public void onClickLogoutButton(){
 
-        Paper.book("user").delete("userID");
-        Paper.book("user").delete("userPassword");
-        Toast.makeText(this, "Logout Completed", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(SettingActivityV2.this, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        finish();
+        builder.setTitle("로그아웃");
+        builder.setMessage("로그아웃 하시겠어요?");
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Paper.book("user").delete("userID");
+                Paper.book("user").delete("userPassword");
+                Toasty.success(SettingActivityV2.this, "Logout Completed", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SettingActivityV2.this, LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+
 
     }
 
@@ -118,5 +143,18 @@ public class SettingActivityV2 extends AppCompatActivity {
     public void onClickBackButton(){
         finish();
     }
+
+
+    @OnClick(R.id.reminder_button)
+    public void onClickedReminderButton(){
+        Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
+    }
+
+    @OnClick(R.id.alarm_button)
+    public void onClickedAlarmButton(){
+        Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
+
+    }
+
 
 }
