@@ -404,22 +404,27 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
                             // TODO: 2018-08-28 최소 혈당 값과 최대 혈당 값 설정 값이 같을 수 없음을 사전에 방지해야한다 - 박제창
 
                             String tempValue = userChooseValue[0];
-
+                            userChangeGlucoseMin = userChooseValue[0];
                             if (userChangeGlucoseMax != null) {
                                 Log.e(TAG, "onClick: " + tempValue + " | " + userChangeGlucoseMax);
                                 if (userChangeGlucoseMax.equals(tempValue)) {
+                                    userChangeGlucoseMin = null;
+                                    userChooseValue[0] = "None";
                                     Toasty.error(ProfileActivity.this, "최고 혈당과 같을 수 없습니다.", Toast.LENGTH_SHORT, true).show();
                                 } else if (Integer.valueOf(userChangeGlucoseMax) < Integer.valueOf(tempValue)) {
                                     Toasty.error(ProfileActivity.this, "최소 혈당이 최고 혈당보다 클 수 없습니다..", Toast.LENGTH_SHORT, true).show();
+                                    userChangeGlucoseMin = null;
+                                    userChooseValue[0] = "None";
                                 } else {
                                     userChangeGlucoseMin = userChooseValue[0];
                                 }
                             } else {
-                                Toasty.error(ProfileActivity.this, "최고 혈당을 설정해주세요", Toast.LENGTH_SHORT, true).show();
+                                // TODO: 2018-08-28 최고혈당을 설정 ?
+//                                Toasty.error(ProfileActivity.this, "최고 혈당을 설정해주세요", Toast.LENGTH_SHORT, true).show();
                             }
 
                         } else if (selectedPosition == 1) {
-
+                            userChangeGlucoseMax = userChooseValue[0];
                             String tempValue = userChooseValue[0];
                             // TODO: 2018-08-28 최소 혈당 값과 최대 혈당 값 설정 값이 같을 수 없음을 사전에 방지해야한다 - 박제창
 
@@ -427,16 +432,19 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
                                 Log.e(TAG, "onClick: " + tempValue + " | " + userChangeGlucoseMin);
                                 if (userChangeGlucoseMin.equals(tempValue)) {
                                     Toasty.error(ProfileActivity.this, "최소 혈당과 같을 수 없습니다.", Toast.LENGTH_SHORT, true).show();
-                                }
-                                else if (Integer.valueOf(userChangeGlucoseMin) > Integer.valueOf(tempValue)) {
-                                    Toasty.error(ProfileActivity.this, "최고 혈당이 최소 혈당보다 작을 수 없습니다.", Toast.LENGTH_SHORT, true).show();
-                                }
 
-                                else {
+                                    userChangeGlucoseMax = null;
+                                    userChooseValue[0] = "None";
+                                } else if (Integer.valueOf(userChangeGlucoseMin) > Integer.valueOf(tempValue)) {
+                                    Toasty.error(ProfileActivity.this, "최고 혈당이 최소 혈당보다 작을 수 없습니다.", Toast.LENGTH_SHORT, true).show();
+                                    userChangeGlucoseMax = null;
+                                    userChooseValue[0] = "None";
+                                } else {
                                     userChangeGlucoseMax = userChooseValue[0];
                                 }
                             } else {
-                                Toasty.error(ProfileActivity.this, "최소 혈당을 설정해주세요", Toast.LENGTH_SHORT, true).show();
+                                // TODO: 2018-08-28 최소 혈당을 설정?
+//                                Toasty.error(ProfileActivity.this, "최소 혈당을 설정해주세요", Toast.LENGTH_SHORT, true).show();
                             }
 
                         } else if (selectedPosition == 2) {
@@ -460,6 +468,8 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 //        Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
     }
 
+    private long time = 0;
+
     @Override
     public void onBackPressed() {
 
@@ -470,7 +480,13 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 
         // TODO: 2018-08-28 변경된 정보가 없을 때 
         if (userChangeGlucoseMin == null && userChangeGlucoseMax == null && userChangeWeight == null && userChangeHeight == null) {
-            Toasty.error(ProfileActivity.this, "변경된 정보 없음", Toast.LENGTH_SHORT, true).show();
+            if (System.currentTimeMillis() - time >= 2000) {
+                time = System.currentTimeMillis();
+                Toasty.warning(ProfileActivity.this, "변경된 정보 없음 : 뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT, true).show();
+//                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+            } else if (System.currentTimeMillis() - time < 2000) {
+                finish();
+            }
         }
         // TODO: 2018-08-28 만약 정보가 변경되었다면
         else {
@@ -481,19 +497,36 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
             builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
-                    if (!userGlucoseMin.equals(userChangeGlucoseMin)) {
+                    // TODO: 2018-08-28 뭐든 하나가 널이 아니기에 이곳에 도달했고  널이 아닌것만 저장하도록 한다. - 박제창
+                    if (userChangeGlucoseMin != null) {
                         Paper.book("user").write("userGlucoseMin", userChangeGlucoseMin);
                     }
-                    if (!userGlucoseMax.equals(userChangeGlucoseMax)) {
-                        Paper.book("user").write("userGlucoseMax", userChangeGlucoseMin);
+                    if (userChangeGlucoseMax != null) {
+                        Paper.book("user").write("userGlucoseMax", userChangeGlucoseMax);
                     }
-                    if (!userHeight.equals(userChangeHeight)) {
+                    if (userChangeHeight != null) {
                         Paper.book("user").write("userHeight", userChangeHeight);
                     }
-                    if (!userWeight.equals(userChangeWeight)) {
+                    if (userChangeWeight != null) {
                         Paper.book("user").write("userWeight", userChangeWeight);
                     }
+
+                    // TODO: 2018-08-28 둘다 null인 경우
+
+                    // TODO: 2018-08-28 하나만 설정 된 경우
+
+//                    if (!userGlucoseMin.equals(userChangeGlucoseMin)) {
+//                        Paper.book("user").write("userGlucoseMin", userChangeGlucoseMin);
+//                    }
+//                    if (!userGlucoseMax.equals(userChangeGlucoseMax)) {
+//                        Paper.book("user").write("userGlucoseMax", userChangeGlucoseMin);
+//                    }
+//                    if (!userHeight.equals(userChangeHeight)) {
+//                        Paper.book("user").write("userHeight", userChangeHeight);
+//                    }
+//                    if (!userWeight.equals(userChangeWeight)) {
+//                        Paper.book("user").write("userWeight", userChangeWeight);
+//                    }
 
                     dialog.dismiss();
                     finish();
