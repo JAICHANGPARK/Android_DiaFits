@@ -1,4 +1,4 @@
-package com.dreamwalker.diabetesfits.activity;
+package com.dreamwalker.diabetesfits.activity.appinfo;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;

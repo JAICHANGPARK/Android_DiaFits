@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.activity.appinfo.DetailAppMenuActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,14 +79,12 @@ public class SettingActivityV2 extends AppCompatActivity {
 
     @OnClick(R.id.about_app_button)
     public void onClickedAboutAppButton(){
-
-        startActivity(new Intent(SettingActivityV2.this, AboutAppActivity.class));
+        startActivity(new Intent(SettingActivityV2.this, DetailAppMenuActivity.class));
 
     }
     @OnClick(R.id.licenses_button)
     public void onClickLicenseButton(){
         startActivity(new Intent(SettingActivityV2.this, OpenSourceLicenseActivity.class));
-
     }
 
     @OnClick(R.id.developer_button)
