@@ -83,7 +83,6 @@ public class GlucoseFeedActivity extends AppCompatActivity {
     // TODO: 2018-07-26 FASTING, SLEEP, BB, BA , LB, LA, DB, DA, FB, FA, UNKNOWN   -- 박제창
     int[] kindCount = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-
     String userGlucoseMin;
     String userGlucoseMax;
     boolean userGlucoseValueCheckFlag = false;
@@ -335,6 +334,9 @@ public class GlucoseFeedActivity extends AppCompatActivity {
                 valueList.add(String.valueOf(kindCount[8]));
                 labelList.add("운동 후");
                 valueList.add(String.valueOf(kindCount[9]));
+
+
+
 
 
             }

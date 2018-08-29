@@ -134,4 +134,9 @@
         <item name="android:listPreferredItemHeightSmall">56dp</item><!-- item size in menu-->
         <item name="listPreferredItemHeightSmall">56dp</item><!-- item size in menu-->
     </style>
+
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/selected_item_color</item>
+    </style>
+
 </resources>

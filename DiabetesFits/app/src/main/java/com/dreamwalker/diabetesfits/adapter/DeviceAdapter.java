@@ -258,7 +258,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                                                      @Override
                                                      public void onClick(View v) {
 
-                                                         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+                                                         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context, R.style.MyAlertDialogStyle);
                                                          switch (deviceName) {
 
                                                              case PremierNConst.PREMIER_N_BLE:
