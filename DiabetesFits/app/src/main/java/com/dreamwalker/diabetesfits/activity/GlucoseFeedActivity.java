@@ -258,14 +258,18 @@ public class GlucoseFeedActivity extends AppCompatActivity {
                 // TODO: 2018-08-28 만약 최소, 최대 목표 혈당이 설정되어 있다면 최근 혈당 수치에 따라 운동추천을 표기한다.-박제창
                 if (userGlucoseValueCheckFlag) {
                     Log.e(TAG, "userGlucoseValueCheckFlag: " + "플레그 들어옴 ");
-                    if (Integer.valueOf(lastGlucoseValue) > Integer.valueOf(userGlucoseMax)) {
+                    if (Float.valueOf(lastGlucoseValue) > Integer.valueOf(userGlucoseMax)) {
                         Log.e(TAG, "onCreate: " + "고혈당임 ");
                         runOnUiThread(() -> recommendTextView.setText("현재 측정된 혈당이 목표 최고 혈당 수치보다 높습니다. \n 운동을 수행해 목표 혈당 구간 내 유지가 필요한 시점입니다."));
-                    } else if (Integer.valueOf(lastGlucoseValue) < Integer.valueOf(userGlucoseMin)) {
+                    } else if (Float.valueOf(lastGlucoseValue) < Integer.valueOf(userGlucoseMin)) {
                         Log.e(TAG, "onCreate: " + "저혈당임 ");
                         runOnUiThread(() -> recommendTextView.setText("최저 목표 혈당 수치보다 높습니다. 저혈당 위험이 있으므로 당분을 섭취하여 목표혈당 구간으로 유지가 필요합니다."));
-                    } else if (Integer.valueOf(lastGlucoseValue) < Integer.valueOf(userGlucoseMax) && Integer.valueOf(lastGlucoseValue) > Integer.valueOf(userGlucoseMin)) {
+                    } else if (Float.valueOf(lastGlucoseValue) < Integer.valueOf(userGlucoseMax) && Integer.valueOf(lastGlucoseValue) > Integer.valueOf(userGlucoseMin)) {
                         runOnUiThread(() -> recommendTextView.setText("훌륭해요! 혈당 유지를 잘 실천하고 있습니다. "));
+                    } else if (Float.valueOf(lastGlucoseValue).equals(Float.valueOf(userGlucoseMax))) {
+                        runOnUiThread(() -> recommendTextView.setText("최고 목표 혈당과 같습니다. 가벼운 운동을 수행하여 목표 혈당 구간을 유지하세요"));
+                    } else if (Float.valueOf(lastGlucoseValue).equals(Float.valueOf(userGlucoseMin))) {
+                        runOnUiThread(() -> recommendTextView.setText("최소 목표 혈당과 같습니다. 가벼운 당분을 섭취하여 목표 구간을 유지하세요"));
                     }
                 } else {
                     Log.e(TAG, "userGlucoseValueCheckFlag: " + "플레그 가 거짓 값임  ");
