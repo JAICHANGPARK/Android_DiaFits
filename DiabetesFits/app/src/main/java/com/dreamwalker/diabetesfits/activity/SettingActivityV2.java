@@ -136,8 +136,6 @@ public class SettingActivityV2 extends AppCompatActivity {
         });
 
         builder.show();
-
-
     }
 
     @OnClick(R.id.home)
@@ -149,7 +147,7 @@ public class SettingActivityV2 extends AppCompatActivity {
     @OnClick(R.id.reminder_button)
     public void onClickedReminderButton(){
         startActivity(new Intent(SettingActivityV2.this, ReminderActivity.class));
-        Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
+//        Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
     }
 
     @OnClick(R.id.alarm_button)

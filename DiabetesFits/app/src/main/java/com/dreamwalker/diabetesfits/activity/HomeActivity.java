@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class HomeActivity extends AppCompatActivity {
     Toolbar toolbar;
     @BindView(R.id.root)
     FrameLayout root;
+
     @BindView(R.id.content_hamburger)
     View contentHamburger;
 
@@ -80,6 +82,7 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
+
     DeviceAdapter deviceAdapter;
 
     //HashMap<String, String> deviceMap = new HashMap<>();
@@ -94,6 +97,10 @@ public class HomeActivity extends AppCompatActivity {
     IUploadAPI service;
 
     AlertDialog alertDialog;
+
+    GuillotineAnimation aniMenu;
+
+    boolean menuTouchIndicatorFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +161,7 @@ public class HomeActivity extends AppCompatActivity {
                     MaterialButton fitnessButton = writeView.findViewById(R.id.workout_write_button);
                     fitnessButton.setOnClickListener(v -> {
                         alertDialog.dismiss();
-                        Toasty.info(this,  getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
+                        Toasty.info(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
 
                     });
 
@@ -217,7 +224,6 @@ public class HomeActivity extends AppCompatActivity {
             cl.getLogDialog().show();
         }
 
-
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setTitle(null);
@@ -226,11 +232,40 @@ public class HomeActivity extends AppCompatActivity {
         View guillotineMenu = LayoutInflater.from(this).inflate(R.layout.guillotine, null);
         root.addView(guillotineMenu);
 
-        new GuillotineAnimation.GuillotineBuilder(guillotineMenu, guillotineMenu.findViewById(R.id.guillotine_hamburger), contentHamburger)
+        ImageView guillotineHamburger = guillotineMenu.findViewById(R.id.guillotine_hamburger);
+
+        aniMenu = new GuillotineAnimation.GuillotineBuilder(guillotineMenu, guillotineMenu.findViewById(R.id.guillotine_hamburger), contentHamburger)
                 .setStartDelay(RIPPLE_DURATION)
                 .setActionBarViewForAnimation(toolbar)
                 .setClosedOnStart(true)
                 .build();
+
+        // TODO: 2018-08-30 뒤로가기 버튼을 눌렀을때 앱이 꺼지는 현상을 방지하고자 다음과 같이 플레그 코드를 추가함.
+
+        contentHamburger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!menuTouchIndicatorFlag) {
+                    aniMenu.open();
+                    menuTouchIndicatorFlag = true;
+                }
+//                } else {
+////                    aniMenu.close();
+//                    menuTouchIndicatorFlag = false;
+//                }
+                Log.e(TAG, "onClick: " + menuTouchIndicatorFlag );
+            }
+        });
+
+        guillotineHamburger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (menuTouchIndicatorFlag) {
+                    aniMenu.close();
+                    menuTouchIndicatorFlag = false;
+                }
+            }
+        });
 
         LinearLayout settingLayout = guillotineMenu.findViewById(R.id.settings_group);
         LinearLayout activityLayout = guillotineMenu.findViewById(R.id.activity_group);
@@ -268,10 +303,30 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(new Intent(HomeActivity.this, GlucoseFeedActivity.class));
         });
 
-
     }
 
     private void initToasty() {
         Toasty.Config.getInstance().apply(); // required
+    }
+
+    private long time = 0;
+    @Override
+    public void onBackPressed() {
+        if (menuTouchIndicatorFlag) {
+            aniMenu.close();
+            menuTouchIndicatorFlag = false;
+        } else {
+
+            if (System.currentTimeMillis() - time >= 2000) {
+                time = System.currentTimeMillis();
+                Toasty.info(HomeActivity.this, "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT, true).show();
+//                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+            } else if (System.currentTimeMillis() - time < 2000) {
+                finish();
+            }
+
+//            super.onBackPressed();
+        }
+//        super.onBackPressed();
     }
 }
