@@ -49,6 +49,7 @@ public class DetailAppMenuActivity extends AppCompatActivity {
 
     @OnClick(R.id.buttonInformation0)
     public void onClickedAppInformation(){
+        startActivity(new Intent(this, AboutProjectActivity.class));
         Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT,true).show();
     }
 

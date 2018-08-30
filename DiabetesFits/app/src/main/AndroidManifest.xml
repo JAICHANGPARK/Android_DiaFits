@@ -152,12 +152,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
         <activity android:name=".activity.diary.WriteFitnessActivity" />
-        <activity android:name=".activity.reminder.AddReminderActivity"
-            android:theme="@style/ShopTheme"/>
-
-        <activity android:name=".activity.reminder.ReminderActivity"
-            android:theme="@style/ShopTheme"/>
-
+        <activity
+            android:name=".activity.reminder.AddReminderActivity"
+            android:theme="@style/ShopTheme" />
+        <activity
+            android:name=".activity.reminder.ReminderActivity"
+            android:theme="@style/ShopTheme" />
 
         <!-- <provider -->
         <!-- android:name=".utils.reminder.data.AlarmReminderProvider" -->
@@ -169,7 +169,7 @@
             android:name=".utils.reminder.alarm.ReminderAlarmService"
             android:exported="false" />
 
-
+        <activity android:name=".activity.appinfo.AboutProjectActivity"></activity>
     </application>
 
 </manifest>

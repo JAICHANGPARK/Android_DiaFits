@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.0.5" versioncode="6">
+        <change>Date : 2018-08-30</change>
+        <change>Add Diabetes Reminder</change>
+        <change>Add About our project. pls check setting--> about app</change>
+        <change>Bug Fixed and Crash Fixed</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
+    </release>
+
     <release version="1.0.4" versioncode="5">
         <change>Date : 2018-08-28</change>
         <change>User Profile Function Change</change>
