@@ -263,7 +263,7 @@ public class GlucoseFeedActivity extends AppCompatActivity {
                     } else if (Float.valueOf(lastGlucoseValue) < Integer.valueOf(userGlucoseMin)) {
                         Log.e(TAG, "onCreate: " + "저혈당임 ");
                         runOnUiThread(() -> recommendTextView.setText("최저 목표 혈당 수치보다 높습니다. 저혈당 위험이 있으므로 당분을 섭취하여 목표혈당 구간으로 유지가 필요합니다."));
-                    } else if (Float.valueOf(lastGlucoseValue) < Integer.valueOf(userGlucoseMax) && Integer.valueOf(lastGlucoseValue) > Integer.valueOf(userGlucoseMin)) {
+                    } else if (Float.valueOf(lastGlucoseValue) < Integer.valueOf(userGlucoseMax) && Float.valueOf(lastGlucoseValue) > Integer.valueOf(userGlucoseMin)) {
                         runOnUiThread(() -> recommendTextView.setText("훌륭해요! 혈당 유지를 잘 실천하고 있습니다. "));
                     } else if (Float.valueOf(lastGlucoseValue).equals(Float.valueOf(userGlucoseMax))) {
                         runOnUiThread(() -> recommendTextView.setText("최고 목표 혈당과 같습니다. 가벼운 운동을 수행하여 목표 혈당 구간을 유지하세요"));
@@ -334,11 +334,6 @@ public class GlucoseFeedActivity extends AppCompatActivity {
                 valueList.add(String.valueOf(kindCount[8]));
                 labelList.add("운동 후");
                 valueList.add(String.valueOf(kindCount[9]));
-
-
-
-
-
             }
 
         } catch (IndexOutOfBoundsException errer) {

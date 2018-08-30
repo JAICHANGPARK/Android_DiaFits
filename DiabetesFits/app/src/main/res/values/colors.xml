@@ -115,5 +115,7 @@
 
     <color name="diary_bottom_appbar_color">#ff25adff</color>
 
+    <color name="fab_pressed">#546e7a</color>
+
 
 </resources>

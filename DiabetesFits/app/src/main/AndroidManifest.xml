@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -144,13 +145,31 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.education.KADNEHomeActivity" />
         </activity>
-
         <activity android:name=".activity.diary.DiaryGlucoseActivity" />
         <activity android:name=".activity.diary.DiaryFitnessActivity" />
-        <activity android:name=".activity.appinfo.DetailAppMenuActivity"
+        <activity
+            android:name=".activity.appinfo.DetailAppMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-        <activity android:name=".activity.diary.WriteFitnessActivity"></activity>
+        <activity android:name=".activity.diary.WriteFitnessActivity" />
+        <activity android:name=".activity.reminder.AddReminderActivity"
+            android:theme="@style/ShopTheme"/>
+
+        <activity android:name=".activity.reminder.ReminderActivity"
+            android:theme="@style/ShopTheme"/>
+
+
+        <!-- <provider -->
+        <!-- android:name=".utils.reminder.data.AlarmReminderProvider" -->
+        <!-- android:authorities="com.dreamwalker.diabetesreminder" -->
+        <!-- android:exported="true" -->
+        <!-- android:enabled="true"/> -->
+
+        <service
+            android:name=".utils.reminder.alarm.ReminderAlarmService"
+            android:exported="false" />
+
+
     </application>
 
 </manifest>

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.appinfo.DetailAppMenuActivity;
+import com.dreamwalker.diabetesfits.activity.reminder.ReminderActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -147,13 +148,13 @@ public class SettingActivityV2 extends AppCompatActivity {
 
     @OnClick(R.id.reminder_button)
     public void onClickedReminderButton(){
+        startActivity(new Intent(SettingActivityV2.this, ReminderActivity.class));
         Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
     }
 
     @OnClick(R.id.alarm_button)
     public void onClickedAlarmButton(){
         Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
-
     }
 
 

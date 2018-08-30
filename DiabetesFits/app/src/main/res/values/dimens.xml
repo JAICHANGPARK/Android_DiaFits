@@ -23,4 +23,8 @@
 
     <dimen name="card_margin">12dp</dimen>
 
+
+    <dimen name="activity_margin">16dp</dimen>
+    <dimen name="slug_padding">20dp</dimen>
+
 </resources>
