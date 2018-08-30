@@ -254,7 +254,6 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
 //            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
             startActivity(intent);
-
         });
         settingLayout.setOnClickListener(v -> {
             Intent intent = new Intent(HomeActivity.this, SettingActivityV2.class);
@@ -263,12 +262,10 @@ public class HomeActivity extends AppCompatActivity {
         });
         activityLayout.setOnClickListener(v -> {
             startActivity(new Intent(HomeActivity.this, ChartActivity.class));
-
         });
 
         feedLayout.setOnClickListener(v -> {
             startActivity(new Intent(HomeActivity.this, GlucoseFeedActivity.class));
-
         });
 
 
