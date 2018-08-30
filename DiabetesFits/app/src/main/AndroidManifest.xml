@@ -123,7 +123,7 @@
             android:name=".activity.OpenSourceLicenseActivity"
             android:theme="@style/ShopTheme" />
         <activity
-            android:name=".activity.ProfileActivity"
+            android:name=".activity.profile.ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
         <activity
@@ -165,11 +165,15 @@
         <!-- android:exported="true" -->
         <!-- android:enabled="true"/> -->
 
+        <activity android:name=".activity.appinfo.AboutProjectActivity" />
+        <activity android:name=".activity.profile.EditProfileActivity"
+            android:theme="@style/EditProfileTheme"/>
+
         <service
             android:name=".utils.reminder.alarm.ReminderAlarmService"
             android:exported="false" />
 
-        <activity android:name=".activity.appinfo.AboutProjectActivity"></activity>
+
     </application>
 
 </manifest>

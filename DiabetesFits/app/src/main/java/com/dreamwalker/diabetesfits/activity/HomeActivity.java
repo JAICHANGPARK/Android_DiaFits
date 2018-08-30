@@ -29,6 +29,7 @@ import com.dreamwalker.diabetesfits.activity.chart.ChartActivity;
 import com.dreamwalker.diabetesfits.activity.diary.DiaryActivity;
 import com.dreamwalker.diabetesfits.activity.diary.WriteBSActivity;
 import com.dreamwalker.diabetesfits.activity.education.KADNEHomeActivity;
+import com.dreamwalker.diabetesfits.activity.profile.ProfileActivity;
 import com.dreamwalker.diabetesfits.adapter.DeviceAdapter;
 import com.dreamwalker.diabetesfits.consts.PageConst;
 import com.dreamwalker.diabetesfits.model.Device;
@@ -319,7 +320,7 @@ public class HomeActivity extends AppCompatActivity {
 
             if (System.currentTimeMillis() - time >= 2000) {
                 time = System.currentTimeMillis();
-                Toasty.info(HomeActivity.this, "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT, true).show();
+                Toasty.info(HomeActivity.this, "뒤로 가기 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT, true).show();
 //                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
             } else if (System.currentTimeMillis() - time < 2000) {
                 finish();

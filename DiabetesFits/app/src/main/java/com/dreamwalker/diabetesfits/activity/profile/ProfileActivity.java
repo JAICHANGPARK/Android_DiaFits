@@ -1,4 +1,4 @@
-package com.dreamwalker.diabetesfits.activity;
+package com.dreamwalker.diabetesfits.activity.profile;
 
 import android.content.DialogInterface;
 import android.graphics.Color;

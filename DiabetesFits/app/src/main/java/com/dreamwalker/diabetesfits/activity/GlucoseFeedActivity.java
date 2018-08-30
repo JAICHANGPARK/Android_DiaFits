@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.activity.profile.ProfileActivity;
 import com.dreamwalker.diabetesfits.adapter.DashboardAdapter;
 import com.dreamwalker.diabetesfits.consts.GlucoseType;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
