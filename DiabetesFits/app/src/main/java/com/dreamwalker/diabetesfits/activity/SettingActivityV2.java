@@ -2,14 +2,18 @@ package com.dreamwalker.diabetesfits.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
@@ -24,6 +28,7 @@ import es.dmoral.toasty.Toasty;
 import io.paperdb.Paper;
 
 public class SettingActivityV2 extends AppCompatActivity {
+    private static final String TAG = "SettingActivityV2";
 
 
     @BindView(R.id.edit_profile_button)
@@ -49,6 +54,9 @@ public class SettingActivityV2 extends AppCompatActivity {
     @BindView(R.id.home)
     ImageView imageView;
 
+    @BindView(R.id.scrollView)
+    ScrollView scrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,14 +66,14 @@ public class SettingActivityV2 extends AppCompatActivity {
         Paper.init(this);
         initToasty();
 
-
+        checkScrollView();
     }
 
-    private void bindView(){
+    private void bindView() {
         ButterKnife.bind(this);
     }
 
-    private void initToasty(){
+    private void initToasty() {
         Toasty.Config.getInstance().apply();
     }
 
@@ -77,40 +85,41 @@ public class SettingActivityV2 extends AppCompatActivity {
     }
 
     @OnClick(R.id.edit_profile_button)
-    public void onClickEditProfileButton(){
+    public void onClickEditProfileButton() {
         Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
         startActivity(new Intent(SettingActivityV2.this, EditProfileActivity.class));
 
     }
 
     @OnClick(R.id.feedback_button)
-    public void onClickFeedbackButton(){
+    public void onClickFeedbackButton() {
         startActivity(new Intent(SettingActivityV2.this, FeedbackActivity.class));
     }
 
     @OnClick(R.id.db_management_button)
-    public void onClickDatabaseButton(){
+    public void onClickDatabaseButton() {
         startActivity(new Intent(SettingActivityV2.this, DBManagementActivity.class));
     }
 
 
     @OnClick(R.id.about_app_button)
-    public void onClickedAboutAppButton(){
+    public void onClickedAboutAppButton() {
         startActivity(new Intent(SettingActivityV2.this, DetailAppMenuActivity.class));
 
     }
+
     @OnClick(R.id.licenses_button)
-    public void onClickLicenseButton(){
+    public void onClickLicenseButton() {
         startActivity(new Intent(SettingActivityV2.this, OpenSourceLicenseActivity.class));
     }
 
     @OnClick(R.id.developer_button)
-    public void onClickDeveloperButton(){
+    public void onClickDeveloperButton() {
         startActivity(new Intent(SettingActivityV2.this, DeveloperActivity.class));
     }
 
     @OnClick(R.id.logout_button)
-    public void onClickLogoutButton(){
+    public void onClickLogoutButton() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -140,21 +149,31 @@ public class SettingActivityV2 extends AppCompatActivity {
     }
 
     @OnClick(R.id.home)
-    public void onClickBackButton(){
+    public void onClickBackButton() {
         finish();
     }
 
 
     @OnClick(R.id.reminder_button)
-    public void onClickedReminderButton(){
+    public void onClickedReminderButton() {
         startActivity(new Intent(SettingActivityV2.this, ReminderActivity.class));
 //        Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
     }
 
     @OnClick(R.id.alarm_button)
-    public void onClickedAlarmButton(){
+    public void onClickedAlarmButton() {
         Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
     }
 
+    private void checkScrollView() {
 
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            scrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    Log.e(TAG, "onScrollChange: " + scrollX + " | " + scrollY + " | " + oldScrollX + " | " + oldScrollY);
+                }
+            });
+        }
+    }
 }
