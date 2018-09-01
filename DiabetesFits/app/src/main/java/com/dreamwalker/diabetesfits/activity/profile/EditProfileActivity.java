@@ -1,16 +1,23 @@
 package com.dreamwalker.diabetesfits.activity.profile;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 
 import com.dreamwalker.diabetesfits.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.paperdb.Paper;
 
 public class EditProfileActivity extends AppCompatActivity {
+    private static final String TAG = "EditProfileActivity";
 
     @BindView(R.id.glucose_min_edt)
     TextInputEditText minGlucoseEditText;
@@ -23,6 +30,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
     @BindView(R.id.height_edt)
     TextInputEditText heightEditText;
+
+    @BindView(R.id.home)
+    ImageView homeButton;
 
     String minGlucose;
     String maxGlucose;
@@ -64,6 +74,8 @@ public class EditProfileActivity extends AppCompatActivity {
             weightEditText.setText(userWeight);
         }
 
+        setEditTextKeyboardListener();
+
 
     }
 
@@ -79,5 +91,51 @@ public class EditProfileActivity extends AppCompatActivity {
         bindView();
         getPaper();
 
+    }
+
+    @OnClick(R.id.home)
+    public void onClickedBackButton(){
+        finish();
+    }
+
+    private void setEditTextKeyboardListener(){
+        minGlucoseEditText.setOnKeyListener((v, keyCode, event) -> {
+            Log.e(TAG, "setEditTextKeyboardListener: " + keyCode );
+            Log.e(TAG, "setEditTextKeyboardListener: " + event.getAction() );
+            if ((event.getAction() == KeyEvent.ACTION_DOWN )&& (keyCode == KeyEvent.KEYCODE_ENTER)){
+                hideKeyboard(maxGlucoseEditText);
+                return true;
+            }
+            return false;
+        });
+
+        maxGlucoseEditText.setOnKeyListener((v, keyCode, event) -> {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN )&& (keyCode == KeyEvent.KEYCODE_ENTER)){
+                hideKeyboard(maxGlucoseEditText);
+                return true;
+            }
+            return false;
+        });
+        heightEditText.setOnKeyListener((v, keyCode, event) -> {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+                hideKeyboard(heightEditText);
+                return true;
+            }
+            return false;
+        });
+
+        weightEditText.setOnKeyListener((v, keyCode, event) -> {
+            if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)){
+                hideKeyboard(weightEditText);
+                return true;
+            }
+            return false;
+        });
+
+    }
+
+    private void hideKeyboard(TextInputEditText editText) {
+        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 }
