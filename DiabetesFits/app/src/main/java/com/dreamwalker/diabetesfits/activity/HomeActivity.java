@@ -28,6 +28,7 @@ import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.chart.ChartActivity;
 import com.dreamwalker.diabetesfits.activity.diary.DiaryActivity;
 import com.dreamwalker.diabetesfits.activity.diary.WriteBSActivity;
+import com.dreamwalker.diabetesfits.activity.diary.WriteFitnessActivity;
 import com.dreamwalker.diabetesfits.activity.education.KADNEHomeActivity;
 import com.dreamwalker.diabetesfits.activity.profile.ProfileActivity;
 import com.dreamwalker.diabetesfits.adapter.DeviceAdapter;
@@ -162,8 +163,8 @@ public class HomeActivity extends AppCompatActivity {
                     MaterialButton fitnessButton = writeView.findViewById(R.id.workout_write_button);
                     fitnessButton.setOnClickListener(v -> {
                         alertDialog.dismiss();
-                        Toasty.info(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
-
+//                        Toasty.info(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
+                        startActivity(new Intent(HomeActivity.this, WriteFitnessActivity.class));
                     });
 
                     MaterialButton glucoseButton = writeView.findViewById(R.id.glucose_write_button);
