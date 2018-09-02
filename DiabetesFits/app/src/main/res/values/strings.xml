@@ -299,5 +299,8 @@
     <string name="editor_update_reminder_failed">Error with updating reminder</string>
 
     <string name="reminder_title">AlarmReminder</string>
+
+    <string name="write_fitness_rpe_label">운동자각인지도 RPE (Rate of Perceived Exertion)는 주관적인 느낌을 가지고 운동 강도를 정하는 것입니다.</string>
+    <string name="write_fitness_kcal_label">체중은 소모 열량을 계산하기 위해 사용됩니다. 체중이 등록되어 있지 않다면 프로필에 들어가 체중 정보를 입력해주세요.</string>
 </resources>
 

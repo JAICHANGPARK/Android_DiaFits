@@ -84,7 +84,6 @@ public class HomeActivity extends AppCompatActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
-
     DeviceAdapter deviceAdapter;
 
     //HashMap<String, String> deviceMap = new HashMap<>();

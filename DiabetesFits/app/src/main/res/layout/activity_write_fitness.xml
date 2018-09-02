@@ -21,15 +21,33 @@
             android:background="@color/default_background"
             android:theme="@style/AppTheme.AppBarOverlay">
 
-            <ImageView
-                android:id="@+id/home"
-                style="@style/ClickableImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:src="@drawable/ic_arrow_back_black_24dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/home"
+                    style="@style/ClickableImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_gravity="start"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_arrow_back_black_24dp" />
+
+                <ImageView
+                    android:id="@+id/done"
+                    style="@style/ClickableImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="start"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_check_black_24dp" />
+            </RelativeLayout>
+
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -83,12 +101,27 @@
                 android:layout_marginTop="4dp"
                 android:background="@color/secondarytext" />
 
-            <org.angmarch.views.NiceSpinner
-                android:id="@+id/nice_spinner"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp" />
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
+                <org.angmarch.views.NiceSpinner
+                    android:id="@+id/nice_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1" />
+
+                <org.angmarch.views.NiceSpinner
+                    android:id="@+id/nice_spinner_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -121,10 +154,11 @@
                 android:layout_margin="16dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/weight_edt"
+                    android:id="@+id/fitness_time_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="운동 시간(분)"
+                    android:inputType="number"
                     android:maxLength="3"
                     android:maxLines="1" />
 
@@ -149,7 +183,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="운동 거리(km)"
-                        android:maxLength="3"
+                        android:inputType="numberDecimal"
+                        android:maxLength="4"
                         android:maxLines="1" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -165,9 +200,81 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="운동 속도(km/h)"
-                        android:maxLength="3"
+                        android:inputType="numberDecimal"
+                        android:maxLength="4"
                         android:maxLines="1" />
                 </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_alignParentStart="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/noto_sans"
+                    android:text="운동 강도(RPE)"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <ImageView
+
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_info_outline_black_24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/secondarytext" />
+
+            <TextView
+                android:id="@+id/rpe_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/write_fitness_rpe_label" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <android.support.design.widget.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/score_edt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="점수(6-20)"
+                        android:inputType="number"
+                        android:maxLength="2"
+                        android:maxLines="1" />
+                </android.support.design.widget.TextInputLayout>
+
+                <org.angmarch.views.NiceSpinner
+                    android:id="@+id/nice_spinner_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1" />
             </LinearLayout>
 
 
@@ -182,10 +289,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="정보"
+                    android:text="신체 정보"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
-
             </LinearLayout>
 
             <View
@@ -195,19 +301,27 @@
                 android:background="@color/secondarytext" />
 
             <TextView
-                android:id="@+id/bmi_text_view"
+                android:id="@+id/kcal_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"
+                android:text="@string/write_fitness_kcal_label" />
 
-            <TextView
-                android:id="@+id/bmi_result_text_view"
+            <android.support.design.widget.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                android:layout_margin="16dp">
 
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/weight_edt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="체중(kg)"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:maxLines="1" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
-
     </android.support.v4.widget.NestedScrollView>
-
 </RelativeLayout>
