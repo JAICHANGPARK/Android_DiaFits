@@ -223,7 +223,7 @@
                     android:textSize="18sp" />
 
                 <ImageView
-
+                    android:id="@+id/rpe_info_button"
                     android:layout_alignParentEnd="true"
                     android:src="@drawable/ic_info_outline_black_24dp"
                     android:layout_width="wrap_content"
