@@ -6,6 +6,7 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -216,6 +217,13 @@ public class WriteFitnessActivity extends AppCompatActivity {
 //             return null;
 //         };
 //         scoreEditText.setFilters(new InputFilter[]{filterAlphaNum});
+        scoreEditText.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.e(TAG, "onKey: " + keyCode +  " ,, " + event );
+                return false;
+            }
+        });
 
     }
 
