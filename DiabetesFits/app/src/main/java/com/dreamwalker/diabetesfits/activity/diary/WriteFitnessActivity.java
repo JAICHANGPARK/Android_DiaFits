@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +17,6 @@ import org.angmarch.views.NiceSpinner;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -210,14 +208,14 @@ public class WriteFitnessActivity extends AppCompatActivity {
     }
 
     private void setTextInputEditText(){
-         InputFilter filterAlphaNum = (source, start, end, dest, dstart, dend) -> {
-             Pattern ps = Pattern.compile("[[6]-2[0]]");
-             if (!ps.matcher(source).matches()) {
-                 return "";
-             }
-             return null;
-         };
-         scoreEditText.setFilters(new InputFilter[]{filterAlphaNum});
+//         InputFilter filterAlphaNum = (source, start, end, dest, dstart, dend) -> {
+//             Pattern ps = Pattern.compile("[[6]-2[0]]");
+//             if (!ps.matcher(source).matches()) {
+//                 return "";
+//             }
+//             return null;
+//         };
+//         scoreEditText.setFilters(new InputFilter[]{filterAlphaNum});
 
     }
 
@@ -255,7 +253,8 @@ public class WriteFitnessActivity extends AppCompatActivity {
         builder.setTitle("운동의 느낌");
         builder.setMessage("저강도 운동의 느낌은 호흡 패턴이 뚜렷하게 변하지 않으며, 땀이 많이 나지 않을 정도이며, 대화를 나눌 수 있으며 노래도 부를 수 있는 정도 입니다.\n" +
                 "중강도 운동의 느낌은 호흡이 짧아 지며 약 10분 정도 운동을 하면은 땀이 날 정도이며, 대화를 나눌 수 있지만 노래를 부를 수 없을 정도 입니다.\n" +
-                "고강도 운동의 느낌은 호흡이 깊고 빨라지며 짧은 시간 운동을 하면은 땀이 날 정도이며, 대화를 나누기 힘들 정도입니다.\n");
+                "고강도 운동의 느낌은 호흡이 깊고 빨라지며 짧은 시간 운동을 하면은 땀이 날 정도이며, 대화를 나누기 힘들 정도입니다.\n\n" +
+                "출처 : 삼성서울병원");
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
