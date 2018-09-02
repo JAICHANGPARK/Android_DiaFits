@@ -152,10 +152,14 @@
             android:name=".activity.appinfo.DetailAppMenuActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-        <activity android:name=".activity.diary.WriteFitnessActivity" />
+
+        <activity android:name=".activity.diary.WriteFitnessActivity"
+            android:theme="@style/WriteFitnessTheme"/>
+
         <activity
             android:name=".activity.reminder.AddReminderActivity"
             android:theme="@style/ShopTheme" />
+
         <activity
             android:name=".activity.reminder.ReminderActivity"
             android:theme="@style/ShopTheme" />

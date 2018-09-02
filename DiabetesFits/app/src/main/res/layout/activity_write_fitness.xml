@@ -85,7 +85,7 @@
 
             <org.angmarch.views.NiceSpinner
                 android:id="@+id/nice_spinner"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp" />
 
@@ -101,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/noto_sans"
-                    android:text="신체 정보"
+                    android:text="운동 정보"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
@@ -124,27 +124,51 @@
                     android:id="@+id/weight_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="체중(kg)"
+                    android:hint="운동 시간(분)"
                     android:maxLength="3"
                     android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
-
-            <android.support.design.widget.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                android:layout_margin="8dp"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/height_edt"
-                    android:layout_width="match_parent"
+                <android.support.design.widget.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:hint="신장(m)"
-                    android:maxLength="3"
-                    android:maxLines="1" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_margin="8dp"
+                    android:layout_weight="1">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/distance_edt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="운동 거리(km)"
+                        android:maxLength="3"
+                        android:maxLines="1" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_weight="1">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/speed_edt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="운동 속도(km/h)"
+                        android:maxLength="3"
+                        android:maxLines="1" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
 
 
             <LinearLayout
