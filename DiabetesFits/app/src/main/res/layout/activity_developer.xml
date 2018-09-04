@@ -12,7 +12,7 @@
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".activity.sync.SyncBMSResultActivity">
+        tools:context=".activity.sync.bsm.SyncBMSResultActivity">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appbar_add_contacts"

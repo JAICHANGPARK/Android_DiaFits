@@ -35,7 +35,8 @@ import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.chart.IndoorBikeRealTimeActivity;
-import com.dreamwalker.diabetesfits.activity.sync.SyncBSMDataActivity;
+import com.dreamwalker.diabetesfits.activity.sync.bsm.SyncBSMDataActivity;
+import com.dreamwalker.diabetesfits.activity.sync.indoorbike.SyncIndoorBikeDataActivity;
 import com.dreamwalker.diabetesfits.consts.isens.PremierNConst;
 import com.dreamwalker.diabetesfits.device.knu.egzero.EGZeroConst;
 import com.dreamwalker.diabetesfits.model.Device;
@@ -44,6 +45,7 @@ import java.util.List;
 
 import static com.dreamwalker.diabetesfits.consts.IntentConst.REAL_TIME_INDOOR_BIKE_DEVICE;
 import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_BSM_DEVICE;
+import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_INDOOR_BIKE_DEVICE;
 
 
 /**
@@ -149,6 +151,13 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                                                                     bsmIntent.putExtra(SYNC_BSM_DEVICE, deviceAddress);
                                                                     context.startActivity(bsmIntent);
                                                                     break;
+
+                                                                case EGZeroConst.DEVICE_NAME:
+                                                                    Log.e("클릭됨", "onClick: 클릭툄" );
+                                                                    Intent bikeIntent = new Intent(context, SyncIndoorBikeDataActivity.class);
+                                                                    bikeIntent.putExtra(SYNC_INDOOR_BIKE_DEVICE, deviceAddress);
+                                                                    context.startActivity(bikeIntent);
+                                                                    break;
                                                                 default:
                                                                     break;
                                                             }
@@ -225,7 +234,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                                                          public void onClick(View v) {
 
                                                              switch (deviceName) {
-
                                                                  case EGZeroConst.DEVICE_NAME:
                                                                      Log.e("클릭됨", "onClick: 클릭툄" );
                                                                      Intent bsmIntent = new Intent(context, IndoorBikeRealTimeActivity.class);

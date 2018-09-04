@@ -1,4 +1,4 @@
-package com.dreamwalker.diabetesfits.activity.sync;
+package com.dreamwalker.diabetesfits.activity.sync.bsm;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -149,7 +149,6 @@ public class SyncBSMDataActivity extends AppCompatActivity {
 
     @OnClick(R.id.home)
     public void homeImageButtonClicked(View v) {
-
         mBluetoothGatt.disconnect();
         finish();
     }

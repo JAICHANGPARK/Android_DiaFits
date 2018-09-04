@@ -1,4 +1,4 @@
-package com.dreamwalker.diabetesfits.activity.sync;
+package com.dreamwalker.diabetesfits.activity.sync.bsm;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;

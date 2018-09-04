@@ -73,11 +73,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.sync.SyncBSMDataActivity"
+            android:name=".activity.sync.bsm.SyncBSMDataActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
         <activity
-            android:name=".activity.sync.SyncBMSResultActivity"
+            android:name=".activity.sync.bsm.SyncBMSResultActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.chart.AnalysisBSActivity" />
         <activity android:name=".activity.chart.ChartActivity" />
@@ -94,9 +94,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
 
-        <service
-            android:name=".service.knu.egzero.EZBLEService"
-            android:enabled="true" />
+
 
         <activity
             android:name=".activity.GlucoseFeedActivity"
@@ -173,11 +171,23 @@
             android:name=".activity.profile.EditProfileActivity"
             android:theme="@style/EditProfileTheme" />
 
+        <activity android:name=".activity.diary.WriteFintessCheckActivity" />
+        <activity android:name=".activity.sync.indoorbike.SyncIndoorBikeDataActivity"></activity>
+
+
         <service
             android:name=".utils.reminder.alarm.ReminderAlarmService"
             android:exported="false" />
 
-        <activity android:name=".activity.diary.WriteFintessCheckActivity"></activity>
+        <service
+            android:name=".service.knu.egzero.EZBLEService"
+            android:enabled="true" />
+
+
+        <service
+            android:name=".service.knu.egzero.EZSyncService"
+            android:enabled="true" />
+
     </application>
 
 </manifest>
