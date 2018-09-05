@@ -183,7 +183,9 @@
             android:name=".service.knu.egzero.EZSyncService"
             android:enabled="true" />
 
-        <activity android:name=".activity.sync.indoorbike.SyncIndoorBikeResultActivity"></activity>
+        <activity android:name=".activity.sync.indoorbike.SyncIndoorBikeResultActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
