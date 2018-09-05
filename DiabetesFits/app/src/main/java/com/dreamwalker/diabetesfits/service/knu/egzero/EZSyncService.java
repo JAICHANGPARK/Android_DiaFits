@@ -31,6 +31,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -46,8 +47,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Queue;
 import java.util.UUID;
-
-import static com.dreamwalker.diabetesfits.device.knu.egzero.EGZeroConst.SYNC_ALL_DATA;
 
 /**
  * Service for managing connection and data communication with a GATT server hosted on a
@@ -85,7 +84,7 @@ public class EZSyncService extends Service {
     public final static String ACTION_SERVICE_SCAN_DONE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_SERVICE_SCAN_DONE";
     public final static String ACTION_FIRST_PHASE_DONE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_FIRST_PHASE_DONE";
     public final static String ACTION_SECOND_PHASE_DONE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_SECOND_PHASE_DONE";
-    public final static String INTENT_BLE_OPERATESTARTED  = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.INTENT_BLE_OPERATESTARTED";
+    public final static String INTENT_BLE_OPERATESTARTED = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.INTENT_BLE_OPERATESTARTED";
     public final static String EXTRA_DATA = "com.example.bluetooth.le.EXTRA_DATA";
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString(EZGattService.HEART_RATE_MEASUREMENT);
@@ -134,6 +133,7 @@ public class EZSyncService extends Service {
     }
 
     private boolean firstPhaseCheckerFlag = false;
+    private boolean secondPhaseCheckerFlag = false;
 
     private final BroadcastReceiver mySyncReceiver = new BroadcastReceiver() {
 
@@ -147,44 +147,47 @@ public class EZSyncService extends Service {
                     Log.e(TAG, "onReceive: " + "서비스 스캔 끝 : 동기화 시작 ");
                     if (mDateTimeSyncCharacteristic != null) {
                         firstPhaseCheckerFlag = syncDateTimeToDevice(mDateTimeSyncCharacteristic);
-                        Log.e(TAG, "onReceive: ACTION_SERVICE_SCAN_DONE --> " + firstPhaseCheckerFlag );
+                        Log.e(TAG, "onReceive: ACTION_SERVICE_SCAN_DONE --> " + firstPhaseCheckerFlag);
 
                     }
                     break;
                 case ACTION_FIRST_PHASE_DONE:
-                    try {
-                        byte[] authByte = Authentication.encrypt();
-                        if (mAuthCharacteristic != null) {
-                            mAuthCharacteristic.setValue(authByte);
-                            mBluetoothGatt.writeCharacteristic(mAuthCharacteristic);
-//                            mBluetoothGatt.readCharacteristic(mDataResultCharacteristic);
-//                            new Handler().postDelayed(new Runnable() {
-//                                @Override
-//                                public void run() {
-//
-//                                }
-//                            }, 1000);
-
+                    Log.e(TAG, "onReceive: " + "디바이스 인증 시작 ");
+                    if (mAuthCharacteristic != null) {
+                        try {
+                            secondPhaseCheckerFlag = authDevicePhase(mAuthCharacteristic);
+                            Log.e(TAG, "onReceive: ACTION_FIRST_PHASE_DONE --> " + secondPhaseCheckerFlag);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
-                    Log.e(TAG, "onReceive: " + "시간 동기화 완료 ");
+
+                    Log.e(TAG, "onReceive: " + "디바이스 인증 완료 ");
                     break;
 
                 case ACTION_SECOND_PHASE_DONE:
-                    Log.e(TAG, "onReceive: " + "데이터 동기화  ");
-                    if (mDataContextCharacteristic != null) {
-                        byte[] contextByte = new byte[]{0x02, SYNC_ALL_DATA, 0x03};
-                        mDataContextCharacteristic.setValue(contextByte);
-                        mBluetoothGatt.writeCharacteristic(mDataContextCharacteristic);
-                    }
+                    Log.e(TAG, "onReceive: " + "데이터 동기화 시작  ");
+
+                    boolean secondDescriptorResult = enableDataSyncNotification(mBluetoothGatt);
+                    Log.e(TAG, "secondDescriptorResult: " + secondDescriptorResult );
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mDataContextCharacteristic != null) {
+                                boolean result = syncDataFromDevice(mDataContextCharacteristic);
+                                Log.e(TAG, "onReceive: 쓰기 결과 --> " + result);
+                            }
+                        }
+                    }, 1000);
+
                     break;
                 case INTENT_BLE_OPERATESTARTED:
                     break;
             }
         }
     };
+
 
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
@@ -254,6 +257,7 @@ public class EZSyncService extends Service {
                             Log.e(TAG, "onServicesDiscovered: " + "mDateTimeSyncCharacteristic set");
                         }
                         if (mDataResultCharacteristic != null) {
+//                            gatt.setCharacteristicNotification(mDataResultCharacteristic, true);
                             dataResultDescriptor = enableResultNotification(gatt);
                             Log.e(TAG, "onServicesDiscovered: " + "mDataResultCharacteristic set");
                         }
@@ -270,7 +274,8 @@ public class EZSyncService extends Service {
                         Log.e(TAG, "onServicesDiscovered: data context " + mDataContextCharacteristic.getUuid().toString());
                         Log.e(TAG, "onServicesDiscovered: data sync " + mDataSyncCharacteristic.getUuid().toString());
 
-                        if (mDateTimeSyncCharacteristic != null) {
+                        if (mDataSyncCharacteristic != null) {
+//                            gatt.setCharacteristicNotification(mDataSyncCharacteristic, true);
 //                            broadcastUpdate(ACTION_SERVICE_SCAN_DONE);
                         }
                     }
@@ -285,35 +290,35 @@ public class EZSyncService extends Service {
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
 
-                if (EZGattService.BLE_CHAR_RESULT.equals(characteristic.getUuid())) {
-                    Log.e(TAG, "onCharacteristicRead: BLE_CHAR_DATE_TIME_SYNC " + characteristic.getUuid().toString());
-                    byte[] receivedValue = characteristic.getValue();
-
-                    for (byte b : receivedValue) {
-                        Log.e(TAG, "onCharacteristicRead: 결과 받은 데이터 " + b);
-                    }
+//                if (EZGattService.BLE_CHAR_RESULT.equals(characteristic.getUuid())) {
+//                    Log.e(TAG, "onCharacteristicRead: BLE_CHAR_DATE_TIME_SYNC " + characteristic.getUuid().toString());
+//                    byte[] receivedValue = characteristic.getValue();
+//
+//                    for (byte b : receivedValue) {
+//                        Log.e(TAG, "onCharacteristicRead: 결과 받은 데이터 " + b);
+//                    }
+////                    if (receivedValue != null) {
+////                        if (receivedValue[0] == 0x02 && receivedValue[2] == 0x03) {
+////                            if (receivedValue[1] == 0x00) {
+////                                Log.e(TAG, "onCharacteristicRead: " + "성공" );
+////                                broadcastUpdate(ACTION_FIRST_PHASE_DONE);
+////                            }
+////                        }
+////                    }
+//                }
+//
+//                if (EZGattService.BLE_CHAR_DEVICE_AUTH.equals(characteristic.getUuid())) {
+//                    Log.e(TAG, "onCharacteristicRead: BLE_CHAR_DEVICE_AUTH" + characteristic.getUuid().toString());
+//                    byte[] receivedValue = characteristic.getValue();
 //                    if (receivedValue != null) {
 //                        if (receivedValue[0] == 0x02 && receivedValue[2] == 0x03) {
 //                            if (receivedValue[1] == 0x00) {
-//                                Log.e(TAG, "onCharacteristicRead: " + "성공" );
-//                                broadcastUpdate(ACTION_FIRST_PHASE_DONE);
+//                                Log.e(TAG, "onCharacteristicRead: " + "장비 인증까지 완료");
+//                                broadcastUpdate(ACTION_SECOND_PHASE_DONE);
 //                            }
 //                        }
 //                    }
-                }
-
-                if (EZGattService.BLE_CHAR_DEVICE_AUTH.equals(characteristic.getUuid())) {
-                    Log.e(TAG, "onCharacteristicRead: BLE_CHAR_DEVICE_AUTH" + characteristic.getUuid().toString());
-                    byte[] receivedValue = characteristic.getValue();
-                    if (receivedValue != null) {
-                        if (receivedValue[0] == 0x02 && receivedValue[2] == 0x03) {
-                            if (receivedValue[1] == 0x00) {
-                                Log.e(TAG, "onCharacteristicRead: " + "장비 인증까지 완료");
-                                broadcastUpdate(ACTION_SECOND_PHASE_DONE);
-                            }
-                        }
-                    }
-                }
+//                }
 
 //                broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
             }
@@ -321,10 +326,40 @@ public class EZSyncService extends Service {
 
         @Override
         public void onDescriptorWrite(BluetoothGatt gatt, BluetoothGattDescriptor descriptor, int status) {
-
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.e(TAG, "onDescriptorWrite: " + "------- dataResultDescriptor Descriptor Write Done");
-                broadcastUpdate(ACTION_SERVICE_SCAN_DONE);
+
+//                if (EZGattService.BLE_CHAR_RESULT.equals(descriptor.getCharacteristic().getUuid())) { //2A18
+//                    dataResultDescriptor = enableResultNotification(gatt);
+//                }
+//                if (EZGattService.BLE_CHAR_DATA_SYNC.equals(descriptor.getCharacteristic().getUuid())) { //2A34
+//                    dataSyncDescriptor = enableDataSyncNotification(gatt);
+//                    broadcastUpdate(ACTION_SERVICE_SCAN_DONE);
+//
+//                }
+
+
+                // TODO: 2018-09-05 만약 데이터 결과 디스크립터가 설정되면
+                if (dataResultDescriptor) {
+//                    Log.e(TAG, "onDescriptorWrite: dataResultDescriptor -> " + dataResultDescriptor );
+                    Log.e(TAG, "onDescriptorWrite: " + "------- dataResultDescriptor Descriptor Write Done");
+//                    dataSyncDescriptor = enableDataSyncNotification(gatt);
+                    Log.e(TAG, "onDescriptorWrite: dataSyncDescriptor -> " + dataSyncDescriptor);
+                    broadcastUpdate(ACTION_SERVICE_SCAN_DONE);
+                    dataResultDescriptor = false; // TODO: 2018-09-05 콜백이 다시 발생하면 다시 시간 동기화를 진행하기때문에 플레그를 끈다.
+                }
+
+                if (dataSyncDescriptor) {
+
+//                    broadcastUpdate(INTENT_BLE_OPERATESTARTED);
+
+                    Log.e(TAG, "onDescriptorWrite: " + "------- dataSyncDescriptor Descriptor Write Done");
+//                    broadcastUpdate(ACTION_SERVICE_SCAN_DONE);
+
+//                    broadcastUpdate(ACTION_SECOND_PHASE_DONE);
+                    dataSyncDescriptor = false;
+                }
+
+
 //                try {
 //                    Thread.sleep(1000);
 //                } catch (InterruptedException e) {
@@ -374,18 +409,26 @@ public class EZSyncService extends Service {
                 byte[] receivedValue = characteristic.getValue();
                 for (byte b : receivedValue) {
                     Log.e(TAG, "onCharacteristicRead: 결과 받은 데이터 " + b);
-
                 }
 
                 if (receivedValue != null) {
-                    if (receivedValue[0] == 0x02 && receivedValue[2] == 0x03) {
-                        if (receivedValue[1] == 0x01) {
-                            Log.e(TAG, "시간 동기화 : " + "성공" );
-                            broadcastUpdate(ACTION_FIRST_PHASE_DONE);
-                        }else if (receivedValue[1] == 0x02){
 
-                            Log.e(TAG, "디바이스 인증 : " + "성공" );
-                            broadcastUpdate(ACTION_SECOND_PHASE_DONE);
+                    if (firstPhaseCheckerFlag) {
+                        if (receivedValue[0] == 0x02 && receivedValue[2] == 0x03) {
+                            if (receivedValue[1] == 0x01) {
+                                Log.e(TAG, "onCharacteristicChanged 시간 동기화 : " + "성공");
+                                broadcastUpdate(ACTION_FIRST_PHASE_DONE);
+                            }
+                        }
+                    }
+
+                    if (secondPhaseCheckerFlag) {
+                        if (receivedValue[0] == 0x02 && receivedValue[2] == 0x03) {
+                            if (receivedValue[1] == 0x02) {
+                                Log.e(TAG, "onCharacteristicChanged 디바이스 인증 : " + "성공");
+                                broadcastUpdate(ACTION_SECOND_PHASE_DONE);
+//                                dataSyncDescriptor = enableDataSyncNotification(gatt);
+                            }
                         }
                     }
                 }
@@ -397,7 +440,6 @@ public class EZSyncService extends Service {
                 for (byte b : tmp) {
                     Log.e(TAG, "onCharacteristicChanged: " + b);
                 }
-
 //                broadcastHeartRateUpdate(ACTION_HEART_RATE_AVAILABLE, characteristic);
             } else {
 //                broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
@@ -407,8 +449,35 @@ public class EZSyncService extends Service {
 
     };
 
-    private boolean syncDateTimeToDevice(BluetoothGattCharacteristic characteristic) {
+    private boolean authDevicePhase(BluetoothGattCharacteristic characteristic) throws Exception {
+        byte[] authByte = Authentication.encrypt();
 
+//        broadcastUpdate(INTENT_BLE_OPERATESTARTED);
+
+//        characteristic.setValue(new byte[authByte.length]);
+
+        characteristic.setValue(authByte);
+        return mBluetoothGatt.writeCharacteristic(mAuthCharacteristic);
+
+    }
+
+    private boolean syncDataFromDevice(BluetoothGattCharacteristic characteristic) {
+
+        if (mDataSyncCharacteristic == null) {
+            return false;
+        }
+
+        byte[] contextByte = {0x02, 0x00, 0x03};
+
+//        broadcastUpdate(INTENT_BLE_OPERATESTARTED);
+
+//        characteristic.setValue(new byte[contextByte.length]);
+
+        characteristic.setValue(contextByte);
+        return mBluetoothGatt.writeCharacteristic(characteristic);
+    }
+
+    private boolean syncDateTimeToDevice(BluetoothGattCharacteristic characteristic) {
 
         byte[] temp = new byte[7];
         Calendar cal = Calendar.getInstance(Locale.KOREA);
@@ -422,7 +491,7 @@ public class EZSyncService extends Service {
         int min = cal.get(Calendar.MINUTE);
         int sec = cal.get(Calendar.SECOND);
 
-        Log.e(TAG, "syncDateTimeToDevice: " + year + month + date + hour + min + sec);
+        Log.e(TAG, "syncDateTimeToDevice: 현재시간" + year + month + date + hour + min + sec);
 
         temp[0] = (byte) ((year >> 8) & 0xff);
         temp[1] = (byte) (year & 0xff);
@@ -453,6 +522,10 @@ public class EZSyncService extends Service {
 //        mDateTimeSyncCharacteristic.setValue();
 
     }
+
+
+    // TODO: 2018-09-05 여기 이후 코드는 ..
+
 
     public void readCharacteristic(String characteristicName) {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
