@@ -100,6 +100,7 @@ public class EZSyncService extends Service {
     BluetoothGattCharacteristic mAuthCharacteristic;  // 인증 특성
     BluetoothGattCharacteristic mDataContextCharacteristic;   // 데이터 컨텍스트
     BluetoothGattCharacteristic mDataSyncCharacteristic;   // 데이터 전송
+    BluetoothGattCharacteristic mDataResultCharacteristic; // 결과
 
 
     boolean heartRateDescriptor = false;
@@ -119,6 +120,7 @@ public class EZSyncService extends Service {
         mDataContextCharacteristic = null;
         mDataSyncCharacteristic = null;
 
+        mDataResultCharacteristic = null;
     }
 
 
@@ -141,7 +143,7 @@ public class EZSyncService extends Service {
 
             switch (action) {
                 case ACTION_SERVICE_SCAN_DONE:
-                    Log.e(TAG, "onReceive: " + "서비스 스캔 끝 : 동기화 시작 " );
+                    Log.e(TAG, "onReceive: " + "서비스 스캔 끝 : 동기화 시작 ");
                     if (mDateTimeSyncCharacteristic != null) {
                         syncDateTimeToDevice(mDateTimeSyncCharacteristic);
                         firstPhaseCheckerFlag = true;
@@ -149,7 +151,7 @@ public class EZSyncService extends Service {
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                mBluetoothGatt.readCharacteristic(mDateTimeSyncCharacteristic);
+                                mBluetoothGatt.readCharacteristic(mDataResultCharacteristic);
                             }
                         }, 1000);
                     }
@@ -157,14 +159,14 @@ public class EZSyncService extends Service {
                 case ACTION_FIRST_PHASE_DONE:
                     try {
                         byte[] authByte = Authentication.encrypt();
-                        if (mAuthCharacteristic != null){
+                        if (mAuthCharacteristic != null) {
                             mAuthCharacteristic.setValue(authByte);
                             mBluetoothGatt.writeCharacteristic(mAuthCharacteristic);
 
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mBluetoothGatt.readCharacteristic(mAuthCharacteristic);
+                                    mBluetoothGatt.readCharacteristic(mDataResultCharacteristic);
                                 }
                             }, 1000);
 
@@ -172,12 +174,12 @@ public class EZSyncService extends Service {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    Log.e(TAG, "onReceive: " + "시간 동기화 완료 " );
+                    Log.e(TAG, "onReceive: " + "시간 동기화 완료 ");
                     break;
 
                 case ACTION_SECOND_PHASE_DONE:
-                    Log.e(TAG, "onReceive: " + "데이터 동기화  " );
-                    if (mDataContextCharacteristic != null){
+                    Log.e(TAG, "onReceive: " + "데이터 동기화  ");
+                    if (mDataContextCharacteristic != null) {
                         byte[] contextByte = new byte[]{0x02, SYNC_ALL_DATA, 0x03};
                         mDataContextCharacteristic.setValue(contextByte);
                         mBluetoothGatt.writeCharacteristic(mDataContextCharacteristic);
@@ -242,10 +244,11 @@ public class EZSyncService extends Service {
                     } else if (EZGattService.BLE_DATE_TIME.equals(service.getUuid())) {
 
                         mDateTimeSyncCharacteristic = service.getCharacteristic(EZGattService.BLE_CHAR_DATE_TIME_SYNC);
-                        mDateTimeCharacteristic = service.getCharacteristic(EZGattService.BLE_CHAR_DATE_TIME);
-
+//                        mDateTimeCharacteristic = service.getCharacteristic(EZGattService.BLE_CHAR_DATE_TIME);
+                        mDataResultCharacteristic = service.getCharacteristic(EZGattService.BLE_CHAR_RESULT);
                         Log.e(TAG, "onServicesDiscovered: dtSync " + mDateTimeSyncCharacteristic.getUuid().toString());
-                        Log.e(TAG, "onServicesDiscovered: dt " + mDateTimeCharacteristic.getUuid().toString());
+//                        Log.e(TAG, "onServicesDiscovered: dt " + mDateTimeCharacteristic.getUuid().toString());
+                        Log.e(TAG, "onServicesDiscovered: result " + mDataResultCharacteristic.getUuid().toString());
 
                         if (mDateTimeSyncCharacteristic != null) {
                             Log.e(TAG, "onServicesDiscovered: " + "mIndoorBikeCharacteristic set");
@@ -281,13 +284,13 @@ public class EZSyncService extends Service {
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
 
-                if (EZGattService.BLE_CHAR_DATE_TIME_SYNC.equals(characteristic.getUuid())) {
+                if (EZGattService.BLE_CHAR_RESULT.equals(characteristic.getUuid())) {
                     Log.e(TAG, "onCharacteristicRead: BLE_CHAR_DATE_TIME_SYNC" + characteristic.getUuid().toString());
                     byte[] receivedValue = characteristic.getValue();
                     if (receivedValue != null) {
                         if (receivedValue[0] == 0x02 && receivedValue[2] == 0x03) {
                             if (receivedValue[1] == 0x00) {
-
+                                Log.e(TAG, "onCharacteristicRead: " + "성공" );
                                 broadcastUpdate(ACTION_FIRST_PHASE_DONE);
                             }
                         }
@@ -300,7 +303,7 @@ public class EZSyncService extends Service {
                     if (receivedValue != null) {
                         if (receivedValue[0] == 0x02 && receivedValue[2] == 0x03) {
                             if (receivedValue[1] == 0x00) {
-                                Log.e(TAG, "onCharacteristicRead: " + "장비 인증까지 완료" );
+                                Log.e(TAG, "onCharacteristicRead: " + "장비 인증까지 완료");
                                 broadcastUpdate(ACTION_SECOND_PHASE_DONE);
                             }
                         }
@@ -377,15 +380,12 @@ public class EZSyncService extends Service {
             // TODO: 2018-09-04 데이터 동기화 서비스
             else if (EZGattService.BLE_CHAR_DATA_SYNC.equals(uuid)) {
                 byte[] tmp = characteristic.getValue();
-                for (byte b : tmp){
-                    Log.e(TAG, "onCharacteristicChanged: " + b );
+                for (byte b : tmp) {
+                    Log.e(TAG, "onCharacteristicChanged: " + b);
                 }
 
 //                broadcastHeartRateUpdate(ACTION_HEART_RATE_AVAILABLE, characteristic);
-            }
-
-
-            else {
+            } else {
                 broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
             }
         }

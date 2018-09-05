@@ -45,6 +45,7 @@ public class EZGattService {
 
     public final static UUID BLE_CHAR_DATE_TIME_SYNC            = UUID.fromString("00000001-0000-1000-8000-00805f9b34fb");
     public final static UUID BLE_CHAR_DATE_TIME                 = UUID.fromString("00000002-0000-1000-8000-00805f9b34fb");
+    public final static UUID BLE_CHAR_RESULT                    = UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb");
 
     public final static UUID BLE_CHAR_DEVICE_AUTH               = UUID.fromString("0000eee1-0000-1000-8000-00805f9b34fb");
     public final static UUID BLE_CHAR_DATA_CONTEXT              = UUID.fromString("0000fff1-0000-1000-8000-00805f9b34fb");
