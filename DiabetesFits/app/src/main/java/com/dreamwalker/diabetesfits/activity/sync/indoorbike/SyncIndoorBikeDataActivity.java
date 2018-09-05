@@ -87,13 +87,13 @@ public class SyncIndoorBikeDataActivity extends AppCompatActivity {
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(EZBLEService.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(EZBLEService.ACTION_GATT_DISCONNECTED);
-        intentFilter.addAction(EZBLEService.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(EZBLEService.ACTION_DATA_AVAILABLE);
-        intentFilter.addAction(EZBLEService.ACTION_HEART_RATE_AVAILABLE);
-        intentFilter.addAction(EZBLEService.ACTION_INDOOR_BIKE_AVAILABLE);
-        intentFilter.addAction(EZBLEService.ACTION_TREADMILL_AVAILABLE);
+        intentFilter.addAction(EZSyncService.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(EZSyncService.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(EZSyncService.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(EZSyncService.ACTION_DATA_AVAILABLE);
+        intentFilter.addAction(EZSyncService.ACTION_HEART_RATE_AVAILABLE);
+        intentFilter.addAction(EZSyncService.ACTION_INDOOR_BIKE_AVAILABLE);
+        intentFilter.addAction(EZSyncService.ACTION_TREADMILL_AVAILABLE);
         return intentFilter;
     }
 
@@ -107,33 +107,33 @@ public class SyncIndoorBikeDataActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            if (EZBLEService.ACTION_GATT_CONNECTED.equals(action)) {
+            if (EZSyncService.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
                 //updateConnectionState(R.string.connected);
                 invalidateOptionsMenu();
-            } else if (EZBLEService.ACTION_GATT_DISCONNECTED.equals(action)) {
+            } else if (EZSyncService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 //updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
                 //clearUI();
-            } else if (EZBLEService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+            } else if (EZSyncService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 // TODO: 2018-07-24 서비스와 연결되엉ㅅ을때 방송되어 받아지는 리시버 - 박제창
 //                startIndicator = true;
                 //chronometer.start();
                 //displayGattServices(mBluetoothLeService.getSupportedGattServices());
-            } else if (EZBLEService.ACTION_DATA_AVAILABLE.equals(action)) {
+            } else if (EZSyncService.ACTION_DATA_AVAILABLE.equals(action)) {
                 Log.e(TAG, "onReceive: " + intent.getStringExtra(EZBLEService.EXTRA_DATA));
 //                displayData(intent.getStringExtra(EZBLEService.EXTRA_DATA));
-            } else if (EZBLEService.ACTION_HEART_RATE_AVAILABLE.equals(action)) {
+            } else if (EZSyncService.ACTION_HEART_RATE_AVAILABLE.equals(action)) {
                 Log.e(TAG, "onReceive:  실시간 화면에서 심박수 받앗어요 ");
                 String hr = intent.getStringExtra(EZBLEService.EXTRA_DATA);
 //                heartRateTextView.setText(hr);
-            } else if (EZBLEService.ACTION_INDOOR_BIKE_AVAILABLE.equals(action)) {
+            } else if (EZSyncService.ACTION_INDOOR_BIKE_AVAILABLE.equals(action)) {
 
                 String nowSpeed = intent.getStringExtra(EZBLEService.EXTRA_DATA);
 //                nowSpeedTextView.setText(nowSpeed);
-            } else if (EZBLEService.ACTION_TREADMILL_AVAILABLE.equals(action)) {
+            } else if (EZSyncService.ACTION_TREADMILL_AVAILABLE.equals(action)) {
 
                 String totalDistance = intent.getStringExtra(EZBLEService.EXTRA_DATA);
 //                totalDistanceTextView.setText(totalDistance);
