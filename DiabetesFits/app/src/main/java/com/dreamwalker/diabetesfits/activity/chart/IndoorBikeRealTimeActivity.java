@@ -122,11 +122,9 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 String hr = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 heartRateTextView.setText(hr);
             } else if (EZBLEService.ACTION_INDOOR_BIKE_AVAILABLE.equals(action)) {
-
                 String nowSpeed = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 nowSpeedTextView.setText(nowSpeed);
             } else if (EZBLEService.ACTION_TREADMILL_AVAILABLE.equals(action)) {
-
                 String totalDistance = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 totalDistanceTextView.setText(totalDistance);
             }

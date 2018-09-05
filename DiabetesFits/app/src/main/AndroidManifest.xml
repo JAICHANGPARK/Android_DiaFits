@@ -172,8 +172,9 @@
             android:theme="@style/EditProfileTheme" />
 
         <activity android:name=".activity.diary.WriteFintessCheckActivity" />
-        <activity android:name=".activity.sync.indoorbike.SyncIndoorBikeDataActivity"></activity>
-
+        <activity android:name=".activity.sync.indoorbike.SyncIndoorBikeDataActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme"/>
 
         <service
             android:name=".utils.reminder.alarm.ReminderAlarmService"

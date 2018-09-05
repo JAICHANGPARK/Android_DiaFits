@@ -37,10 +37,12 @@ import android.util.Log;
 
 import com.dreamwalker.diabetesfits.device.knu.egzero.EGDataConverter;
 import com.dreamwalker.diabetesfits.device.knu.egzero.EZGattService;
+import com.dreamwalker.diabetesfits.model.fitness.Fitness;
 import com.dreamwalker.diabetesfits.utils.auth.Authentication;
 
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -74,6 +76,15 @@ public class EZSyncService extends Service {
     public final static String ACTION_GATT_DISCONNECTED = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_GATT_DISCONNECTED";
     public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_GATT_SERVICES_DISCOVERED";
     public final static String ACTION_DATA_AVAILABLE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_DATA_AVAILABLE";
+
+    public final static String ACTION_FIRST_DONE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_FIRST_DONE";
+    public final static String ACTION_SECOND_DONE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_SECOND_DONE";
+    public final static String ACTION_FINAL_DONE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_FINAL_DONE";
+
+    public final static String ACTION_FIRST_FAILED = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_FIRST_FAILED";
+    public final static String ACTION_SECOND_FAILED = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_SECOND_FAILED";
+    public final static String ACTION_FINAL_FAILED = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_FINAL_FAILED";
+
 
     public final static String ACTION_HEART_RATE_AVAILABLE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_HEART_RATE_AVAILABLE";
     public final static String ACTION_INDOOR_BIKE_AVAILABLE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_INDOOR_BIKE_AVAILABLE";
@@ -134,6 +145,10 @@ public class EZSyncService extends Service {
 
     private boolean firstPhaseCheckerFlag = false;
     private boolean secondPhaseCheckerFlag = false;
+    private boolean finalPhaseResult = false;
+
+    ArrayList<Fitness> fitnessArrayList = new ArrayList<>();
+
 
     private final BroadcastReceiver mySyncReceiver = new BroadcastReceiver() {
 
@@ -153,14 +168,21 @@ public class EZSyncService extends Service {
                     break;
                 case ACTION_FIRST_PHASE_DONE:
                     Log.e(TAG, "onReceive: " + "디바이스 인증 시작 ");
-                    if (mAuthCharacteristic != null) {
-                        try {
-                            secondPhaseCheckerFlag = authDevicePhase(mAuthCharacteristic);
-                            Log.e(TAG, "onReceive: ACTION_FIRST_PHASE_DONE --> " + secondPhaseCheckerFlag);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mAuthCharacteristic != null) {
+                                try {
+                                    secondPhaseCheckerFlag = authDevicePhase(mAuthCharacteristic);
+                                    Log.e(TAG, "onReceive: ACTION_FIRST_PHASE_DONE --> " + secondPhaseCheckerFlag);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
                         }
-                    }
+                    }, 500);
+
 
                     Log.e(TAG, "onReceive: " + "디바이스 인증 완료 ");
                     break;
@@ -169,14 +191,14 @@ public class EZSyncService extends Service {
                     Log.e(TAG, "onReceive: " + "데이터 동기화 시작  ");
 
                     boolean secondDescriptorResult = enableDataSyncNotification(mBluetoothGatt);
-                    Log.e(TAG, "secondDescriptorResult: " + secondDescriptorResult );
+                    Log.e(TAG, "secondDescriptorResult: " + secondDescriptorResult);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             if (mDataContextCharacteristic != null) {
-                                boolean result = syncDataFromDevice(mDataContextCharacteristic);
-                                Log.e(TAG, "onReceive: 쓰기 결과 --> " + result);
+                                finalPhaseResult = syncDataFromDevice(mDataContextCharacteristic);
+                                Log.e(TAG, "onReceive: 쓰기 결과 --> " + finalPhaseResult);
                             }
                         }
                     }, 1000);
@@ -199,7 +221,7 @@ public class EZSyncService extends Service {
                 mBluetoothGatt = gatt;
                 intentAction = ACTION_GATT_CONNECTED;
                 mConnectionState = STATE_CONNECTED;
-//                broadcastUpdate(intentAction);
+                broadcastUpdate(intentAction);
                 Log.e(TAG, "Connected to GATT server.");
                 // Attempts to discover services after successful connection.
                 Log.e(TAG, "Attempting to start service discovery:" + mBluetoothGatt.discoverServices());
@@ -208,7 +230,7 @@ public class EZSyncService extends Service {
                 intentAction = ACTION_GATT_DISCONNECTED;
                 mConnectionState = STATE_DISCONNECTED;
                 Log.i(TAG, "Disconnected from GATT server.");
-//                broadcastUpdate(intentAction);
+                broadcastUpdate(intentAction);
             }
         }
 
@@ -418,6 +440,8 @@ public class EZSyncService extends Service {
                             if (receivedValue[1] == 0x01) {
                                 Log.e(TAG, "onCharacteristicChanged 시간 동기화 : " + "성공");
                                 broadcastUpdate(ACTION_FIRST_PHASE_DONE);
+
+                                broadcastUpdate(ACTION_FIRST_DONE);
                             }
                         }
                     }
@@ -427,19 +451,79 @@ public class EZSyncService extends Service {
                             if (receivedValue[1] == 0x02) {
                                 Log.e(TAG, "onCharacteristicChanged 디바이스 인증 : " + "성공");
                                 broadcastUpdate(ACTION_SECOND_PHASE_DONE);
+
+                                broadcastUpdate(ACTION_SECOND_DONE);
 //                                dataSyncDescriptor = enableDataSyncNotification(gatt);
                             }
                         }
                     }
+
+                    if (finalPhaseResult) {
+                        if (receivedValue[0] == 0x02 && receivedValue[2] == 0x03) {
+                            if (receivedValue[1] == 0x03) {
+                                Log.e(TAG, "onCharacteristicChanged 전송 완료  : " + "성공");
+                                // TODO: 2018-09-05 데이터 전송 완료 엑티비티 전환
+
+                                broadcastUpdate(ACTION_FINAL_DONE);
+
+                            }
+                        }
+                    }
+
+
                 }
             }
 
-            // TODO: 2018-09-04 데이터 동기화 서비스
+            // TODO: 2018-09-04 데이터 동기화 서비스 및 동기화 처리 - 박제창
+
             else if (EZGattService.BLE_CHAR_DATA_SYNC.equals(uuid)) {
-                byte[] tmp = characteristic.getValue();
-                for (byte b : tmp) {
-                    Log.e(TAG, "onCharacteristicChanged: " + b);
+                byte[] data = characteristic.getValue();
+
+                int index = ((data[0] << 8 & 0xff00) | (data[1] & 0xff));
+
+                int receivedYear = ((data[2] << 8 & 0xff00) | (data[3] & 0xff));
+                int receivedMonth = (data[4] & 0xff);
+                int receivedDay = (data[5] & 0xff);
+                int receivedHour = (data[6] & 0xff);
+                int receivedMinute = (data[7] & 0xff);
+                int receivedSecond = (data[8] & 0xff);
+
+                int receivedFitnessTime = ((data[9] << 8 & 0xff00) | (data[10] & 0xff));
+
+                final int intVal = (data[11] << 8) & 0xff00 | (data[12] & 0xff);
+                float receivedFitnessSpeed = (float) intVal / 100;
+
+                final int intVal2 = (data[13] << 8) & 0xff00 | (data[14] & 0xff);
+                float receivedFitnessDistance = (float) intVal2 / 100;
+
+                int receivedFitnessHeartRate = data[15] & 0xff;
+
+                int receivedFitnessKcal = ((data[16] << 8 & 0xff00) | (data[17] & 0xff));
+
+                Log.e(TAG, "onCharacteristicChanged: " + index + "|" + receivedYear + "|" + receivedMonth +
+                        "|" + receivedDay + "|" + receivedHour + "|" + receivedMinute + "|" + receivedSecond
+                        + "|" + receivedFitnessTime
+                        + "|" + receivedFitnessSpeed
+                        + "|" + receivedFitnessDistance
+                        + "|" + receivedFitnessHeartRate
+                        + "|" + receivedFitnessKcal
+                );
+
+                if (data != null && data.length > 0) {
+
+                    fitnessArrayList.add(new Fitness());
+
+
+//                    final StringBuilder stringBuilder = new StringBuilder(data.length);
+//                    for (byte byteChar : data)
+//                        stringBuilder.append(String.format("%02X ", byteChar));
+//                    intent.putExtra(EXTRA_DATA, new String(data) + "\n" + stringBuilder.toString());
                 }
+
+//                for (byte b : data) {
+//                    Log.e(TAG, "onCharacteristicChanged: " + b);
+//                }
+
 //                broadcastHeartRateUpdate(ACTION_HEART_RATE_AVAILABLE, characteristic);
             } else {
 //                broadcastUpdate(ACTION_DATA_AVAILABLE, characteristic);
