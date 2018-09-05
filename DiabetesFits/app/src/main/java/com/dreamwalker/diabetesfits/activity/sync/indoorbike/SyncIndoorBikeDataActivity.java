@@ -22,8 +22,13 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.model.fitness.Fitness;
 import com.dreamwalker.diabetesfits.service.knu.egzero.EZBLEService;
 import com.dreamwalker.diabetesfits.service.knu.egzero.EZSyncService;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +36,8 @@ import butterknife.OnClick;
 import io.paperdb.Paper;
 
 import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_INDOOR_BIKE_DEVICE;
+import static com.dreamwalker.diabetesfits.service.knu.egzero.EZSyncService.ACTION_FINAL_DONE;
+import static com.dreamwalker.diabetesfits.service.knu.egzero.EZSyncService.EXTRA_FINAL_DATA;
 
 public class SyncIndoorBikeDataActivity extends AppCompatActivity {
 
@@ -91,7 +98,11 @@ public class SyncIndoorBikeDataActivity extends AppCompatActivity {
 
         intentFilter.addAction(EZSyncService.ACTION_FIRST_DONE);
         intentFilter.addAction(EZSyncService.ACTION_SECOND_DONE);
-        intentFilter.addAction(EZSyncService.ACTION_FINAL_DONE);
+        intentFilter.addAction(ACTION_FINAL_DONE);
+
+        intentFilter.addAction(EXTRA_FINAL_DATA);
+
+
 
 
         return intentFilter;
@@ -126,8 +137,28 @@ public class SyncIndoorBikeDataActivity extends AppCompatActivity {
             else if (EZSyncService.ACTION_SECOND_DONE.equals(action)){
                 _result.setText("장비 인증 완료 ");
             }
-            else if (EZSyncService.ACTION_FINAL_DONE.equals(action)){
+            else if (ACTION_FINAL_DONE.equals(action)){
+                // TODO: 2018-09-05 동기화 완료되면 처리하는 부분이고 전달은 gson으로처리함 . - 박제창
+                // TODO: 2018-09-05 전달할 데이터는 페이퍼 케시에 임시 저장함. - 바ㄱ제차ㅇ
                 _result.setText("데이터 동기화 완료");
+                String resultString = intent.getStringExtra(EXTRA_FINAL_DATA);
+                Log.e(TAG, "최종 전달 받은 값 onReceive: " + resultString);
+                Gson gson = new Gson();
+                ArrayList<Fitness> result = gson.fromJson(resultString, new TypeToken<ArrayList<Fitness>>(){}.getType());
+                Log.e(TAG, "onReceive: " + result.size());
+                _result.setText("정보 처리 중...");
+
+                if (Paper.book("syncIndoorBike").read("data") == null) {
+                    Paper.book("syncIndoorBike").write("data", result);
+                    startActivity(new Intent(SyncIndoorBikeDataActivity.this, SyncIndoorBikeResultActivity.class));
+                    finish();
+                } else {
+                    Paper.book("syncIndoorBike").delete("data");
+                    Paper.book("syncIndoorBike").write("data", result);
+                    startActivity(new Intent(SyncIndoorBikeDataActivity.this, SyncIndoorBikeResultActivity.class));
+                    finish();
+                }
+
             }
 
 

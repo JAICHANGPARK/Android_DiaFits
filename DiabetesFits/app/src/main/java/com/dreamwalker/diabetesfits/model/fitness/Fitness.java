@@ -5,8 +5,8 @@ import java.util.Date;
 public class Fitness {
 
 
-    private String userValue;
-    private String type;
+    private String userValue;   // 여기에 뭘 넣야야 할까
+    private String type;        // 여기에 뭘 넣어야 할까
 
     private String fitnessTime; //운동시간
     private String distance; // 운동 거리

@@ -687,7 +687,6 @@ public class SyncBSMDataActivity extends AppCompatActivity {
                         finish();
                     }
                 } else {
-
                     AlertDialog.Builder builder = new AlertDialog.Builder(SyncBSMDataActivity.this);
                     builder.setTitle("Error");
                     builder.setMessage("데이터 동기화를 위해서 혈당계와 페어링 과정이 필요합니다. \n 1. S 버튼을 길게 눌러 설정으로 가세요.\n 2. 블루투스 페어링을 진행하세요" +

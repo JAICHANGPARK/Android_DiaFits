@@ -39,11 +39,14 @@ import com.dreamwalker.diabetesfits.device.knu.egzero.EGDataConverter;
 import com.dreamwalker.diabetesfits.device.knu.egzero.EZGattService;
 import com.dreamwalker.diabetesfits.model.fitness.Fitness;
 import com.dreamwalker.diabetesfits.utils.auth.Authentication;
+import com.google.gson.Gson;
 
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -86,6 +89,8 @@ public class EZSyncService extends Service {
     public final static String ACTION_FINAL_FAILED = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_FINAL_FAILED";
 
 
+
+
     public final static String ACTION_HEART_RATE_AVAILABLE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_HEART_RATE_AVAILABLE";
     public final static String ACTION_INDOOR_BIKE_AVAILABLE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_INDOOR_BIKE_AVAILABLE";
     public final static String ACTION_TREADMILL_AVAILABLE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_TREADMILL_AVAILABLE";
@@ -97,6 +102,7 @@ public class EZSyncService extends Service {
     public final static String ACTION_SECOND_PHASE_DONE = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.ACTION_SECOND_PHASE_DONE";
     public final static String INTENT_BLE_OPERATESTARTED = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.INTENT_BLE_OPERATESTARTED";
     public final static String EXTRA_DATA = "com.example.bluetooth.le.EXTRA_DATA";
+    public final static String EXTRA_FINAL_DATA = "com.dreamwalker.diabetesfits.service.knu.egzero.sync.EXTRA_FINAL_DATA";
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT = UUID.fromString(EZGattService.HEART_RATE_MEASUREMENT);
 
@@ -464,7 +470,12 @@ public class EZSyncService extends Service {
                                 Log.e(TAG, "onCharacteristicChanged 전송 완료  : " + "성공");
                                 // TODO: 2018-09-05 데이터 전송 완료 엑티비티 전환
 
-                                broadcastUpdate(ACTION_FINAL_DONE);
+                                Gson gson = new Gson();
+                                String gsonConverted = gson.toJson(fitnessArrayList);
+                                Log.e(TAG, "gson 변경 : " + gsonConverted );
+
+
+                                broadcastFinalUpdate(ACTION_FINAL_DONE, gsonConverted);
 
                             }
                         }
@@ -498,7 +509,7 @@ public class EZSyncService extends Service {
 
                 int receivedFitnessHeartRate = data[15] & 0xff;
 
-                int receivedFitnessKcal = ((data[16] << 8 & 0xff00) | (data[17] & 0xff));
+                int receivedFitnessKCal = ((data[16] << 8 & 0xff00) | (data[17] & 0xff));
 
                 Log.e(TAG, "onCharacteristicChanged: " + index + "|" + receivedYear + "|" + receivedMonth +
                         "|" + receivedDay + "|" + receivedHour + "|" + receivedMinute + "|" + receivedSecond
@@ -506,13 +517,35 @@ public class EZSyncService extends Service {
                         + "|" + receivedFitnessSpeed
                         + "|" + receivedFitnessDistance
                         + "|" + receivedFitnessHeartRate
-                        + "|" + receivedFitnessKcal
+                        + "|" + receivedFitnessKCal
                 );
+
+
+                Date receivedDate = getDate(receivedYear, receivedMonth, receivedDay, receivedHour, receivedMinute, receivedSecond);
+                Log.e(TAG, "onCharacteristicChanged: receivedDate -->  " + receivedDate.getTime());
+                Log.e(TAG, "onCharacteristicChanged: receivedDate -->  " + receivedDate.toString());
+
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("hh:mm:ss", Locale.KOREA);
+                SimpleDateFormat simpleDateTimeFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
+
+                String saveDate = simpleDateFormat.format(receivedDate);
+                String saveTime = simpleTimeFormat.format(receivedDate);
+                String saveDateTime = simpleDateTimeFormat.format(receivedDate);
+                long saveTimestamp = receivedDate.getTime();
 
                 if (data != null && data.length > 0) {
 
-                    fitnessArrayList.add(new Fitness());
-
+                    fitnessArrayList.add(new Fitness("0", "0", String.valueOf(receivedFitnessTime),
+                            String.valueOf(receivedFitnessDistance),
+                            String.valueOf(receivedFitnessSpeed),
+                            String.valueOf(receivedFitnessHeartRate),
+                            saveDate,
+                            saveTime,
+                            saveDateTime,
+                            saveTimestamp,
+                            receivedDate
+                    ));
 
 //                    final StringBuilder stringBuilder = new StringBuilder(data.length);
 //                    for (byte byteChar : data)
@@ -532,6 +565,14 @@ public class EZSyncService extends Service {
 
 
     };
+
+    public static Date getDate(int year, int month, int date, int hour, int minute, int second) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month - 1, date, hour, minute, second);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
+
 
     private boolean authDevicePhase(BluetoothGattCharacteristic characteristic) throws Exception {
         byte[] authByte = Authentication.encrypt();
@@ -694,6 +735,17 @@ public class EZSyncService extends Service {
 
     private void broadcastUpdate(final String action) {
         final Intent intent = new Intent(action);
+        sendBroadcast(intent);
+    }
+
+    /**
+     * 최종 값을 전달 받는
+     * @param action
+     * @param data
+     */
+    private void broadcastFinalUpdate(final String action, final String data){
+        final Intent intent = new Intent(action);
+        intent.putExtra(EXTRA_FINAL_DATA, data);
         sendBroadcast(intent);
     }
 

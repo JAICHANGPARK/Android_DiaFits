@@ -93,9 +93,6 @@
             android:name=".activity.diary.WriteCheckActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-
-
-
         <activity
             android:name=".activity.GlucoseFeedActivity"
             android:screenOrientation="portrait"
@@ -170,25 +167,23 @@
         <activity
             android:name=".activity.profile.EditProfileActivity"
             android:theme="@style/EditProfileTheme" />
-
         <activity android:name=".activity.diary.WriteFintessCheckActivity" />
-        <activity android:name=".activity.sync.indoorbike.SyncIndoorBikeDataActivity"
+        <activity
+            android:name=".activity.sync.indoorbike.SyncIndoorBikeDataActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ShopTheme"/>
+            android:theme="@style/ShopTheme" />
 
         <service
             android:name=".utils.reminder.alarm.ReminderAlarmService"
             android:exported="false" />
-
         <service
             android:name=".service.knu.egzero.EZBLEService"
             android:enabled="true" />
-
-
         <service
             android:name=".service.knu.egzero.EZSyncService"
             android:enabled="true" />
 
+        <activity android:name=".activity.sync.indoorbike.SyncIndoorBikeResultActivity"></activity>
     </application>
 
 </manifest>
