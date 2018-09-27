@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,7 +42,11 @@ import com.dreamwalker.diabetesfits.consts.isens.PremierNConst;
 import com.dreamwalker.diabetesfits.device.knu.egzero.EGZeroConst;
 import com.dreamwalker.diabetesfits.model.Device;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+
+import io.paperdb.Paper;
 
 import static com.dreamwalker.diabetesfits.consts.IntentConst.REAL_TIME_INDOOR_BIKE_DEVICE;
 import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_BSM_DEVICE;
@@ -57,15 +62,21 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     private List<Device> deviceList;
     private int expandedDevicePosition = RecyclerView.NO_POSITION;
     private ViewGroup parent;
+    private static final String TAG = "DeviceAdapter";
+
+    HashSet<Device> deviceDatabase = new HashSet<>();
+    ArrayList<Device> deviceArrayList;
 
     public DeviceAdapter(Context context, List<Device> deviceList) {
         this.context = context;
         this.deviceList = deviceList;
+
     }
 
     @NonNull
     @Override
     public DeviceAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Paper.init(context);
         this.parent = parent;
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.device_item, parent, false);
         return new ViewHolder(view);
@@ -303,6 +314,57 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         );
 
+        holder.deviceRemove.setOnClickListener(v -> {
+
+            Log.e(TAG, "deviceAddress: --> " + deviceAddress);
+            Log.e(TAG, "deviceName: --> " + deviceName);
+
+            deviceDatabase = Paper.book("device").read("user_device");
+            deviceArrayList = new ArrayList<>(deviceDatabase);
+
+            for (Device d : deviceArrayList){
+                Log.e(TAG, "deviceArrayList: --> " + d.getDeviceAddress());
+                Log.e(TAG, "deviceArrayList: --> " + d.getDeviceName());
+            }
+            Log.e(TAG, "onBindViewHolder: " + deviceList.get(position).getDeviceName());
+//
+//            Set<Device> tmpSet = new HashSet<>();
+//            tmpSet.add(new Device(deviceName, deviceAddress));
+            Log.e(TAG, "onBindViewHolder: " +   deviceList.indexOf(deviceList.get(position))) ;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.HomeAlertDialog);
+
+            builder.setTitle("장비 삭제하기");
+            builder.setMessage("등록하신 장비를 삭제하시겠어요?");
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Log.e(TAG, "onClick: " + deviceAddress);
+//                    deviceDatabase.remove()
+//                    boolean removeResult = tmp.remove(new Device(deviceName, deviceAddress));
+//                    Log.e(TAG, "removeResult: " + removeResult );
+//                    Paper.book("device").delete("user_device");
+//                    Paper.book("device").write("user_device", tmp);
+                    deviceList.remove(deviceList.get(position));
+
+                    HashSet<Device> tmpSet = new HashSet<>(deviceList);
+
+                    for (Device d : tmpSet){
+                        Log.e(TAG, "tmpSet: --> " + d.getDeviceAddress());
+                        Log.e(TAG, "tmpSet: --> " + d.getDeviceName());
+                    }
+
+                    Paper.book("device").delete("user_device");
+                    Paper.book("device").write("user_device", tmpSet);
+
+                    notifyDataSetChanged();
+
+                }
+            });
+            builder.show();
+
+        });
+
 //        holder.findDevice.setVisibility(device.isInitialized() ? View.VISIBLE : View.GONE);
 //        holder.findDevice.setOnClickListener(new View.OnClickListener()
 //
@@ -411,6 +473,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         ImageView showActivityTracks;
 
         ImageView deviceInfoView;
+        ImageView deviceRemove;
+
         //overflow
         ListView deviceInfoList;
         ImageView findDevice;
@@ -428,6 +492,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
             fetchActivityData = view.findViewById(R.id.device_action_fetch_activity);
             showActivityTracks = view.findViewById(R.id.device_action_show_activity_tracks);
             deviceInfoView = view.findViewById(R.id.device_info_image);
+
+            deviceRemove = view.findViewById(R.id.device_info_trashcan);
 
         }
     }

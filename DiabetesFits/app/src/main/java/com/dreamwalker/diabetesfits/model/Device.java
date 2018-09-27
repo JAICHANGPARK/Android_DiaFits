@@ -2,8 +2,8 @@ package com.dreamwalker.diabetesfits.model;
 
 public class Device {
 
-    String deviceName;
-    String deviceAddress;
+    private String deviceName;
+    private String deviceAddress;
 
     public Device(String deviceName, String deviceAddress) {
         this.deviceName = deviceName;

@@ -105,9 +105,23 @@
                 android:tint="@color/white"
                 card_view:srcCompat="@drawable/ic_info_outline_black_24dp" />
 
+            <ImageView
+                android:id="@+id/device_info_trashcan"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_below="@id/device_image"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@id/device_info_image"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:contentDescription="@string/candidate_item_device_image"
+                android:focusable="true"
+                android:tint="@color/white"
+                card_view:srcCompat="@drawable/ic_delete_black_24dp" />
+
         </RelativeLayout>
-
     </android.support.v7.widget.CardView>
-
-
 </android.support.design.widget.CoordinatorLayout>
