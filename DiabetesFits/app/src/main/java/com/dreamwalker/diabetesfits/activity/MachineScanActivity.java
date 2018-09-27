@@ -34,6 +34,8 @@ import android.widget.Toast;
 import com.airbnb.lottie.LottieAnimationView;
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.machine.MachineScanAdapter;
+import com.dreamwalker.diabetesfits.device.knu.egzero.EGZeroConst;
+import com.dreamwalker.diabetesfits.device.knu.treadmillzero.TMZConst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -299,8 +301,10 @@ public class MachineScanActivity extends AppCompatActivity {
 
     private List<ScanFilter> getScanFilters() {
         List<ScanFilter> allFilters = new ArrayList<>();
-        ScanFilter scanFilter0 = new ScanFilter.Builder().setDeviceName("KNU EG0").build();
+        ScanFilter scanFilter0 = new ScanFilter.Builder().setDeviceName(EGZeroConst.DEVICE_NAME).build();
+        ScanFilter scanFilter1 = new ScanFilter.Builder().setDeviceName(TMZConst.DEVICE_NAME).build();
         allFilters.add(scanFilter0);
+        allFilters.add(scanFilter1);
 //        ScanFilter scanFilter1 = new ScanFilter.Builder().setDeviceName("").build();
 //        for (DeviceCoordinator coordinator : DeviceHelper.getInstance().getAllCoordinators()) {
 //            allFilters.addAll(coordinator.createBLEScanFilters());
