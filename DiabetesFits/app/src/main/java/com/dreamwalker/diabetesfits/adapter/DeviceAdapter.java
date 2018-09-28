@@ -38,8 +38,10 @@ import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.chart.IndoorBikeRealTimeActivity;
 import com.dreamwalker.diabetesfits.activity.sync.bsm.SyncBSMDataActivity;
 import com.dreamwalker.diabetesfits.activity.sync.indoorbike.SyncIndoorBikeDataActivity;
+import com.dreamwalker.diabetesfits.activity.sync.treadmillzero.SyncTreadmillDataActivity;
 import com.dreamwalker.diabetesfits.consts.isens.PremierNConst;
 import com.dreamwalker.diabetesfits.device.knu.egzero.EGZeroConst;
+import com.dreamwalker.diabetesfits.device.knu.treadmillzero.TMZConst;
 import com.dreamwalker.diabetesfits.model.Device;
 
 import java.util.ArrayList;
@@ -49,8 +51,10 @@ import java.util.List;
 import io.paperdb.Paper;
 
 import static com.dreamwalker.diabetesfits.consts.IntentConst.REAL_TIME_INDOOR_BIKE_DEVICE;
+import static com.dreamwalker.diabetesfits.consts.IntentConst.REAL_TIME_TREADMILL_DEVICE;
 import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_BSM_DEVICE;
 import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_INDOOR_BIKE_DEVICE;
+import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_TREADMILL_DEVICE;
 
 
 /**
@@ -152,22 +156,31 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
         }
         //fetch activity data
 //        holder.fetchActivityDataBox.setVisibility((device.isInitialized() && coordinator.supportsActivityDataFetching()) ? View.VISIBLE : View.GONE);
+        // TODO: 2018-09-28 데이터 동기화
         holder.fetchActivityData.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onClick(View v) {
                                                             switch (deviceName) {
+
                                                                 case PremierNConst.PREMIER_N_BLE:
-                                                                    Log.e("클릭됨", "onClick: 클릭툄" );
+                                                                    Log.e("클릭됨", "onClick: 클릭툄" +  PremierNConst.PREMIER_N_BLE );
                                                                     Intent bsmIntent = new Intent(context, SyncBSMDataActivity.class);
                                                                     bsmIntent.putExtra(SYNC_BSM_DEVICE, deviceAddress);
                                                                     context.startActivity(bsmIntent);
                                                                     break;
 
                                                                 case EGZeroConst.DEVICE_NAME:
-                                                                    Log.e("클릭됨", "onClick: 클릭툄" );
+                                                                    Log.e("클릭됨", "onClick: 클릭툄"  + EGZeroConst.DEVICE_NAME);
                                                                     Intent bikeIntent = new Intent(context, SyncIndoorBikeDataActivity.class);
                                                                     bikeIntent.putExtra(SYNC_INDOOR_BIKE_DEVICE, deviceAddress);
                                                                     context.startActivity(bikeIntent);
+                                                                    break;
+
+                                                                case TMZConst.DEVICE_NAME:
+                                                                    Log.e("클릭됨", "onClick: 클릭툄" + TMZConst.DEVICE_NAME );
+                                                                    Intent tmzeroIntent = new Intent(context, SyncTreadmillDataActivity.class);
+                                                                    tmzeroIntent.putExtra(SYNC_TREADMILL_DEVICE, deviceAddress);
+                                                                    context.startActivity(tmzeroIntent);
                                                                     break;
                                                                 default:
                                                                     break;
@@ -240,6 +253,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         //show activity tracks
         //holder.showActivityTracks.setVisibility(coordinator.supportsActivityTracks() ? View.VISIBLE : View.GONE);
+        // TODO: 2018-09-28 실시간 동기화 가능 -제창
         holder.showActivityTracks.setOnClickListener(new View.OnClickListener() {
                                                          @Override
                                                          public void onClick(View v) {
@@ -251,6 +265,15 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                                                                      bsmIntent.putExtra(REAL_TIME_INDOOR_BIKE_DEVICE, deviceAddress);
                                                                      context.startActivity(bsmIntent);
                                                                      break;
+
+                                                                 case TMZConst.DEVICE_NAME:
+                                                                     Log.e("클릭됨", "onClick: 클릭툄" );
+                                                                     Intent tmzeroIntent = new Intent(context, IndoorBikeRealTimeActivity.class);
+                                                                     tmzeroIntent.putExtra(REAL_TIME_TREADMILL_DEVICE, deviceAddress);
+                                                                     context.startActivity(tmzeroIntent);
+                                                                     break;
+                                                                     
+                                                                     
                                                                  default:
                                                                      break;
                                                              }
@@ -303,6 +326,18 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                                                                  });
                                                                  builder.show();
                                                                  break;
+
+                                                             case TMZConst.DEVICE_NAME:
+                                                                 builder.setTitle(EGZeroConst.DEVICE_NAME);
+                                                                 builder.setMessage("트레드밀(런닝머신). 실내에서 걷기, 달리기 운동이 가능한 유산소 운동기구.");
+                                                                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                                     @Override
+                                                                     public void onClick(DialogInterface dialog, int which) {
+                                                                         dialog.dismiss();
+                                                                     }
+                                                                 });
+                                                                 builder.show();
+                                                                 break;
                                                              default:
                                                                  break;
                                                          }
@@ -333,7 +368,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
             Log.e(TAG, "onBindViewHolder: " +   deviceList.indexOf(deviceList.get(position))) ;
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.HomeAlertDialog);
-
+            // TODO: 2018-09-28 새로운 모델을 생성해 삭제하려고 하면 메모리 주소가 틀려 인식하지 못합니다. - 박제창
             builder.setTitle("장비 삭제하기");
             builder.setMessage("등록하신 장비를 삭제하시겠어요?");
             builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

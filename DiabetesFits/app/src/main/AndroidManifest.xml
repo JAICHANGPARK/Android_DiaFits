@@ -173,6 +173,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
 
+        <activity
+            android:name=".activity.sync.indoorbike.SyncIndoorBikeResultActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".activity.sync.treadmillzero.SyncTreadmillDataActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme">
+        </activity>
+
         <service
             android:name=".utils.reminder.alarm.ReminderAlarmService"
             android:exported="false" />
@@ -182,10 +192,9 @@
         <service
             android:name=".service.knu.egzero.EZSyncService"
             android:enabled="true" />
-
-        <activity android:name=".activity.sync.indoorbike.SyncIndoorBikeResultActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait"></activity>
+        <service
+            android:name=".service.knu.treadmillzero.TMZeroSyncService"
+            android:enabled="true" />
     </application>
 
 </manifest>

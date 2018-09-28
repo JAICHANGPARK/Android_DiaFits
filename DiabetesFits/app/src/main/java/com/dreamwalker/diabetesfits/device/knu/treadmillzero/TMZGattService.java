@@ -8,11 +8,11 @@ public class TMZGattService {
     public static String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
 
     //Service
-    public final static UUID BLE_HEART_RATE             = UUID.fromString("0000180D-0000-1000-8000-00805f9b34fb");
-    public final static UUID BLE_FITNESS_MACHINE        = UUID.fromString("00001826-0000-1000-8000-00805f9b34fb");
-    public final static UUID BLE_DATE_TIME              = UUID.fromString("0000aaa0-0000-1000-8000-00805f9b34fb");
-    public final static UUID BLE_DEVICE_AUTH            = UUID.fromString("0000eee0-0000-1000-8000-00805f9b34fb");
-    public final static UUID BLE_DATA_SYNC              = UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb");
+    public final static UUID BLE_HEART_RATE                     = UUID.fromString("0000180D-0000-1000-8000-00805f9b34fb");
+    public final static UUID BLE_FITNESS_MACHINE                = UUID.fromString("00001826-0000-1000-8000-00805f9b34fb");
+    public final static UUID BLE_DATE_TIME                      = UUID.fromString("0000ddd0-0000-1000-8000-00805f9b34fb");
+    public final static UUID BLE_DEVICE_AUTH                    = UUID.fromString("0000eee0-0000-1000-8000-00805f9b34fb");
+    public final static UUID BLE_DATA_SYNC                      = UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb");
 
     //Characteristic
     public final static UUID BLE_CHAR_HEART_RATE_MEASUREMENT    = UUID.fromString("00002A37-0000-1000-8000-00805f9b34fb");

@@ -36,6 +36,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.dreamwalker.diabetesfits.device.knu.egzero.EGDataConverter;
+import com.dreamwalker.diabetesfits.device.knu.egzero.EGZeroConst;
 import com.dreamwalker.diabetesfits.device.knu.egzero.EZGattService;
 import com.dreamwalker.diabetesfits.model.fitness.Fitness;
 import com.dreamwalker.diabetesfits.utils.auth.Authentication;
@@ -560,14 +561,13 @@ public class EZSyncService extends Service {
 
 
     private boolean authDevicePhase(BluetoothGattCharacteristic characteristic) throws Exception {
-        byte[] authByte = Authentication.encrypt();
-
-//        broadcastUpdate(INTENT_BLE_OPERATESTARTED);
-
-//        characteristic.setValue(new byte[authByte.length]);
-
+        byte[] authByte = Authentication.encrypt(EGZeroConst.AUTH_MESSAGE);
         characteristic.setValue(authByte);
         return mBluetoothGatt.writeCharacteristic(mAuthCharacteristic);
+
+//        broadcastUpdate(INTENT_BLE_OPERATESTARTED);
+//        characteristic.setValue(new byte[authByte.length]);
+
 
     }
 

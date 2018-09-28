@@ -14,7 +14,7 @@ public class Authentication {
      */
     public static String key = "2222000011118888";
     public static byte[] keys = new byte[]{0x02, 0x02, 0x02, 0x02, 0x00, 0x00, 0x00, 0x00, 0x01, 0x01, 0x01, 0x01, 0x08, 0x08, 0x08, 0x08,};
-    public static String  message = "9876543210000001";
+
 
     /**
      * AES 방식의 암호화
@@ -23,7 +23,7 @@ public class Authentication {
      * @return String 암호화 된 문자열
      * @throws Exception
      */
-    public static byte[] encrypt() throws Exception {
+    public static byte[] encrypt(String message) throws Exception {
 
         // use key coss2
         SecretKeySpec skeySpec = new SecretKeySpec(keys, "AES");

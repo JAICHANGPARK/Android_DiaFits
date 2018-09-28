@@ -1,4 +1,4 @@
-package com.dreamwalker.diabetesfits.activity.sync.indoorbike;
+package com.dreamwalker.diabetesfits.activity.sync.treadmillzero;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGatt;
@@ -22,9 +22,10 @@ import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.device.knu.treadmillzero.TMZConst;
 import com.dreamwalker.diabetesfits.model.fitness.Fitness;
 import com.dreamwalker.diabetesfits.service.knu.egzero.EZBLEService;
-import com.dreamwalker.diabetesfits.service.knu.egzero.EZSyncService;
+import com.dreamwalker.diabetesfits.service.knu.treadmillzero.TMZeroSyncService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -35,25 +36,24 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.paperdb.Paper;
 
-import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_INDOOR_BIKE_DEVICE;
-import static com.dreamwalker.diabetesfits.service.knu.egzero.EZSyncService.ACTION_FINAL_DONE;
-import static com.dreamwalker.diabetesfits.service.knu.egzero.EZSyncService.EXTRA_FINAL_DATA;
+import static com.dreamwalker.diabetesfits.consts.IntentConst.SYNC_TREADMILL_DEVICE;
 
-public class SyncIndoorBikeDataActivity extends AppCompatActivity {
 
-    private static final String TAG = "SyncIndoorBikeDataActiv";
+public class SyncTreadmillDataActivity extends AppCompatActivity {
+    private static final String TAG = "SyncTreadmillDataActy";
 
 
     @BindView(R.id.result)
     TextView _result;
     @BindView(R.id.home)
     ImageView backImageView;
-
     @BindView(R.id.animation_view)
     LottieAnimationView animationView;
 
+    String deviceAddress;
+
     BluetoothGattCharacteristic mNotifyCharacteristic;
-    EZSyncService mBluetoothLeService;
+    TMZeroSyncService mBluetoothLeService;
     boolean mConnected = false;
 
     private static final int REQUEST_ENABLE_BT = 2;
@@ -62,14 +62,14 @@ public class SyncIndoorBikeDataActivity extends AppCompatActivity {
     private String mBluetoothDeviceAddress;
     private BluetoothGatt mBluetoothGatt;
 
-    String deviceAddress;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
-            mBluetoothLeService = ((EZSyncService.LocalBinder) service).getService();
+            Log.e(TAG, "서비스 연결 들어왔어요");
+            mBluetoothLeService = ((TMZeroSyncService.LocalBinder) service).getService();
             if (!mBluetoothLeService.initialize()) {
                 Log.e(TAG, "Unable to initialize Bluetooth");
                 finish();
@@ -87,98 +87,78 @@ public class SyncIndoorBikeDataActivity extends AppCompatActivity {
 
     private static IntentFilter makeGattUpdateIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(EZSyncService.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(EZSyncService.ACTION_GATT_DISCONNECTED);
-        intentFilter.addAction(EZSyncService.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(EZSyncService.ACTION_DATA_AVAILABLE);
-        intentFilter.addAction(EZSyncService.ACTION_HEART_RATE_AVAILABLE);
-        intentFilter.addAction(EZSyncService.ACTION_INDOOR_BIKE_AVAILABLE);
-        intentFilter.addAction(EZSyncService.ACTION_TREADMILL_AVAILABLE);
-
-        intentFilter.addAction(EZSyncService.ACTION_FIRST_DONE);
-        intentFilter.addAction(EZSyncService.ACTION_SECOND_DONE);
-        intentFilter.addAction(ACTION_FINAL_DONE);
-
-        intentFilter.addAction(EXTRA_FINAL_DATA);
-
-
-
-
+        intentFilter.addAction(TMZConst.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(TMZConst.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(TMZConst.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(TMZConst.ACTION_DATA_AVAILABLE);
+        intentFilter.addAction(TMZConst.ACTION_HEART_RATE_AVAILABLE);
+        intentFilter.addAction(TMZConst.ACTION_INDOOR_BIKE_AVAILABLE);
+        intentFilter.addAction(TMZConst.ACTION_TREADMILL_AVAILABLE);
+        intentFilter.addAction(TMZConst.ACTION_FIRST_DONE);
+        intentFilter.addAction(TMZConst.ACTION_SECOND_DONE);
+        intentFilter.addAction(TMZConst.ACTION_FINAL_DONE);
+        intentFilter.addAction(TMZConst.EXTRA_FINAL_DATA);
         return intentFilter;
     }
 
-    // Handles various events fired by the Service.
-    // ACTION_GATT_CONNECTED: connected to a GATT server.
-    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
-    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
-    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
-    //                        or notification operations.
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            if (EZSyncService.ACTION_GATT_CONNECTED.equals(action)) {
+            if (TMZConst.ACTION_GATT_CONNECTED.equals(action)) {
                 mConnected = true;
                 //updateConnectionState(R.string.connected);
                 _result.setText("Connected !");
                 invalidateOptionsMenu();
-            } else if (EZSyncService.ACTION_GATT_DISCONNECTED.equals(action)) {
+            } else if (TMZConst.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 _result.setText("DISCONNECTED ! ");
                 //updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
                 //clearUI();
-            }
-
-            else if (EZSyncService.ACTION_FIRST_DONE.equals(action)){
+            } else if (TMZConst.ACTION_FIRST_DONE.equals(action)) {
                 _result.setText("시간 동기화 완료");
-            }
-            else if (EZSyncService.ACTION_SECOND_DONE.equals(action)){
+            } else if (TMZConst.ACTION_SECOND_DONE.equals(action)) {
                 _result.setText("장비 인증 완료 ");
-            }
-            else if (ACTION_FINAL_DONE.equals(action)){
+            } else if (TMZConst.ACTION_FINAL_DONE.equals(action)) {
                 // TODO: 2018-09-05 동기화 완료되면 처리하는 부분이고 전달은 gson으로처리함 . - 박제창
                 // TODO: 2018-09-05 전달할 데이터는 페이퍼 케시에 임시 저장함. - 바ㄱ제차ㅇ
                 _result.setText("데이터 동기화 완료");
-                String resultString = intent.getStringExtra(EXTRA_FINAL_DATA);
+                String resultString = intent.getStringExtra(TMZConst.EXTRA_FINAL_DATA);
                 Log.e(TAG, "최종 전달 받은 값 onReceive: " + resultString);
                 Gson gson = new Gson();
-                ArrayList<Fitness> result = gson.fromJson(resultString, new TypeToken<ArrayList<Fitness>>(){}.getType());
+                ArrayList<Fitness> result = gson.fromJson(resultString, new TypeToken<ArrayList<Fitness>>() {
+                }.getType());
                 Log.e(TAG, "onReceive: " + result.size());
                 _result.setText("정보 처리 중...");
 
-                if (Paper.book("syncIndoorBike").read("data") == null) {
-                    Paper.book("syncIndoorBike").write("data", result);
-                    startActivity(new Intent(SyncIndoorBikeDataActivity.this, SyncIndoorBikeResultActivity.class));
-                    finish();
-                } else {
-                    Paper.book("syncIndoorBike").delete("data");
-                    Paper.book("syncIndoorBike").write("data", result);
-                    startActivity(new Intent(SyncIndoorBikeDataActivity.this, SyncIndoorBikeResultActivity.class));
-                    finish();
-                }
+//                if (Paper.book("syncIndoorBike").read("data") == null) {
+//                    Paper.book("syncIndoorBike").write("data", result);
+//                    startActivity(new Intent(SyncIndoorBikeDataActivity.this, SyncIndoorBikeResultActivity.class));
+//                    finish();
+//                } else {
+//                    Paper.book("syncIndoorBike").delete("data");
+//                    Paper.book("syncIndoorBike").write("data", result);
+//                    startActivity(new Intent(SyncIndoorBikeDataActivity.this, SyncIndoorBikeResultActivity.class));
+//                    finish();
+//                }
 
-            }
-
-
-            else if (EZSyncService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+            } else if (TMZConst.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
                 // TODO: 2018-07-24 서비스와 연결되엉ㅅ을때 방송되어 받아지는 리시버 - 박제창
-//                startIndicator = true;
-                //chronometer.start();
-                //displayGattServices(mBluetoothLeService.getSupportedGattServices());
-            } else if (EZSyncService.ACTION_DATA_AVAILABLE.equals(action)) {
+                _result.setText("서비스 탐색 중..");
+            } else if (TMZConst.ACTION_DATA_AVAILABLE.equals(action)) {
                 Log.e(TAG, "onReceive: " + intent.getStringExtra(EZBLEService.EXTRA_DATA));
 //                displayData(intent.getStringExtra(EZBLEService.EXTRA_DATA));
-            } else if (EZSyncService.ACTION_HEART_RATE_AVAILABLE.equals(action)) {
+            } else if (TMZConst.ACTION_HEART_RATE_AVAILABLE.equals(action)) {
                 Log.e(TAG, "onReceive:  실시간 화면에서 심박수 받앗어요 ");
                 String hr = intent.getStringExtra(EZBLEService.EXTRA_DATA);
 //                heartRateTextView.setText(hr);
-            } else if (EZSyncService.ACTION_INDOOR_BIKE_AVAILABLE.equals(action)) {
+            } else if (TMZConst.ACTION_INDOOR_BIKE_AVAILABLE.equals(action)) {
 
                 String nowSpeed = intent.getStringExtra(EZBLEService.EXTRA_DATA);
 //                nowSpeedTextView.setText(nowSpeed);
-            } else if (EZSyncService.ACTION_TREADMILL_AVAILABLE.equals(action)) {
+            } else if (TMZConst.ACTION_TREADMILL_AVAILABLE.equals(action)) {
 
                 String totalDistance = intent.getStringExtra(EZBLEService.EXTRA_DATA);
 //                totalDistanceTextView.setText(totalDistance);
@@ -186,17 +166,14 @@ public class SyncIndoorBikeDataActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sync_indoor_bike_data);
-
-        Paper.init(this);
-        ButterKnife.bind(this);
-
-        deviceAddress = getIntent().getStringExtra(SYNC_INDOOR_BIKE_DEVICE);
+        setContentView(R.layout.activity_sync_treadmill_data);
+        initActivitySetting();
+        deviceAddress = getDeviceAddress(SYNC_TREADMILL_DEVICE);
         Log.e(TAG, "onCreate: " + deviceAddress);
+
 
         boolean isBleAvailable = getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
 
@@ -209,9 +186,24 @@ public class SyncIndoorBikeDataActivity extends AppCompatActivity {
             registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
         }
 
-        Intent gattServiceIntent = new Intent(this, EZSyncService.class);
+        Intent gattServiceIntent = new Intent(this, TMZeroSyncService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
+    }
+
+    private void initActivitySetting() {
+        Paper.init(this);
+        ButterKnife.bind(this);
+    }
+
+    private String getDeviceAddress(String key) {
+        String address = getIntent().getStringExtra(key);
+        return address;
+    }
+
+    @OnClick(R.id.home)
+    public void homeImageButtonClicked(View v) {
+        finish();
     }
 
 
@@ -239,17 +231,10 @@ public class SyncIndoorBikeDataActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mBluetoothLeService != null){
-
+        if (mBluetoothLeService != null) {
         }
         unbindService(mServiceConnection);
         mBluetoothLeService = null;
     }
 
-    @OnClick(R.id.home)
-    public void homeImageButtonClicked(View v) {
-//        unbindService(mServiceConnection);
-//        mBluetoothLeService = null;
-        finish();
-    }
 }
