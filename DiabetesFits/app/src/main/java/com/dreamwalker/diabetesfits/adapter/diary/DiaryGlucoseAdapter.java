@@ -19,7 +19,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 
 
-class DiaryGlucoseViewHolder extends RecyclerView.ViewHolder{
+class DiaryGlucoseViewHolder extends RecyclerView.ViewHolder {
 
     ImageView mThumbnailImage;
     TextView mTitleText;
@@ -39,7 +39,7 @@ class DiaryGlucoseViewHolder extends RecyclerView.ViewHolder{
 }
 
 
-public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseViewHolder>{
+public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseViewHolder> {
     Context context;
     ArrayList<Gluco> glucoArrayList;
     private ColorGenerator mColorGenerator = ColorGenerator.DEFAULT;
@@ -62,12 +62,26 @@ public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseViewHo
     public void onBindViewHolder(@NonNull DiaryGlucoseViewHolder diaryGlucoseViewHolder, int i) {
 
         String userType = glucoArrayList.get(i).getType();
+        int changeGlucoseValue = glucoArrayList.get(i).getChangeValue();
+
         setReminderTitle(userType);
         diaryGlucoseViewHolder.mTitleText.setText(userType);
         diaryGlucoseViewHolder.mThumbnailImage.setImageDrawable(mDrawableBuilder);
         diaryGlucoseViewHolder.mDateAndTimeText.setText(DateFormat.getTimeInstance().format(glucoArrayList.get(i).getDatetime()));
         diaryGlucoseViewHolder.glucoseValueTextView.setText(glucoArrayList.get(i).getUserValue());
-        diaryGlucoseViewHolder.glucoseChangeTextView.setText(String.valueOf(glucoArrayList.get(i).getChangeValue()));
+
+        if (changeGlucoseValue < 0) {
+            String tmp = String.valueOf(changeGlucoseValue);
+            tmp = tmp.substring(1) + " 감소";
+            diaryGlucoseViewHolder.glucoseChangeTextView.setText(tmp);
+        } else if (changeGlucoseValue > 0) {
+            String tmp = String.valueOf(changeGlucoseValue) + " 증가";
+            diaryGlucoseViewHolder.glucoseChangeTextView.setText(tmp);
+        } else if (changeGlucoseValue == 0) {
+            String tmp = "";
+            diaryGlucoseViewHolder.glucoseChangeTextView.setText(tmp);
+        }
+
 
     }
 
