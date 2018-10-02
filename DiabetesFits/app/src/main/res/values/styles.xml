@@ -99,7 +99,14 @@
         <item name="colorAccent">@color/shopAccent</item>
     </style>
 
+
     <style name="WriteFitnessTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimaryDark">@android:color/white</item>
+        <item name="colorAccent">@color/shopAccent</item>
+    </style>
+
+
+    <style name="WriteGlucoseTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimaryDark">@android:color/white</item>
         <item name="colorAccent">@color/shopAccent</item>
     </style>

@@ -78,7 +78,7 @@ public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseViewHo
             String tmp = String.valueOf(changeGlucoseValue) + " 증가";
             diaryGlucoseViewHolder.glucoseChangeTextView.setText(tmp);
         } else if (changeGlucoseValue == 0) {
-            String tmp = "";
+            String tmp = " - ";
             diaryGlucoseViewHolder.glucoseChangeTextView.setText(tmp);
         }
 

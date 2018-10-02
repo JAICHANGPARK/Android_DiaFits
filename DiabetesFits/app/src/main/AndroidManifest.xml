@@ -141,12 +141,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.education.KADNEHomeActivity" />
         </activity>
-        <activity android:name=".activity.diary.DiaryGlucoseActivity"
+        <activity
+            android:name=".activity.diary.DiaryGlucoseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ShopTheme"/>
-        <activity android:name=".activity.diary.DiaryFitnessActivity"
+            android:theme="@style/ShopTheme" />
+        <activity
+            android:name=".activity.diary.DiaryFitnessActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ShopTheme"/>
+            android:theme="@style/ShopTheme" />
         <activity
             android:name=".activity.appinfo.DetailAppMenuActivity"
             android:screenOrientation="portrait"
@@ -161,7 +163,6 @@
         <activity
             android:name=".activity.reminder.ReminderActivity"
             android:theme="@style/ShopTheme" />
-
         <activity android:name=".activity.appinfo.AboutProjectActivity" />
         <activity
             android:name=".activity.profile.EditProfileActivity"
@@ -174,16 +175,14 @@
             android:name=".activity.sync.indoorbike.SyncIndoorBikeDataActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-
         <activity
             android:name=".activity.sync.indoorbike.SyncIndoorBikeResultActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.sync.treadmillzero.SyncTreadmillDataActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ShopTheme"></activity>
+            android:theme="@style/ShopTheme" />
 
         <service
             android:name=".utils.reminder.alarm.ReminderAlarmService"
@@ -203,6 +202,9 @@
         <!-- android:authorities="com.dreamwalker.diabetesreminder" -->
         <!-- android:exported="true" -->
         <!-- android:enabled="true"/> -->
+        <activity android:name=".activity.diary.WriteGlucoseActivity"
+            android:theme="@style/WriteGlucoseTheme"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

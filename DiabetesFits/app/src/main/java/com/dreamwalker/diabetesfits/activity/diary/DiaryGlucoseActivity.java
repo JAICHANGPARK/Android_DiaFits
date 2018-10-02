@@ -1,5 +1,6 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -92,61 +93,6 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
         Log.e(TAG, "onCreate: todayString --> " + todayString);
 
         initHorizontalCalendar(startDate, endDate, defaultSelectedDate, simpleDateFormat);
-
-
-//        horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
-//                .range(startDate, endDate)
-//                .datesNumberOnScreen(5)
-//                .configure()
-//                .formatTopText("MMM")
-//                .formatMiddleText("dd")
-//                .formatBottomText("EE")
-//                .showTopText(true)
-//                .showBottomText(true)
-//                .textColor(Color.LTGRAY, Color.WHITE)
-//                .colorTextMiddle(Color.LTGRAY, Color.parseColor("#ffd54f"))
-//                .end()
-//                .defaultSelectedDate(defaultSelectedDate)
-//                .addEvents(new CalendarEventsPredicate() {
-//                    @Override
-//                    public List<CalendarEvent> events(Calendar date) {
-//                        List<CalendarEvent> events = new ArrayList<>();
-//                        String eventDate = simpleDateFormat.format(date.getTime());
-//                        RealmResults<Glucose> tmp = realm.where(Glucose.class).equalTo("date", eventDate).findAll();
-//
-//                        for (int i = 0; i < tmp.size(); i++) {
-//                            Log.e(TAG, "events: " + date.getTimeInMillis());
-//
-//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                                events.add(new CalendarEvent(getColor(R.color.shopAccent), "count"));
-//                            } else {
-//                                events.add(new CalendarEvent(R.color.shopAccent, "count"));
-//                            }
-//                        }
-//                        return events;
-//                    }
-//                })
-//                .build();
-//
-//        Log.e("Default Date", DateFormat.format("EEE, MMM d, yyyy", defaultSelectedDate).toString());
-//
-//        horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
-//
-//            @Override
-//            public void onDateSelected(Calendar date, int position) {
-////                String selectedDateStr = DateFormat.format("EEE, MMM d, yyyy", date).toString();
-//                String selectedDate = DateFormat.format("yyyy-MM-dd", date).toString();
-////                Toast.makeText(DiaryGlucoseActivity.this, selectedDate + " selected!", Toast.LENGTH_SHORT).show();
-////                Log.e("onDateSelected", selectedDateStr + " - Position = " + position);
-//                Log.e("onDateSelected", selectedDate + " - Position = " + position);
-//
-//                sortAndProcessGlucose(selectedDate);
-//                adapter.notifyDataSetChanged();
-//
-//            }
-//
-//        });
-
 
         sortAndProcessGlucose(todayString, true);
 
@@ -333,6 +279,9 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
 
     @OnClick(R.id.fab)
     public void onClickedFab() {
+        Intent intent = new Intent(DiaryGlucoseActivity.this, WriteGlucoseActivity.class);
+        startActivity(intent);
+        Realm.getInstance(realmConfiguration).close();
 
 //        horizontalCalendar.goToday(false);
 
