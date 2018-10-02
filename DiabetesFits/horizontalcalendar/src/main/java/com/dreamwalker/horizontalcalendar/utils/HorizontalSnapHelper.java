@@ -5,8 +5,9 @@ import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
-import devs.mulham.horizontalcalendar.HorizontalCalendarView;
+import com.dreamwalker.horizontalcalendar.HorizontalCalendar;
+import com.dreamwalker.horizontalcalendar.HorizontalCalendarView;
+
 
 /**
  * @author Mulham-Raee

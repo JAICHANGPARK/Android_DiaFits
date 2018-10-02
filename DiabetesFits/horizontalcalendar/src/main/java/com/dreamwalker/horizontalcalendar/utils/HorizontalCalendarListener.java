@@ -1,8 +1,9 @@
 package com.dreamwalker.horizontalcalendar.utils;
 
+import com.dreamwalker.horizontalcalendar.HorizontalCalendarView;
+
 import java.util.Calendar;
 
-import devs.mulham.horizontalcalendar.HorizontalCalendarView;
 
 /**
  * @author Mulham-Raee

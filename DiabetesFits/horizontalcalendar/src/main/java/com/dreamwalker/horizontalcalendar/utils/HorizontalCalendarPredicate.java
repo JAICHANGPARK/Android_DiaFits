@@ -1,8 +1,10 @@
 package com.dreamwalker.horizontalcalendar.utils;
 
+import com.dreamwalker.horizontalcalendar.model.CalendarItemStyle;
+
 import java.util.Calendar;
 
-import devs.mulham.horizontalcalendar.model.CalendarItemStyle;
+
 
 /**
  * @author Mulham-Raee

@@ -1,9 +1,10 @@
 package com.dreamwalker.horizontalcalendar.utils;
 
+import com.dreamwalker.horizontalcalendar.model.CalendarEvent;
+
 import java.util.Calendar;
 import java.util.List;
 
-import devs.mulham.horizontalcalendar.model.CalendarEvent;
 
 /**
  * @author Mulham-Raee

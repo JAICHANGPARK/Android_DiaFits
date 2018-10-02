@@ -2,8 +2,9 @@ package com.dreamwalker.horizontalcalendar;
 
 import android.graphics.drawable.Drawable;
 
-import devs.mulham.horizontalcalendar.model.CalendarItemStyle;
-import devs.mulham.horizontalcalendar.model.HorizontalCalendarConfig;
+import com.dreamwalker.horizontalcalendar.model.CalendarItemStyle;
+import com.dreamwalker.horizontalcalendar.model.HorizontalCalendarConfig;
+
 
 /**
  * @author Mulham-Raee

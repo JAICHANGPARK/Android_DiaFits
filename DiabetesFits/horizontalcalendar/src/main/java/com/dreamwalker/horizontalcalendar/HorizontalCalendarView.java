@@ -8,9 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
-import devs.mulham.horizontalcalendar.adapter.HorizontalCalendarBaseAdapter;
-import devs.mulham.horizontalcalendar.model.CalendarItemStyle;
-import devs.mulham.horizontalcalendar.model.HorizontalCalendarConfig;
+import com.dreamwalker.horizontalcalendar.adapter.HorizontalCalendarBaseAdapter;
+import com.dreamwalker.horizontalcalendar.model.CalendarItemStyle;
+import com.dreamwalker.horizontalcalendar.model.HorizontalCalendarConfig;
+
 
 /**
  * See {devs.mulham.horizontalcalendar.R.styleable#HorizontalCalendarView HorizontalCalendarView Attributes}

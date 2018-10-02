@@ -4,16 +4,17 @@ import android.text.format.DateFormat;
 import android.util.TypedValue;
 import android.view.View;
 
+import com.dreamwalker.horizontalcalendar.HorizontalCalendar;
+import com.dreamwalker.horizontalcalendar.R;
+import com.dreamwalker.horizontalcalendar.model.HorizontalCalendarConfig;
+import com.dreamwalker.horizontalcalendar.utils.CalendarEventsPredicate;
+import com.dreamwalker.horizontalcalendar.utils.HorizontalCalendarPredicate;
+import com.dreamwalker.horizontalcalendar.utils.Utils;
+
 import java.util.Calendar;
 import java.util.List;
 
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
-import devs.mulham.horizontalcalendar.HorizontalCalendarView;
-import devs.mulham.horizontalcalendar.R;
-import devs.mulham.horizontalcalendar.model.HorizontalCalendarConfig;
-import devs.mulham.horizontalcalendar.utils.CalendarEventsPredicate;
-import devs.mulham.horizontalcalendar.utils.HorizontalCalendarPredicate;
-import devs.mulham.horizontalcalendar.utils.Utils;
+
 
 /**
  * custom adapter for {@link HorizontalCalendarView HorizontalCalendarView}

@@ -9,7 +9,6 @@ import android.view.WindowManager;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
-import devs.mulham.horizontalcalendar.HorizontalCalendar;
 
 /**
  * @author Mulham-Raee

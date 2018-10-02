@@ -7,18 +7,19 @@ import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.dreamwalker.horizontalcalendar.adapter.DaysAdapter;
+import com.dreamwalker.horizontalcalendar.adapter.HorizontalCalendarBaseAdapter;
+import com.dreamwalker.horizontalcalendar.adapter.MonthsAdapter;
+import com.dreamwalker.horizontalcalendar.model.CalendarItemStyle;
+import com.dreamwalker.horizontalcalendar.model.HorizontalCalendarConfig;
+import com.dreamwalker.horizontalcalendar.utils.CalendarEventsPredicate;
+import com.dreamwalker.horizontalcalendar.utils.HorizontalCalendarListener;
+import com.dreamwalker.horizontalcalendar.utils.HorizontalCalendarPredicate;
+import com.dreamwalker.horizontalcalendar.utils.HorizontalSnapHelper;
+import com.dreamwalker.horizontalcalendar.utils.Utils;
+
 import java.util.Calendar;
 
-import devs.mulham.horizontalcalendar.adapter.DaysAdapter;
-import devs.mulham.horizontalcalendar.adapter.HorizontalCalendarBaseAdapter;
-import devs.mulham.horizontalcalendar.adapter.MonthsAdapter;
-import devs.mulham.horizontalcalendar.model.CalendarItemStyle;
-import devs.mulham.horizontalcalendar.model.HorizontalCalendarConfig;
-import devs.mulham.horizontalcalendar.utils.CalendarEventsPredicate;
-import devs.mulham.horizontalcalendar.utils.HorizontalCalendarListener;
-import devs.mulham.horizontalcalendar.utils.HorizontalCalendarPredicate;
-import devs.mulham.horizontalcalendar.utils.HorizontalSnapHelper;
-import devs.mulham.horizontalcalendar.utils.Utils;
 
 
 /**
