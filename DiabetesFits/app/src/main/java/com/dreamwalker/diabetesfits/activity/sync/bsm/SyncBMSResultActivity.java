@@ -628,6 +628,7 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
         protected void onPostExecute(Void aVoid) {
             progressDialog.dismiss();
             Toast.makeText(SyncBMSResultActivity.this, "저장완료", Toast.LENGTH_SHORT).show();
+            Realm.getInstance(realmConfiguration).close();
             finish();
             super.onPostExecute(aVoid);
         }
@@ -635,7 +636,9 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
 
     @Override
     protected void onDestroy() {
-        realm.close();
+
+
+//        realm.close();
         super.onDestroy();
     }
 }

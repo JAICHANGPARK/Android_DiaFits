@@ -7,6 +7,8 @@ import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
@@ -16,15 +18,21 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.adapter.diary.DiaryGlucoseAdapter;
 import com.dreamwalker.diabetesfits.database.RealmManagement;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
+import com.dreamwalker.diabetesfits.model.diary.Gluco;
 import com.dreamwalker.horizontalcalendar.HorizontalCalendar;
 import com.dreamwalker.horizontalcalendar.HorizontalCalendarView;
+import com.dreamwalker.horizontalcalendar.model.CalendarEvent;
+import com.dreamwalker.horizontalcalendar.utils.CalendarEventsPredicate;
 import com.dreamwalker.horizontalcalendar.utils.HorizontalCalendarListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -37,6 +45,8 @@ import io.realm.RealmResults;
 public class DiaryGlucoseActivity extends AppCompatActivity {
     private static final String TAG = "DiaryGlucoseActivity";
 
+    @BindView(R.id.recycler_view)
+    RecyclerView recyclerView;
     @BindView(R.id.calendarView)
     HorizontalCalendarView calendarView;
     @BindView(R.id.bottomAppBar)
@@ -44,9 +54,16 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
 
+    ArrayList<Gluco> glucoArrayList = new ArrayList<>();
+    DiaryGlucoseAdapter adapter;
+    LinearLayoutManager layoutManager;
+
+
     HorizontalCalendar horizontalCalendar;
     Realm realm;
     RealmConfiguration realmConfiguration;
+
+    RealmResults<Glucose> todayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +71,9 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_diary_glucose);
         initSetting();
 
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
 
         /* start 2 months ago from now */
         Calendar startDate = Calendar.getInstance();
@@ -70,8 +90,65 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
         String todayString = simpleDateFormat.format(todayDate);
         Log.e(TAG, "onCreate: todayString --> " + todayString);
 
+
+        RealmResults<Glucose> preResult = realm.where(Glucose.class)
+                .greaterThanOrEqualTo("datetime", startDate.getTime())
+                .lessThanOrEqualTo("datetime", endDate.getTime())
+                .findAll();
+
+        todayList = realm.where(Glucose.class).equalTo("date", todayString).findAll().sort("datetime");
+//        todayList = realm.where(Glucose.class).equalTo("date", todayString).findAll().sort("datetime");
+//        for (Glucose glucose : todayList) {
+//            Log.e(TAG, "onCreate: todayList  getValue --> " + glucose.getValue());
+//            Log.e(TAG, "onCreate: todayList  getLongTs --> " + glucose.getDate());
+//
+//        }
+
+        ArrayList<Integer> changeList = new ArrayList<>();
+        for (int i = (todayList.size() - 1); i > 0; i--) {
+            float change = Float.parseFloat(todayList.get(i).getValue()) - Float.parseFloat(todayList.get(i - 1).getValue());
+            Log.e(TAG, "onCreate: " + change);
+            changeList.add((int) change);
+        }
+
+        glucoArrayList.add(new Gluco(todayList.get(0).getValue(),
+                todayList.get(0).getType(),
+                todayList.get(0).getDate(),
+                todayList.get(0).getTime(),
+                todayList.get(0).getTimestamp(),
+                todayList.get(0).getLongTs(),
+                todayList.get(0).getDatetime(), 0));
+
+        for (int i = 1; i < todayList.size(); i++) {
+            glucoArrayList.add(new Gluco(todayList.get(i).getValue(),
+                    todayList.get(i).getType(),
+                    todayList.get(i).getDate(),
+                    todayList.get(i).getTime(),
+                    todayList.get(i).getTimestamp(),
+                    todayList.get(i).getLongTs(),
+                    todayList.get(i).getDatetime(),
+                    changeList.get(changeList.size() - i)));
+        }
+
+        adapter = new DiaryGlucoseAdapter(this, glucoArrayList);
+        recyclerView.setAdapter(adapter);
+
+
+        initHorizontalCalendar(startDate, endDate, defaultSelectedDate, simpleDateFormat, todayString);
+//        RealmResults<Glucose> result = realm.where(Glucose.class).findAll();
+//        Log.e(TAG, "onCreate: " + result.size() );
+//        for (Glucose glucose: result){
+//            Log.e(TAG, "onCreate: getValue --> " + glucose.getValue());
+//            Log.e(TAG, "onCreate: getLongTs --> " + glucose.getDate());
+//        }
+
+
+    }
+
+    private void initHorizontalCalendar(Calendar start, Calendar end, Calendar defaultDate, SimpleDateFormat sdf, String tds) {
+
         horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
-                .range(startDate, endDate)
+                .range(start, end)
                 .datesNumberOnScreen(5)
                 .configure()
                 .formatTopText("MMM")
@@ -82,10 +159,29 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
                 .textColor(Color.LTGRAY, Color.WHITE)
                 .colorTextMiddle(Color.LTGRAY, Color.parseColor("#ffd54f"))
                 .end()
-                .defaultSelectedDate(defaultSelectedDate)
+                .defaultSelectedDate(defaultDate)
+                .addEvents(new CalendarEventsPredicate() {
+                    @Override
+                    public List<CalendarEvent> events(Calendar date) {
+                        List<CalendarEvent> events = new ArrayList<>();
+                        String eventDate = sdf.format(date.getTime());
+                        RealmResults<Glucose> tmp = realm.where(Glucose.class).equalTo("date", eventDate).findAll();
+
+                        for (int i = 0; i < tmp.size(); i++) {
+                            Log.e(TAG, "events: " + date.getTimeInMillis());
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                events.add(new CalendarEvent(getColor(R.color.shopAccent), "count"));
+                            } else {
+                                events.add(new CalendarEvent(R.color.shopAccent, "count"));
+                            }
+                        }
+                        return events;
+                    }
+                })
                 .build();
 
-        Log.e("Default Date", DateFormat.format("EEE, MMM d, yyyy", defaultSelectedDate).toString());
+        Log.e("Default Date", DateFormat.format("EEE, MMM d, yyyy", defaultDate).toString());
 
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
@@ -98,18 +194,6 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
             }
         });
 
-//        RealmResults<Glucose> result = realm.where(Glucose.class).findAll();
-//        Log.e(TAG, "onCreate: " + result.size() );
-//        for (Glucose glucose: result){
-//            Log.e(TAG, "onCreate: getValue --> " + glucose.getValue());
-//            Log.e(TAG, "onCreate: getLongTs --> " + glucose.getDate());
-//        }
-
-        RealmResults<Glucose> todayList = realm.where(Glucose.class).equalTo("date", todayString).findAll();
-        for (Glucose glucose : todayList) {
-            Log.e(TAG, "onCreate: todayList  getValue --> " + glucose.getValue());
-            Log.e(TAG, "onCreate: todayList  getLongTs --> " + glucose.getDate());
-        }
     }
 
     private void initSetting() {

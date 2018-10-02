@@ -31,16 +31,33 @@
 
     <!--</android.support.design.widget.AppBarLayout>-->
 
-    <com.dreamwalker.horizontalcalendar.HorizontalCalendarView
-        android:background="@color/diary_bottom_appbar_color2"
-        android:backgroundTint="@color/diary_bottom_appbar_color2"
-        android:id="@+id/calendarView"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:sizeBottomText="14sp"
-        app:sizeMiddleText="20sp"
-        app:textColorSelected="#FFFF" />
+        android:layout_height="match_parent">
 
+        <com.dreamwalker.horizontalcalendar.HorizontalCalendarView
+            android:background="@color/diary_bottom_appbar_color2"
+            android:backgroundTint="@color/diary_bottom_appbar_color2"
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:sizeBottomText="14sp"
+            app:sizeMiddleText="20sp"
+            app:textColorSelected="#FFFF" />
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_below="@id/calendarView"
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:background="#ffffff"
+            android:clipChildren="false"
+            android:clipToPadding="false" />
+
+    </RelativeLayout>
 
     <android.support.design.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
