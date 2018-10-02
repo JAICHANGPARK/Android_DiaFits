@@ -21,6 +21,7 @@ import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.profile.ProfileActivity;
 import com.dreamwalker.diabetesfits.adapter.DashboardAdapter;
 import com.dreamwalker.diabetesfits.consts.GlucoseType;
+import com.dreamwalker.diabetesfits.database.MyMigration;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.dreamwalker.diabetesfits.utils.timeago.ZamanTextView;
 import com.github.mikephil.charting.charts.LineChart;
@@ -39,6 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.paperdb.Paper;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 import io.realm.Sort;
 
@@ -88,6 +90,16 @@ public class GlucoseFeedActivity extends AppCompatActivity {
     String userGlucoseMax;
     boolean userGlucoseValueCheckFlag = false;
 
+    Realm realm;
+    RealmConfiguration realmConfiguration;
+
+    private RealmConfiguration getRealmConfig(){
+        return new RealmConfiguration.Builder().schemaVersion(1).migration(new MyMigration()).build();
+    }
+
+    private RealmConfiguration getRealmConfigIfDevelopment(){
+        return new RealmConfiguration.Builder().deleteRealmIfMigrationNeeded().build();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +108,9 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Paper.init(this);
         Realm.init(this);
+        realmConfiguration = getRealmConfig();
+        Realm.setDefaultConfiguration(realmConfiguration);
+
 
         userGlucoseMin = Paper.book("user").read("userGlucoseMin");
         userGlucoseMax = Paper.book("user").read("userGlucoseMax");
@@ -117,7 +132,8 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(staggeredGridLayoutManager);
 
-        Realm realm = Realm.getDefaultInstance();
+        realm =  Realm.getInstance(realmConfiguration);
+//        Realm realm = Realm.getDefaultInstance();
 
         Calendar now = Calendar.getInstance();
 
@@ -424,7 +440,6 @@ public class GlucoseFeedActivity extends AppCompatActivity {
 
         LineData lineData = new LineData(lineDataSet);
 
-
         lineChart.setData(lineData);
         lineChart.invalidate();
 
@@ -443,5 +458,20 @@ public class GlucoseFeedActivity extends AppCompatActivity {
     public void onClickRecommendTextView() {
         // TODO: 2018-08-28 개인 추천 페이지로 넘겨줘야 한다.  필수적으로 최대 최소 목표 혈당이 설정되어야 한다는 조건 - 박제창
         startActivity(new Intent(GlucoseFeedActivity.this, ProfileActivity.class));
+    }
+
+    @Override
+    protected void onPause() {
+        Realm.getInstance(realmConfiguration).close();
+        realm.close();
+        super.onPause();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        Realm.getInstance(realmConfiguration).close();
+        realm.close();
+        super.onDestroy();
     }
 }

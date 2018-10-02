@@ -12,6 +12,7 @@ public class IntentConst {
     public static final String REAL_TIME_TREADMILL_DEVICE = "REAL_TIME_TREADMILL_DEVICE";
 
     public static final String USER_WRITE_GLUCOSE = "USER_WRITE_GLUCOSE";
+    public static final String USER_WRITE_FITNESS = "USER_WRITE_FITNESS";
     public static final String WEB_URL = "WEB_URL";
     public static final String EDUCATION_PART = "EDUCATION_PART";
     public static final String EDUCATION_PART_NAME = "EDUCATION_PART_NAME";

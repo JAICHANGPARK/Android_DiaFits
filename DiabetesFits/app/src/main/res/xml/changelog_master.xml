@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.0.7" versioncode="8">
+        <change>Date : 2018-10-02</change>
+        <change>Fitness Database Migration</change>
+        <change>Fitness Write added</change>
+        <change>Bug Fixed and Crash Fixed</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
+    </release>
+
+    <release version="1.0.6" versioncode="7">
+        <change>Date : 2018-09-28</change>
+        <change>Now Can delete device</change>
+        <change>Treadmill Device Scan added</change>
+        <change>Bug Fixed and Crash Fixed</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
+    </release>
     <release version="1.0.5" versioncode="6">
         <change>Date : 2018-08-30</change>
         <change>Add Diabetes Reminder</change>

@@ -1,21 +1,32 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.consts.IntentConst;
+import com.philliphsu.bottomsheetpickers.date.DatePickerDialog;
+import com.philliphsu.bottomsheetpickers.time.BottomSheetTimePickerDialog;
+import com.philliphsu.bottomsheetpickers.time.grid.GridTimePickerDialog;
+import com.philliphsu.bottomsheetpickers.time.numberpad.NumberPadTimePickerDialog;
 
 import org.angmarch.views.NiceSpinner;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +35,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.paperdb.Paper;
 
-public class WriteFitnessActivity extends AppCompatActivity {
+public class WriteFitnessActivity extends AppCompatActivity
+        implements BottomSheetTimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener {
     private static final String TAG = "WriteFitnessActivity";
 
     @BindView(R.id.nice_spinner)
@@ -35,9 +47,15 @@ public class WriteFitnessActivity extends AppCompatActivity {
     NiceSpinner niceSpinner3;
 
 
+    @BindView(R.id.fitness_time_edt)
+    TextInputEditText fitnessTimeEditText;
+    @BindView(R.id.distance_edt)
+    TextInputEditText distanceEditText;
+    @BindView(R.id.speed_edt)
+    TextInputEditText speedEditText;
+
     @BindView(R.id.score_edt)
     TextInputEditText scoreEditText;
-
     @BindView(R.id.weight_edt)
     TextInputEditText weightEditText;
 
@@ -50,13 +68,26 @@ public class WriteFitnessActivity extends AppCompatActivity {
     ImageView rpeInfoButton;
 
 
-    String selectType;
-    String selectTypeDetail;
-    String selectRpeExpression;
-    String repScore;
+    String selectType;  // 운동 종류 데이터 변수
+    String selectTypeDetail; // 운동 강도? 상세 정보
+    String selectRpeExpression; // 운동 자각도
+    String userWeight;  // 사용자 체중
 
-    String userWeight;
+    String fitnessTime; //운동 시간
+    String fitnessDistance; // 이동 거리
+    String fitnessSpeed; // 운동 속도
 
+    String rpeScore; //운동 자각도 점수
+
+    NumberPadTimePickerDialog pad;
+
+    DatePickerDialog dateDialog;
+    GridTimePickerDialog gridTimeDialog;
+
+    int y, m, d;
+    int h, min;
+
+    HashMap<String, String> userInputMap = new HashMap<>();
 
 
     @Override
@@ -85,6 +116,7 @@ public class WriteFitnessActivity extends AppCompatActivity {
         initPaper();
         initUserWeight();
         setTextInputEditText();
+        setBottomSheetPicker();
     }
 
     private void initUserWeight() {
@@ -119,10 +151,12 @@ public class WriteFitnessActivity extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         selectType = "트레드밀";
+                        selectTypeDetail = treadmillSet.get(0);
                         niceSpinner2.attachDataSource(treadmillSet);
                         break;
                     case 1:
                         selectType = "실내자전거";
+                        selectTypeDetail = indoorBikeSet.get(0);
                         niceSpinner2.attachDataSource(indoorBikeSet);
                         break;
                 }
@@ -208,7 +242,7 @@ public class WriteFitnessActivity extends AppCompatActivity {
 
     }
 
-    private void setTextInputEditText(){
+    private void setTextInputEditText() {
 //         InputFilter filterAlphaNum = (source, start, end, dest, dstart, dend) -> {
 //             Pattern ps = Pattern.compile("[[6]-2[0]]");
 //             if (!ps.matcher(source).matches()) {
@@ -220,12 +254,84 @@ public class WriteFitnessActivity extends AppCompatActivity {
         scoreEditText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.e(TAG, "onKey: " + keyCode +  " ,, " + event );
+                Log.e(TAG, "onKey: " + keyCode + " ,, " + event);
                 return false;
             }
         });
 
     }
+
+
+    private void setBottomSheetPicker() {
+
+
+        Calendar now = Calendar.getInstance();
+
+        // As of version 2.3.0, `BottomSheetDatePickerDialog` is deprecated.
+        dateDialog = DatePickerDialog.newInstance(
+                WriteFitnessActivity.this,
+                now.get(Calendar.YEAR),
+                now.get(Calendar.MONTH),
+                now.get(Calendar.DAY_OF_MONTH));
+
+        gridTimeDialog = GridTimePickerDialog.newInstance(
+                WriteFitnessActivity.this,
+                now.get(Calendar.HOUR_OF_DAY),
+                now.get(Calendar.MINUTE),
+                DateFormat.is24HourFormat(WriteFitnessActivity.this));
+
+        // Configured according to the system preference for 24-hour time.
+        pad = NumberPadTimePickerDialog.newInstance(WriteFitnessActivity.this);
+
+    }
+
+
+    @Override
+    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+
+        Log.e(TAG, "onDateSet: " + year + "|" + monthOfYear + "|" + dayOfMonth);
+
+        //
+        y = year;
+        m = monthOfYear;
+        d = dayOfMonth;
+
+        userInputMap.put("year", String.valueOf(year));
+        userInputMap.put("monthOfYear", String.valueOf(monthOfYear));
+        userInputMap.put("dayOfMonth", String.valueOf(dayOfMonth));
+
+        gridTimeDialog.show(getSupportFragmentManager(), "3");
+
+    }
+
+    @Override
+    public void onTimeSet(ViewGroup viewGroup, int hourOfDay, int minute) {
+
+        Log.e(TAG, "onTimeSet: " + hourOfDay + ", " + minute);
+        h = hourOfDay;
+        min = minute;
+
+        GregorianCalendar gregorianCalendar = new GregorianCalendar(y, m, d, h, min);
+        Log.e(TAG, "onTimeSet: " + gregorianCalendar.getTime());
+        Log.e(TAG, "onTimeSet: " + gregorianCalendar.getTimeInMillis());
+
+        userInputMap.put("selectType", selectType);
+        userInputMap.put("selectTypeDetail", selectTypeDetail);
+        userInputMap.put("selectRpeExpression", selectRpeExpression);
+        userInputMap.put("fitnessTime", fitnessTime);
+        userInputMap.put("fitnessDistance", fitnessDistance);
+        userInputMap.put("fitnessSpeed", fitnessSpeed);
+        userInputMap.put("rpeScore", rpeScore);
+        userInputMap.put("hourOfDay", String.valueOf(hourOfDay));
+        userInputMap.put("minute", String.valueOf(minute));
+        userInputMap.put("timestamp", String.valueOf(gregorianCalendar.getTimeInMillis()));
+
+        Intent intent = new Intent(WriteFitnessActivity.this, WriteFintessCheckActivity.class);
+        intent.putExtra(IntentConst.USER_WRITE_FITNESS, userInputMap);
+        startActivity(intent);
+
+    }
+
 
     // TODO: 2018-09-02 이지미 뷰이지만 버튼으로 구성했습니다.- 박제창
     @OnClick(R.id.home)
@@ -252,11 +358,101 @@ public class WriteFitnessActivity extends AppCompatActivity {
 
     @OnClick(R.id.done)
     public void onClickedDoneButton() {
+        boolean timeCheck = false;
+        boolean distanceCheck = false;
+        boolean speedCheck = false;
+        boolean scoreCheck = false;
 
+        Log.e(TAG, "onClickedDoneButton: selectType -> " + selectType);
+        Log.e(TAG, "onClickedDoneButton: selectTypeDetail -> " + selectTypeDetail);
+        Log.e(TAG, "onClickedDoneButton: selectRpeExpression -> " + selectRpeExpression);
+
+        if (fitnessTimeEditText.getText().toString().length() != 0) {
+            fitnessTime = fitnessTimeEditText.getText().toString();
+            Log.e(TAG, "onClickedDoneButton: fitnessTime -> " + fitnessTime);
+            timeCheck = true;
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("알림");
+            builder.setMessage("운동시간을 입력해주세요.\n 단위는 [분] 입니다.\n 예) 30분 운동 시 30 입력");
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            builder.show();
+        }
+
+        if (distanceEditText.getText().toString().length() != 0) {
+            fitnessDistance = distanceEditText.getText().toString();
+            Log.e(TAG, "onClickedDoneButton: fitnessDistance -> " + fitnessDistance);
+            if (!fitnessDistance.contains(".")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("알림");
+                builder.setMessage("올바른 운동거리를 입력해주세요. \n 단위는 [km] 입니다. \n\n 예) 4.2km 운동 시 4.2 입력 \n  10km 운동 시 10.0 입력");
+                builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+                builder.show();
+            } else {
+                distanceCheck = true;
+            }
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("알림");
+            builder.setMessage("운동거리를 입력해주세요. \n 단위는 [km] 입니다. \n 예) 4.2km 운동 시 4.2 입력 \n  10km 운동 시 10.0 입력");
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            builder.show();
+        }
+
+        if (speedEditText.getText().toString().length() != 0) {
+            fitnessSpeed = speedEditText.getText().toString();
+            Log.e(TAG, "onClickedDoneButton: fitnessSpeed -> " + fitnessSpeed);
+            if (!fitnessSpeed.contains(".")) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("알림");
+                builder.setMessage("올바른 운동 속도를 입력해주세요. \n 단위는 [km/h] 입니다. \n 예) 트레드밀 5km/h 속도로 운동 시 5.0 입력");
+                builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+                builder.show();
+            } else {
+                speedCheck = true;
+            }
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("알림");
+            builder.setMessage("운동 속도를 입력해주세요. \n 단위는 [km/h] 입니다. \n 예) 트레드밀 5km/h 속도로 운동 시 5.0 입력");
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            builder.show();
+        }
+
+        if (scoreEditText.getText().toString().length() != 0) {
+            String tmpScore = scoreEditText.getText().toString();
+
+            Log.e(TAG, "onClickedDoneButton: rpeScore -> " + tmpScore);
+            if (Integer.valueOf(tmpScore) < 6 || Integer.valueOf(tmpScore) > 20) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("알림");
+                builder.setMessage("운동 강도(운동자각인지도)는 6점이상 20점이하로 입력해주세요");
+                builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+                builder.show();
+            } else {
+                rpeScore = tmpScore;
+                scoreCheck = true;
+            }
+
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("알림");
+            builder.setMessage("운동자각인지도를 입력해주세요.\n 운동자각인지도는 낮을 수록 편안한 상태이며 높을 수록 힘든 상태입니다.");
+            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> dialog.cancel());
+            builder.show();
+        }
+//
+//        if (fitnessTime != null && fitnessDistance != null && fitnessSpeed != null && rpeScore != null) {
+//            dateDialog.show(getSupportFragmentManager(), "2");
+//        }
+
+        if (timeCheck && speedCheck && scoreCheck && distanceCheck) {
+            dateDialog.show(getSupportFragmentManager(), "2");
+        }
     }
 
     @OnClick(R.id.rpe_info_button)
-    public void onClickedRpeInformationButton(){
+    public void onClickedRpeInformationButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("운동의 느낌");
         builder.setMessage("저강도 운동의 느낌은 호흡 패턴이 뚜렷하게 변하지 않으며, 땀이 많이 나지 않을 정도이며, 대화를 나눌 수 있으며 노래도 부를 수 있는 정도 입니다.\n" +

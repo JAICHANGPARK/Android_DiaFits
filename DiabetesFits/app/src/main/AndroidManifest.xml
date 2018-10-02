@@ -149,6 +149,7 @@
             android:theme="@style/ShopTheme" />
         <activity
             android:name=".activity.diary.WriteFitnessActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/WriteFitnessTheme" />
         <activity
             android:name=".activity.reminder.AddReminderActivity"
@@ -157,17 +158,14 @@
             android:name=".activity.reminder.ReminderActivity"
             android:theme="@style/ShopTheme" />
 
-        <!-- <provider -->
-        <!-- android:name=".utils.reminder.data.AlarmReminderProvider" -->
-        <!-- android:authorities="com.dreamwalker.diabetesreminder" -->
-        <!-- android:exported="true" -->
-        <!-- android:enabled="true"/> -->
-
         <activity android:name=".activity.appinfo.AboutProjectActivity" />
         <activity
             android:name=".activity.profile.EditProfileActivity"
             android:theme="@style/EditProfileTheme" />
-        <activity android:name=".activity.diary.WriteFintessCheckActivity" />
+        <activity
+            android:name=".activity.diary.WriteFintessCheckActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme" />
         <activity
             android:name=".activity.sync.indoorbike.SyncIndoorBikeDataActivity"
             android:screenOrientation="portrait"
@@ -178,10 +176,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activity.sync.treadmillzero.SyncTreadmillDataActivity"
+        <activity
+            android:name=".activity.sync.treadmillzero.SyncTreadmillDataActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/ShopTheme">
-        </activity>
+            android:theme="@style/ShopTheme"></activity>
 
         <service
             android:name=".utils.reminder.alarm.ReminderAlarmService"
@@ -195,6 +193,12 @@
         <service
             android:name=".service.knu.treadmillzero.TMZeroSyncService"
             android:enabled="true" />
+
+        <!-- <provider -->
+        <!-- android:name=".utils.reminder.data.AlarmReminderProvider" -->
+        <!-- android:authorities="com.dreamwalker.diabetesreminder" -->
+        <!-- android:exported="true" -->
+        <!-- android:enabled="true"/> -->
     </application>
 
 </manifest>

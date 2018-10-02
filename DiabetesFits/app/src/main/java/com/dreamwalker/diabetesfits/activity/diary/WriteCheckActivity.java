@@ -18,6 +18,7 @@ import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.HomeActivity;
 import com.dreamwalker.diabetesfits.common.Common;
 import com.dreamwalker.diabetesfits.consts.PageConst;
+import com.dreamwalker.diabetesfits.database.MyMigration;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.dreamwalker.diabetesfits.model.Validate;
 import com.dreamwalker.diabetesfits.remote.IUploadAPI;
@@ -37,6 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.paperdb.Paper;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,9 +75,15 @@ public class WriteCheckActivity extends AppCompatActivity {
     Vibrator vibrator;
 
     Realm realm;
+    RealmConfiguration realmConfiguration;
 
     Date userDateTimes;
     long userTs;
+
+    private RealmConfiguration getRealmConfig(){
+        return new RealmConfiguration.Builder().schemaVersion(1).migration(new MyMigration()).build();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,9 +93,11 @@ public class WriteCheckActivity extends AppCompatActivity {
         Paper.init(this);
 
         Realm.init(this);
-        realm = Realm.getDefaultInstance();
+        realmConfiguration = getRealmConfig();
+        Realm.setDefaultConfiguration(realmConfiguration);
+//        realm = Realm.getDefaultInstance();
 
-
+        realm = Realm.getInstance(realmConfiguration) ;
         handler = new Handler();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -239,5 +249,11 @@ public class WriteCheckActivity extends AppCompatActivity {
         protected void onProgressUpdate(Integer... values) {
             //sBtnProgress.setProgress(values[0]);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        realm.close();
+        super.onDestroy();
     }
 }

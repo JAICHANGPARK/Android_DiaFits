@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.CustomItemClickListener;
 import com.dreamwalker.diabetesfits.adapter.ProfileAdapter;
+import com.dreamwalker.diabetesfits.database.MyMigration;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -44,6 +45,7 @@ import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
 import io.paperdb.Paper;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class ProfileActivity extends AppCompatActivity implements CustomItemClickListener {
@@ -72,6 +74,7 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
     String helloMessage;
 
     Realm realm;
+    RealmConfiguration realmConfiguration;
     RealmResults<Glucose> glucoses;
 
     Drawable drawable;
@@ -93,6 +96,12 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 
     BottomSheetBehavior bottomSheetBehavior;
 
+
+    private RealmConfiguration getRealmConfig() {
+        return new RealmConfiguration.Builder().schemaVersion(1).migration(new MyMigration()).build();
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +109,8 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
         ButterKnife.bind(this);
         Paper.init(this);
         Realm.init(this);
+        realmConfiguration = getRealmConfig();
+        Realm.setDefaultConfiguration(realmConfiguration);
 
         setBottomSheetBehavior();
 
@@ -154,7 +165,8 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
         Date jan2 = new Date(calendar.getTimeInMillis());
         Log.e(TAG, "jan2 time -->" + calendar.getTimeInMillis());
 
-        realm = Realm.getDefaultInstance();
+//        realm = Realm.getDefaultInstance();
+        realm = Realm.getInstance(realmConfiguration);
         glucoses = realm.where(Glucose.class).greaterThanOrEqualTo("datetime", jan2).lessThan("datetime", jan1).findAll();
 //        while (glucoses.size() != 0){
 //            calendar.add(Calendar.DAY_OF_MONTH, -1);
@@ -340,7 +352,8 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 
     @OnClick(R.id.home)
     public void onClickedBackButton() {
-        finish();
+//        finish();
+        checkUserChangeData();
     }
 
     @Override
@@ -603,5 +616,89 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
 
 
 //        super.onBackPressed();
+    }
+
+    private void checkUserChangeData() {
+
+        userGlucoseMin = Paper.book("user").read("userGlucoseMin");
+        userGlucoseMax = Paper.book("user").read("userGlucoseMax");
+        userHeight = Paper.book("user").read("userHeight");
+        userWeight = Paper.book("user").read("userWeight");
+
+        // TODO: 2018-08-28 변경된 정보가 없을 때
+        if (userChangeGlucoseMin == null && userChangeGlucoseMax == null && userChangeWeight == null && userChangeHeight == null) {
+            if (System.currentTimeMillis() - time >= 2000) {
+                time = System.currentTimeMillis();
+                Toasty.warning(ProfileActivity.this, "변경된 정보 없음 : 뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT, true).show();
+//                Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT).show();
+            } else if (System.currentTimeMillis() - time < 2000) {
+                finish();
+            }
+        }
+        // TODO: 2018-08-28 만약 정보가 변경되었다면
+        else {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("알림");
+            builder.setMessage("정보를 저장하시겠습니까?");
+            builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO: 2018-08-28 뭐든 하나가 널이 아니기에 이곳에 도달했고  널이 아닌것만 저장하도록 한다. - 박제창
+                    if (userChangeGlucoseMin != null) {
+                        Paper.book("user").write("userGlucoseMin", userChangeGlucoseMin);
+                    }
+                    if (userChangeGlucoseMax != null) {
+                        Paper.book("user").write("userGlucoseMax", userChangeGlucoseMax);
+                    }
+                    if (userChangeHeight != null) {
+                        Paper.book("user").write("userHeight", userChangeHeight);
+                    }
+                    if (userChangeWeight != null) {
+                        Paper.book("user").write("userWeight", userChangeWeight);
+                    }
+
+                    // TODO: 2018-08-28 둘다 null인 경우
+
+                    // TODO: 2018-08-28 하나만 설정 된 경우
+
+//                    if (!userGlucoseMin.equals(userChangeGlucoseMin)) {
+//                        Paper.book("user").write("userGlucoseMin", userChangeGlucoseMin);
+//                    }
+//                    if (!userGlucoseMax.equals(userChangeGlucoseMax)) {
+//                        Paper.book("user").write("userGlucoseMax", userChangeGlucoseMin);
+//                    }
+//                    if (!userHeight.equals(userChangeHeight)) {
+//                        Paper.book("user").write("userHeight", userChangeHeight);
+//                    }
+//                    if (!userWeight.equals(userChangeWeight)) {
+//                        Paper.book("user").write("userWeight", userChangeWeight);
+//                    }
+
+                    dialog.dismiss();
+                    finish();
+
+                }
+            });
+
+            builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+
+            builder.show();
+
+
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Realm.getInstance(realmConfiguration).close();
+        realm.close();
+        super.onDestroy();
     }
 }
