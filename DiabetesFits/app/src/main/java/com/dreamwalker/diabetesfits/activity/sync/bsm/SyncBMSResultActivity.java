@@ -34,6 +34,7 @@ import com.dreamwalker.diabetesfits.adapter.CustomItemClickListener;
 import com.dreamwalker.diabetesfits.adapter.isens.BSMSyncAdapter;
 import com.dreamwalker.diabetesfits.consts.GlucoseType;
 import com.dreamwalker.diabetesfits.database.MyMigration;
+import com.dreamwalker.diabetesfits.database.RealmManagement;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.dreamwalker.diabetesfits.model.isens.BloodSugar;
 import com.mingle.entity.MenuEntity;
@@ -133,7 +134,8 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
         setStatusBar();
 
         Realm.init(this);
-        realmConfiguration = getRealmConfig();
+//        realmConfiguration = getRealmConfig();
+        realmConfiguration = RealmManagement.getRealmConfiguration();
         Realm.setDefaultConfiguration(realmConfiguration);
 
 
@@ -528,6 +530,7 @@ public class SyncBMSResultActivity extends AppCompatActivity implements CustomIt
 
 //            realm = Realm.getDefaultInstance();
             realm = Realm.getInstance(realmConfiguration);
+
 
             String tmpDateTime;
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);

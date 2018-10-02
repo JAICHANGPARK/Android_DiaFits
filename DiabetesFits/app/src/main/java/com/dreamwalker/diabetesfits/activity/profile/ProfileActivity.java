@@ -25,6 +25,7 @@ import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.CustomItemClickListener;
 import com.dreamwalker.diabetesfits.adapter.ProfileAdapter;
 import com.dreamwalker.diabetesfits.database.MyMigration;
+import com.dreamwalker.diabetesfits.database.RealmManagement;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -109,7 +110,8 @@ public class ProfileActivity extends AppCompatActivity implements CustomItemClic
         ButterKnife.bind(this);
         Paper.init(this);
         Realm.init(this);
-        realmConfiguration = getRealmConfig();
+//        realmConfiguration = getRealmConfig();
+        realmConfiguration = RealmManagement.getRealmConfiguration();
         Realm.setDefaultConfiguration(realmConfiguration);
 
         setBottomSheetBehavior();

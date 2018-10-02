@@ -19,6 +19,7 @@ import com.dreamwalker.diabetesfits.activity.HomeActivity;
 import com.dreamwalker.diabetesfits.common.Common;
 import com.dreamwalker.diabetesfits.consts.PageConst;
 import com.dreamwalker.diabetesfits.database.MyMigration;
+import com.dreamwalker.diabetesfits.database.RealmManagement;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.dreamwalker.diabetesfits.model.Validate;
 import com.dreamwalker.diabetesfits.remote.IUploadAPI;
@@ -93,7 +94,7 @@ public class WriteCheckActivity extends AppCompatActivity {
         Paper.init(this);
 
         Realm.init(this);
-        realmConfiguration = getRealmConfig();
+        realmConfiguration = RealmManagement.getRealmConfiguration();
         Realm.setDefaultConfiguration(realmConfiguration);
 //        realm = Realm.getDefaultInstance();
 

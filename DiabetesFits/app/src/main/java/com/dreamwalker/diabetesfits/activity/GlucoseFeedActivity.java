@@ -22,6 +22,7 @@ import com.dreamwalker.diabetesfits.activity.profile.ProfileActivity;
 import com.dreamwalker.diabetesfits.adapter.DashboardAdapter;
 import com.dreamwalker.diabetesfits.consts.GlucoseType;
 import com.dreamwalker.diabetesfits.database.MyMigration;
+import com.dreamwalker.diabetesfits.database.RealmManagement;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.dreamwalker.diabetesfits.utils.timeago.ZamanTextView;
 import com.github.mikephil.charting.charts.LineChart;
@@ -108,7 +109,8 @@ public class GlucoseFeedActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Paper.init(this);
         Realm.init(this);
-        realmConfiguration = getRealmConfig();
+//        realmConfiguration = getRealmConfig();
+        realmConfiguration = RealmManagement.getRealmConfiguration();
         Realm.setDefaultConfiguration(realmConfiguration);
 
 
