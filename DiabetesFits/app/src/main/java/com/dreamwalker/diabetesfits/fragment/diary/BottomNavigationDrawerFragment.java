@@ -52,12 +52,12 @@ public class BottomNavigationDrawerFragment extends BottomSheetDialogFragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case R.id.nav1:
-                        startActivity(new Intent(getActivity(), DiaryGlucoseActivity.class));
+                        startActivity(new Intent(getActivity(), DiaryFitnessActivity.class));
                         Log.e(TAG, "onNavigationItemSelected: 운동버튼 클릭");
 
                         return true;
                     case R.id.nav2:
-                        startActivity(new Intent(getActivity(), DiaryFitnessActivity.class));
+                        startActivity(new Intent(getActivity(), DiaryGlucoseActivity.class));
                         Log.e(TAG, "onNavigationItemSelected: 혈당버튼 클릭");
                 }
                 return false;

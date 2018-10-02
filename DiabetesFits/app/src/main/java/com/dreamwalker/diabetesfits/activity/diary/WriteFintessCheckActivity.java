@@ -64,6 +64,7 @@ public class WriteFintessCheckActivity extends AppCompatActivity {
     String[] dateTime;
     Date userDateTimes;
     long userTs;
+    String userKcal;
 
     Met met = new Met();
     ArrayList<Met> workMet = new ArrayList<>();
@@ -100,6 +101,22 @@ public class WriteFintessCheckActivity extends AppCompatActivity {
             workMet = met.getTreadmillRunningMetData();
         }
 
+        String userFitnessSpeed = userInputMap.get("fitnessSpeed");
+        float fitnessMet = 0.0f;
+        for (Met m : workMet){
+            Log.e(TAG, "met Result --> " + m.getStrength() );
+            if (userFitnessSpeed.equals(m.getStrength())){
+                fitnessMet = m.getMetValue();
+            }
+        }
+
+        // TODO: 2018-10-02 MET 계산
+        float weight = Float.parseFloat(userInputMap.get("userWeight"));
+        Log.e(TAG, "onCreate: weight --> " + weight );
+        float userKCal = 3.5f * 0.05f * weight * fitnessMet;
+        int kCal = Math.round(userKCal);
+        userKcal = String.valueOf(kCal);
+        Log.e(TAG, "onCreate: kCal --> " +  kCal );
 
         glucoseTextView.setText(userInputMap.get("fitnessTime"));
         typeTextView.setText(userInputMap.get("selectType"));
@@ -188,7 +205,7 @@ public class WriteFintessCheckActivity extends AppCompatActivity {
                 fitness.setDistance(userInputMap.get("fitnessDistance"));
                 fitness.setSpeed(userInputMap.get("fitnessSpeed"));
                 fitness.setRpeScore(userInputMap.get("rpeScore"));
-
+                fitness.setKcal(userKcal);
 //                fitness.setFitnessTime(userInputMap.get("fitnessTime"));
 
 //                glucose.setValue(userInputMap.get("userGlucose"));
@@ -270,5 +287,12 @@ public class WriteFintessCheckActivity extends AppCompatActivity {
 //                submitButton.doResult(false);
 //            }
 //        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        Realm.getInstance(realmConfiguration).close();
+        realm.close();
+        super.onDestroy();
     }
 }

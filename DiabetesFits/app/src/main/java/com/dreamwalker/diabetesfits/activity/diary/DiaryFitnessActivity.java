@@ -27,9 +27,10 @@ public class DiaryFitnessActivity extends AppCompatActivity {
         initSetting();
 
         RealmResults<Fitness> result = realm.where(Fitness.class).findAll();
-
+        Log.e(TAG, "onCreate: " + result.size() );
         for (Fitness fitness: result){
-            Log.e(TAG, "onCreate: " + fitness.getFitnessTime());
+            Log.e(TAG, "onCreate: --> " + fitness.getFitnessTime());
+            Log.e(TAG, "onCreate: --> " + fitness.getDate());
         }
     }
 

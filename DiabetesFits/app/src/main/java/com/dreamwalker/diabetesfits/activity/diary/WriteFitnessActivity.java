@@ -322,6 +322,8 @@ public class WriteFitnessActivity extends AppCompatActivity
         userInputMap.put("fitnessDistance", fitnessDistance);
         userInputMap.put("fitnessSpeed", fitnessSpeed);
         userInputMap.put("rpeScore", rpeScore);
+        userInputMap.put("userWeight", userWeight);
+
         userInputMap.put("hourOfDay", String.valueOf(hourOfDay));
         userInputMap.put("minute", String.valueOf(minute));
         userInputMap.put("timestamp", String.valueOf(gregorianCalendar.getTimeInMillis()));
