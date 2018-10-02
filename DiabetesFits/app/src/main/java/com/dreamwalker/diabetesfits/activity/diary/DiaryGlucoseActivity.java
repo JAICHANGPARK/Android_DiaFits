@@ -1,12 +1,18 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
@@ -16,7 +22,10 @@ import com.dreamwalker.horizontalcalendar.HorizontalCalendar;
 import com.dreamwalker.horizontalcalendar.HorizontalCalendarView;
 import com.dreamwalker.horizontalcalendar.utils.HorizontalCalendarListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,8 +65,12 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
 
         // Default Date set to Today.
         final Calendar defaultSelectedDate = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        Date todayDate = defaultSelectedDate.getTime();
+        String todayString = simpleDateFormat.format(todayDate);
+        Log.e(TAG, "onCreate: todayString --> " + todayString);
 
-        horizontalCalendar = new HorizontalCalendar.Builder(this,R.id.calendarView)
+        horizontalCalendar = new HorizontalCalendar.Builder(this, R.id.calendarView)
                 .range(startDate, endDate)
                 .datesNumberOnScreen(5)
                 .configure()
@@ -78,38 +91,80 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
             @Override
             public void onDateSelected(Calendar date, int position) {
                 String selectedDateStr = DateFormat.format("EEE, MMM d, yyyy", date).toString();
-                Toast.makeText(DiaryGlucoseActivity.this, selectedDateStr + " selected!", Toast.LENGTH_SHORT).show();
-                Log.i("onDateSelected", selectedDateStr + " - Position = " + position);
+                String selectedDate = DateFormat.format("yyyy-MM-dd", date).toString();
+                Toast.makeText(DiaryGlucoseActivity.this, selectedDate + " selected!", Toast.LENGTH_SHORT).show();
+//                Log.e("onDateSelected", selectedDateStr + " - Position = " + position);
+                Log.e("onDateSelected", selectedDate + " - Position = " + position);
             }
-
         });
 
-        RealmResults<Glucose> result = realm.where(Glucose.class).findAll();
-        Log.e(TAG, "onCreate: " + result.size() );
-        for (Glucose glucose: result){
-            Log.e(TAG, "onCreate: getValue --> " + glucose.getValue());
-            Log.e(TAG, "onCreate: getLongTs --> " + glucose.getLongTs());
+//        RealmResults<Glucose> result = realm.where(Glucose.class).findAll();
+//        Log.e(TAG, "onCreate: " + result.size() );
+//        for (Glucose glucose: result){
+//            Log.e(TAG, "onCreate: getValue --> " + glucose.getValue());
+//            Log.e(TAG, "onCreate: getLongTs --> " + glucose.getDate());
+//        }
+
+        RealmResults<Glucose> todayList = realm.where(Glucose.class).equalTo("date", todayString).findAll();
+        for (Glucose glucose : todayList) {
+            Log.e(TAG, "onCreate: todayList  getValue --> " + glucose.getValue());
+            Log.e(TAG, "onCreate: todayList  getLongTs --> " + glucose.getDate());
         }
     }
 
-    private void initSetting(){
+    private void initSetting() {
         initRealm();
         bindView();
+        setStatusBar();
         initToolbar();
     }
-    private void initToolbar(){
+
+    private void initToolbar() {
         setSupportActionBar(bottomAppBar);
-        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER);
+//        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
     }
-    private void bindView(){
+
+    private void bindView() {
         ButterKnife.bind(this);
     }
-    private void initRealm(){
+
+    private void initRealm() {
         Realm.init(this);
         realmConfiguration = RealmManagement.getRealmConfiguration();
         Realm.setDefaultConfiguration(realmConfiguration);
         realm = Realm.getInstance(realmConfiguration);
 
+    }
+
+    private void setStatusBar() {
+        Window window = getWindow();
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        // finally change the color
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.diary_bottom_appbar_color2));
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_diary_glucose, menu);
+//        return super.onCreateOptionsMenu(menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.home:
+                horizontalCalendar.goToday(false);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -120,7 +175,9 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.fab)
-    public void onClickedFab(){
+    public void onClickedFab() {
+
+//        horizontalCalendar.goToday(false);
 
     }
 }

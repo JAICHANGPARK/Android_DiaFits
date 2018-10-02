@@ -32,6 +32,8 @@
     <!--</android.support.design.widget.AppBarLayout>-->
 
     <com.dreamwalker.horizontalcalendar.HorizontalCalendarView
+        android:background="@color/diary_bottom_appbar_color2"
+        android:backgroundTint="@color/diary_bottom_appbar_color2"
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
-        app:backgroundTint="@color/diary_bottom_appbar_color"
+        app:backgroundTint="@color/diary_bottom_appbar_color2"
         app:fabAlignmentMode="end"
         app:fabCradleRoundedCornerRadius="10dp"
         app:hideOnScroll="true"
@@ -59,7 +61,7 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_calendar_24dp"
+        android:src="@drawable/ic_add_black_24dp"
         app:layout_anchor="@id/bottomAppBar" />
 
 </android.support.design.widget.CoordinatorLayout>
