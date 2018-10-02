@@ -141,8 +141,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.education.KADNEHomeActivity" />
         </activity>
-        <activity android:name=".activity.diary.DiaryGlucoseActivity" />
-        <activity android:name=".activity.diary.DiaryFitnessActivity" />
+        <activity android:name=".activity.diary.DiaryGlucoseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme"/>
+        <activity android:name=".activity.diary.DiaryFitnessActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/ShopTheme"/>
         <activity
             android:name=".activity.appinfo.DetailAppMenuActivity"
             android:screenOrientation="portrait"
