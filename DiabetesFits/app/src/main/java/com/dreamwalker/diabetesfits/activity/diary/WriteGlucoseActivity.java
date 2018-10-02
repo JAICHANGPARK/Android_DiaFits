@@ -23,6 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -31,6 +32,8 @@ public class WriteGlucoseActivity extends AppCompatActivity {
 
     @BindView(R.id.nice_spinner)
     NiceSpinner niceSpinner;
+    @BindView(R.id.nice_spinner_2)
+    NiceSpinner niceSpinner2;
     @BindView(R.id.bottomAppBar)
     BottomAppBar bottomAppBar;
     @BindView(R.id.fab)
@@ -89,7 +92,7 @@ public class WriteGlucoseActivity extends AppCompatActivity {
 
     private void setNiceSpinner() {
 
-        List<String> dataset = new LinkedList<>(Arrays.asList("트레드밀", "실내자전거"));
+        List<String> dataset = new LinkedList<>(Arrays.asList("공복", "취침 전", "운동", "아침 식사", "점심 식사", "저녁 식사"));
         List<String> treadmillSet = new LinkedList<>(Arrays.asList("가볍게걷기", "일반 걷기", "달리기"));
         List<String> indoorBikeSet = new LinkedList<>(Arrays.asList("보통으로", "빠르게", "가볍게"));
         List<String> rpeSet = new LinkedList<>(Arrays.asList("전혀 힘들지 않다", "힘들지 않다", "보통이다", "약간 힘들다", "힘들다", "매우 힘들다", "매우 매우 힘들다"));
@@ -117,6 +120,10 @@ public class WriteGlucoseActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @OnClick(R.id.fab)
+    public void onClickFlotingActionButton(){
 
     }
 
@@ -125,4 +132,5 @@ public class WriteGlucoseActivity extends AppCompatActivity {
         Realm.getInstance(realmConfiguration).close();
         super.onDestroy();
     }
+
 }

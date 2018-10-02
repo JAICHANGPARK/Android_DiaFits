@@ -271,14 +271,22 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        Log.e(TAG, "onStop: ");
+//        Realm.getInstance(realmConfiguration).close();
+        super.onStop();
+    }
+
+    @Override
     protected void onPause() {
-        Realm.getInstance(realmConfiguration).close();
+        Log.e(TAG, "onPause: " );
+//        Realm.getInstance(realmConfiguration).close();
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        Realm.getInstance(realmConfiguration).close();
+//        Realm.getInstance(realmConfiguration).close();
         super.onDestroy();
     }
 

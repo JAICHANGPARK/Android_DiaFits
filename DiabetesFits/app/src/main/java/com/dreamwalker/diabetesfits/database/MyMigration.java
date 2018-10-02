@@ -101,5 +101,16 @@ public class MyMigration implements RealmMigration {
 
     }
 
+    public int hashCode() {
+        return MyMigration.class.hashCode();
+    }
+
+    public boolean equals(Object object) {
+        if(object == null) {
+            return false;
+        }
+        return object instanceof MyMigration;
+    }
+
 
 }

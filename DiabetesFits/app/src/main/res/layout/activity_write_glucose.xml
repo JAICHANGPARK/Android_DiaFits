@@ -64,7 +64,7 @@
     <RelativeLayout
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/appbar_add_contacts"
@@ -127,7 +127,15 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:layout_weight="2" />
+                    android:layout_weight="1" />
+
+                <org.angmarch.views.NiceSpinner
+                    android:id="@+id/nice_spinner_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1" />
+
             </LinearLayout>
 
             <LinearLayout
