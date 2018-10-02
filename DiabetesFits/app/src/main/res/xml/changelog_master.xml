@@ -3,6 +3,8 @@
 
     <release version="1.0.7" versioncode="8">
         <change>Date : 2018-10-02</change>
+        <change>Diary Function change</change>
+        <change>Glucose, Fitness detail diary ui changed </change>
         <change>Fitness Database Migration</change>
         <change>Fitness Write added</change>
         <change>Bug Fixed and Crash Fixed</change>
