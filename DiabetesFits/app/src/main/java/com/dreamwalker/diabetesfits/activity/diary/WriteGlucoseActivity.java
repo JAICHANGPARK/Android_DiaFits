@@ -6,11 +6,20 @@ import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.database.RealmManagement;
+
+import org.angmarch.views.NiceSpinner;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,7 +29,8 @@ import io.realm.RealmConfiguration;
 public class WriteGlucoseActivity extends AppCompatActivity {
     private static final String TAG = "WriteGlucoseActivity";
 
-
+    @BindView(R.id.nice_spinner)
+    NiceSpinner niceSpinner;
     @BindView(R.id.bottomAppBar)
     BottomAppBar bottomAppBar;
     @BindView(R.id.fab)
@@ -36,8 +46,6 @@ public class WriteGlucoseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write_glucose);
         initSetting();
 
-
-
     }
 
     private void initSetting() {
@@ -45,6 +53,7 @@ public class WriteGlucoseActivity extends AppCompatActivity {
         bindView();
         setStatusBar();
         initToolbar();
+        setNiceSpinner();
     }
 
     private void initToolbar() {
@@ -75,5 +84,45 @@ public class WriteGlucoseActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.setStatusBarColor(ContextCompat.getColor(this, R.color.default_background));
         }
+    }
+
+
+    private void setNiceSpinner() {
+
+        List<String> dataset = new LinkedList<>(Arrays.asList("트레드밀", "실내자전거"));
+        List<String> treadmillSet = new LinkedList<>(Arrays.asList("가볍게걷기", "일반 걷기", "달리기"));
+        List<String> indoorBikeSet = new LinkedList<>(Arrays.asList("보통으로", "빠르게", "가볍게"));
+        List<String> rpeSet = new LinkedList<>(Arrays.asList("전혀 힘들지 않다", "힘들지 않다", "보통이다", "약간 힘들다", "힘들다", "매우 힘들다", "매우 매우 힘들다"));
+
+        niceSpinner.attachDataSource(dataset);
+
+
+        niceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+
+                        break;
+                    case 1:
+
+                        break;
+                }
+                Log.e(TAG, "onItemSelected: " + position + "," + id);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        Realm.getInstance(realmConfiguration).close();
+        super.onDestroy();
     }
 }

@@ -271,17 +271,23 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        Realm.getInstance(realmConfiguration).close();
+        super.onPause();
+    }
+
+    @Override
     protected void onDestroy() {
         Realm.getInstance(realmConfiguration).close();
-        realm.close();
         super.onDestroy();
     }
 
     @OnClick(R.id.fab)
     public void onClickedFab() {
         Intent intent = new Intent(DiaryGlucoseActivity.this, WriteGlucoseActivity.class);
+        // Configurations cannot be different if used to open the same file.
+        // The most likely cause is that equals() and hashCode() are not overridden in the migration class: com.dreamwalker.diabetesfits.database.MyMigration
         startActivity(intent);
-        Realm.getInstance(realmConfiguration).close();
 
 //        horizontalCalendar.goToday(false);
 
