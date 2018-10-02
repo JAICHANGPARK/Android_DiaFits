@@ -5,6 +5,6 @@ import io.realm.RealmConfiguration;
 public class RealmManagement {
 
     public static RealmConfiguration getRealmConfiguration() {
-        return new RealmConfiguration.Builder().schemaVersion(1).migration(new MyMigration()).build();
+        return new RealmConfiguration.Builder().schemaVersion(2).migration(new MyMigration()).build();
     }
 }
