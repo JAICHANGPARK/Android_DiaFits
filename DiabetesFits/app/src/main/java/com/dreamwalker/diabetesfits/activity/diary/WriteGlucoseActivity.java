@@ -51,13 +51,13 @@ public class WriteGlucoseActivity extends AppCompatActivity {
     Realm realm;
     RealmConfiguration realmConfiguration;
 
+    String userSelectedType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_glucose);
         initSetting();
-
     }
 
     private void initSetting() {
@@ -83,7 +83,6 @@ public class WriteGlucoseActivity extends AppCompatActivity {
         realmConfiguration = RealmManagement.getRealmConfiguration();
         Realm.setDefaultConfiguration(realmConfiguration);
         realm = Realm.getInstance(realmConfiguration);
-
     }
 
     private void setStatusBar() {
@@ -98,7 +97,6 @@ public class WriteGlucoseActivity extends AppCompatActivity {
         }
     }
 
-
     private void setNiceSpinner() {
 
         List<String> dataset = new LinkedList<>(Arrays.asList("공복", "취침 전", "운동", "아침 식사", "점심 식사", "저녁 식사"));
@@ -108,9 +106,13 @@ public class WriteGlucoseActivity extends AppCompatActivity {
         niceSpinner.attachDataSource(dataset);
         niceSpinner2.attachDataSource(blankDataSet);
 
+        userSelectedType = "공복";
+
         niceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                userSelectedType = dataset.get(position);
+                Log.e(TAG, "onItemSelected: " + userSelectedType);
                 switch (position) {
                     case 0: //공복
                         Log.e(TAG, "onItemSelected: " + dataset.get(position));
@@ -150,9 +152,23 @@ public class WriteGlucoseActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
+                        if (userSelectedType.equals("운동")){
+                            userSelectedType = "운동 전";
+                            Log.e(TAG, "onItemSelected: " + userSelectedType );
+                        }else if (userSelectedType.equals("아침 식사")){
+                            userSelectedType = "아침 식전";
+                            Log.e(TAG, "onItemSelected: " + userSelectedType );
+                        }
 
                         break;
                     case 1:
+                        if (userSelectedType.equals("운동")){
+                            userSelectedType = "운동 후";
+                            Log.e(TAG, "onItemSelected: " + userSelectedType );
+                        }else if (userSelectedType.equals("아침 식사")){
+                            userSelectedType = "아침 식후";
+                            Log.e(TAG, "onItemSelected: " + userSelectedType );
+                        }
 
                         break;
                 }

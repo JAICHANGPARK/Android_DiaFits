@@ -135,10 +135,9 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
                 Log.e(TAG, "onValueChange: " + v);
                 String gluValue = String.valueOf(v);
                 Log.e(TAG, "onValueChange: " + gluValue);
-//                String gluValue = String.valueOf(selectedValue);
-//                Log.e(TAG, "onValueChange: "+ gluValue);
-                //glucoseValueTextView.setText(gluValue);
                 userInputMap.put("userGlucose", gluValue);
+                String gluValues = String.valueOf(selectedValue);
+                glucoseValueTextView.setText(gluValues);
             }
 
             @Override
@@ -146,8 +145,8 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
                 float v = (float) selectedValue;
                 Log.e(TAG, "onValueChange: " + v);
                 String value = String.valueOf(v);
-                glucoseValueTextView.setText(value);
-
+                String gluValues = String.valueOf(selectedValue);
+                glucoseValueTextView.setText(gluValues);
             }
         });
     }
