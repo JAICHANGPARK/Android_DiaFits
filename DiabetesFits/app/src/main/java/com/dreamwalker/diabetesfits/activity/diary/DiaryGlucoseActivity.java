@@ -363,6 +363,14 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
     @Override
     protected void onRestart() {
         Log.e(TAG, "onRestart: " );
+        final Calendar defaultSelectedDate = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        Date todayDate = defaultSelectedDate.getTime();
+        String todayString = simpleDateFormat.format(todayDate);
+        sortAndProcessGlucose(todayString, true);
+        adapter = new DiaryGlucoseAdapter(this, glucoArrayList);
+        adapter.setItemClickListener(this);
+        recyclerView.setAdapter(adapter);
         super.onRestart();
     }
 
