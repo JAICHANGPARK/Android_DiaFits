@@ -464,6 +464,7 @@ public class EditGlucoseActivity extends AppCompatActivity implements DatePicker
                 results.setLongTs(userTs);
                 results.setDatetime(userDateTimes);
             });
+
             finish();
         }
     }
