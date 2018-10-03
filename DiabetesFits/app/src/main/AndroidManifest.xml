@@ -202,9 +202,14 @@
         <!-- android:authorities="com.dreamwalker.diabetesreminder" -->
         <!-- android:exported="true" -->
         <!-- android:enabled="true"/> -->
-        <activity android:name=".activity.diary.WriteGlucoseActivity"
-            android:theme="@style/WriteGlucoseTheme"
-            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.diary.WriteGlucoseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/WriteGlucoseTheme" />
+
+        <activity android:name=".activity.diary.EditGlucoseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/WriteGlucoseTheme"></activity>
     </application>
 
 </manifest>

@@ -82,9 +82,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
         String id = Paper.book("user").read("userID");
         String pwd = Paper.book("user").read("userPassword");
 
+
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.setMessage("Loading..");
         progressDialog.show();
+
         if (id != null && pwd != null) {
             Call<Validate> autoLoginQueue = service.userLogin(id, pwd);
             autoLoginQueue.enqueue(new Callback<Validate>() {

@@ -1,5 +1,6 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,11 +19,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.diary.DiaryGlucoseAdapter;
 import com.dreamwalker.diabetesfits.adapter.diary.ItemClickListener;
+import com.dreamwalker.diabetesfits.consts.IntentConst;
 import com.dreamwalker.diabetesfits.database.RealmManagement;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.dreamwalker.diabetesfits.model.diary.Gluco;
@@ -57,6 +61,9 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
 
+    @BindView(R.id.empty_layout)
+    LinearLayout emptyLayout;
+
     ArrayList<Gluco> glucoArrayList = new ArrayList<>();
     DiaryGlucoseAdapter adapter;
     LinearLayoutManager layoutManager;
@@ -66,6 +73,8 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
     RealmConfiguration realmConfiguration;
 
     RealmResults<Glucose> todayList;
+
+    Bundle bundle = new Bundle();  //데이터 수정 액티비티에 전달할 번들 객체 생성
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +103,6 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
         Log.e(TAG, "onCreate: todayString --> " + todayString);
 
         initHorizontalCalendar(startDate, endDate, defaultSelectedDate, simpleDateFormat);
-
         sortAndProcessGlucose(todayString, true);
 
         RealmResults<Glucose> preResult = realm.where(Glucose.class)
@@ -120,18 +128,23 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
     }
 
     private void sortAndProcessGlucose(String ts, boolean clearFlag) {
-        if(clearFlag){
+        if (clearFlag) {
             glucoArrayList.clear();
         }
 
         todayList = realm.where(Glucose.class).equalTo("date", ts).findAll().sort("datetime");
 //        todayList = realm.where(Glucose.class).equalTo("date", todayString).findAll().sort("datetime");
-//        for (Glucose glucose : todayList) {
-//            Log.e(TAG, "onCreate: todayList  getValue --> " + glucose.getValue());
-//            Log.e(TAG, "onCreate: todayList  getLongTs --> " + glucose.getDate());
-//
-//        }
-        if (todayList.size() != 0){
+        for (Glucose glucose : todayList) {
+            Log.e(TAG, "onCreate: todayList  getValue --> " + glucose.getValue());
+            Log.e(TAG, "onCreate: todayList  getLongTs --> " + glucose.getDate());
+            Log.e(TAG, "onCreate: todayList  getLongTs --> " + glucose.getTimestamp());
+        }
+
+        if (todayList.size() != 0) {
+
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyLayout.setVisibility(View.GONE);
+
             ArrayList<Integer> changeList = new ArrayList<>();
             for (int i = (todayList.size() - 1); i > 0; i--) {
                 float change = Float.parseFloat(todayList.get(i).getValue()) - Float.parseFloat(todayList.get(i - 1).getValue());
@@ -157,11 +170,12 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
                         todayList.get(i).getDatetime(),
                         changeList.get(changeList.size() - i)));
             }
-        }else {
+
+        } else {
             // TODO: 2018-10-02 값이 없을때 뷰처리
+            recyclerView.setVisibility(View.GONE);
+            emptyLayout.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     private void initHorizontalCalendar(Calendar start, Calendar end, Calendar defaultDate, SimpleDateFormat sdf) {
@@ -263,7 +277,6 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.home:
                 horizontalCalendar.goToday(false);
@@ -281,7 +294,7 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
 
     @Override
     protected void onPause() {
-        Log.e(TAG, "onPause: " );
+        Log.e(TAG, "onPause: ");
 //        Realm.getInstance(realmConfiguration).close();
         super.onPause();
     }
@@ -305,6 +318,44 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
 
     @Override
     public void onItemClick(View v, int position) {
-        Log.e(TAG, "onItemClick: " + position );
+        Log.e(TAG, "onItemClick: " + position);
+
+        bundle.putString("userType", glucoArrayList.get(position).getType());
+        bundle.putString("userValue", glucoArrayList.get(position).getUserValue());
+        bundle.putString("userDate", glucoArrayList.get(position).getDate());
+        bundle.putString("userTime", glucoArrayList.get(position).getTime());
+        bundle.putString("userTimestamp", glucoArrayList.get(position).getTimestamp());
+
+        Intent intent = new Intent(DiaryGlucoseActivity.this, EditGlucoseActivity.class);
+        intent.putExtra(IntentConst.USER_EDIT_GLUCOSE, bundle);
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void onItemLongClick(View v, int position) {
+        String timeStamps = glucoArrayList.get(position).getTimestamp();
+
+        Log.e(TAG, "onItemLongClick: " + position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("경고");
+        builder.setMessage("삭제하시겠어요?");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final RealmResults<Glucose> results = realm.where(Glucose.class).equalTo("timestamp", timeStamps).findAll();
+                Log.e(TAG, "onClick: results size -->" + results.size());
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        results.deleteAllFromRealm();
+                    }
+                });
+                glucoArrayList.remove(position);
+                adapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, (dialog, which) -> dialog.dismiss());
+        builder.show();
     }
 }

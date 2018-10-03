@@ -89,7 +89,7 @@ public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseAdapte
     }
 
 
-    class DiaryGlucoseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class DiaryGlucoseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         ImageView mThumbnailImage;
         TextView mTitleText;
@@ -106,6 +106,8 @@ public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseAdapte
             glucoseValueTextView = (TextView) itemView.findViewById(R.id.glucose_value);
             glucoseChangeTextView = (TextView) itemView.findViewById(R.id.glucose_change);
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+
         }
 
 
@@ -113,7 +115,16 @@ public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseAdapte
         public void onClick(View v) {
             if (itemClickListener != null) {
                 itemClickListener.onItemClick(v, getAdapterPosition());
+
             }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (itemClickListener != null) {
+                itemClickListener.onItemLongClick(v, getAdapterPosition());
+            }
+            return true;
         }
     }
 

@@ -1,6 +1,7 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.bottomappbar.BottomAppBar;
@@ -25,6 +26,8 @@ import org.angmarch.views.NiceSpinner;
 
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,6 +36,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+
+import static com.dreamwalker.diabetesfits.consts.IntentConst.USER_WRITE_GLUCOSE;
 
 public class WriteGlucoseActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private static final String TAG = "WriteGlucoseActivity";
@@ -51,7 +56,6 @@ public class WriteGlucoseActivity extends AppCompatActivity implements DatePicke
     ImageView doneButton;
     @BindView(R.id.home)
     ImageView homeButton;
-
     @BindView(R.id.glucose_value_edt)
     TextInputEditText glucoseValueEditText;
 
@@ -62,6 +66,14 @@ public class WriteGlucoseActivity extends AppCompatActivity implements DatePicke
     String userGlucoseValue;
     DatePickerDialog dpd;
     TimePickerDialog tpd;
+
+
+    HashMap<String, String> userInputMap = new HashMap<>();
+
+    int y, m, d;
+    int h, min;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,15 +132,16 @@ public class WriteGlucoseActivity extends AppCompatActivity implements DatePicke
                 now.get(Calendar.DAY_OF_MONTH) // Inital day selection
         );
         dpd.setVersion(DatePickerDialog.Version.VERSION_2);
-
         dpd.setOkColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
 
         tpd = TimePickerDialog.newInstance(
                 WriteGlucoseActivity.this,
                 now.get(Calendar.HOUR_OF_DAY), // Initial year selection
                 now.get(Calendar.MINUTE), // Initial month selection
+                now.get(Calendar.SECOND),
                 true // Inital day selection
         );
+        tpd.setVersion(TimePickerDialog.Version.VERSION_2);
     }
 
     private void setNiceSpinner() {
@@ -186,38 +199,86 @@ public class WriteGlucoseActivity extends AppCompatActivity implements DatePicke
             }
         });
 
+
         niceSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.e(TAG, "niceSpinner2 onItemSelected: -->  " + position );
+                Log.e(TAG, "niceSpinner2  onItemSelected: userSelectedType -->  " + userSelectedType );
                 switch (position) {
                     case 0:
-                        if (userSelectedType.equals("운동")) {
-                            userSelectedType = "운동 전";
-                            Log.e(TAG, "onItemSelected: " + userSelectedType);
-                        } else if (userSelectedType.equals("아침 식사")) {
-                            userSelectedType = "아침 식전";
-                            Log.e(TAG, "onItemSelected: " + userSelectedType);
-                        } else if (userSelectedType.equals("점심 식사")) {
-                            userSelectedType = "점심 식전";
-                            Log.e(TAG, "onItemSelected: " + userSelectedType);
-                        } else if (userSelectedType.equals("저녁 식사")) {
-                            userSelectedType = "저녁 식전";
-                            Log.e(TAG, "onItemSelected: " + userSelectedType);
+                        switch (userSelectedType) {
+                            case "운동 전":
+                                userSelectedType = "운동 전";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "아침 식전":
+                                userSelectedType = "아침 식전";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "점심 식전":
+                                userSelectedType = "점심 식전";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "저녁 식전":
+                                userSelectedType = "저녁 식전";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+
+                            case "운동 후":
+                                userSelectedType = "운동 전";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "아침 식후":
+                                userSelectedType = "아침 식전";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "점심 식후":
+                                userSelectedType = "점심 식전";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "저녁 식후":
+                                userSelectedType = "저녁 식전";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
                         }
                         break;
                     case 1:
-                        if (userSelectedType.equals("운동")) {
-                            userSelectedType = "운동 후";
-                            Log.e(TAG, "onItemSelected: " + userSelectedType);
-                        } else if (userSelectedType.equals("아침 식사")) {
-                            userSelectedType = "아침 식후";
-                            Log.e(TAG, "onItemSelected: " + userSelectedType);
-                        } else if (userSelectedType.equals("점심 식사")) {
-                            userSelectedType = "점심 식후";
-                            Log.e(TAG, "onItemSelected: " + userSelectedType);
-                        } else if (userSelectedType.equals("저녁 식사")) {
-                            userSelectedType = "저녁 식후";
-                            Log.e(TAG, "onItemSelected: " + userSelectedType);
+                        switch (userSelectedType) {
+
+                            case "운동 전":
+                                userSelectedType = "운동 후";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "아침 식전":
+                                userSelectedType = "아침 식후";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "점심 식전":
+                                userSelectedType = "점심 식후";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "저녁 식전":
+                                userSelectedType = "저녁 식후";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+
+                            case "운동 후":
+                                userSelectedType = "운동 후";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "아침 식후":
+                                userSelectedType = "아침 식후";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "점심 식후":
+                                userSelectedType = "점심 식후";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
+                            case "저녁 식후":
+                                userSelectedType = "저녁 식후";
+                                Log.e(TAG, "onItemSelected: " + userSelectedType);
+                                break;
                         }
                         break;
                 }
@@ -231,7 +292,7 @@ public class WriteGlucoseActivity extends AppCompatActivity implements DatePicke
     }
 
     @OnClick(R.id.fab)
-    public void onClickFlotingActionButton() {
+    public void onClickFloatingActionButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("알림");
         builder.setMessage("입력을 취소하시겠어요?");
@@ -275,11 +336,14 @@ public class WriteGlucoseActivity extends AppCompatActivity implements DatePicke
     @OnClick(R.id.done)
     public void onClickDoneButton() {
 //        finish();
+        boolean checkFlag = false;
         Log.e(TAG, "onClickDoneButton: " + userSelectedType);
         if (glucoseValueEditText.getText().toString().length() != 0) {
             float temp = Float.parseFloat(glucoseValueEditText.getText().toString());
             userGlucoseValue = String.valueOf(temp);
             Log.e(TAG, "onClickDoneButton: " + userGlucoseValue);
+            checkFlag = true;
+
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("경고");
@@ -288,7 +352,10 @@ public class WriteGlucoseActivity extends AppCompatActivity implements DatePicke
             builder.show();
         }
 
-        dpd.show(getFragmentManager(), "Datepickerdialog");
+        if (checkFlag){
+            dpd.show(getFragmentManager(), "Datepickerdialog");
+        }
+
     }
 
     @Override
@@ -300,11 +367,37 @@ public class WriteGlucoseActivity extends AppCompatActivity implements DatePicke
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         Log.e(TAG, "onDateSet: " + year + " | " + monthOfYear + " | " + dayOfMonth);
+
+        y = year;
+        m = monthOfYear;
+        d = dayOfMonth;
+
+        userInputMap.put("year", String.valueOf(year));
+        userInputMap.put("monthOfYear", String.valueOf(monthOfYear));
+        userInputMap.put("dayOfMonth", String.valueOf(dayOfMonth));
         tpd.show(getFragmentManager(), "TimePicker");
+
     }
 
     @Override
     public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
         Log.e(TAG, "onDateSet: " + hourOfDay + " | " + minute + " | " + second);
+        h = hourOfDay;
+        min = minute;
+
+        GregorianCalendar gregorianCalendar = new GregorianCalendar(y, m, d, h, min);
+        Log.e(TAG, "onTimeSet: " + gregorianCalendar.getTime());
+        Log.e(TAG, "onTimeSet: " + gregorianCalendar.getTimeInMillis());
+
+        userInputMap.put("userType", userSelectedType);
+        userInputMap.put("userGlucose", userGlucoseValue);
+        userInputMap.put("hourOfDay", String.valueOf(hourOfDay));
+        userInputMap.put("minute", String.valueOf(minute));
+        userInputMap.put("timestamp", String.valueOf(gregorianCalendar.getTimeInMillis()));
+
+        Intent intent = new Intent(WriteGlucoseActivity.this, WriteCheckActivity.class);
+        intent.putExtra(USER_WRITE_GLUCOSE, userInputMap);
+        startActivity(intent);
+
     }
 }

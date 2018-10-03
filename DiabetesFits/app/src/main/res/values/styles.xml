@@ -94,21 +94,29 @@
         <item name="android:background">?android:selectableItemBackgroundBorderless</item>
     </style>
 
+    <!--<item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item> 이걸 상속 받는데
+    다이얼로그 버튼이 이상하게 나온다 따라서 안드로이드 x로 재 설정 필요-->
     <style name="EditProfileTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimaryDark">@android:color/white</item>
         <item name="colorAccent">@color/shopAccent</item>
+        <item name="viewInflaterClass">androidx.appcompat.app.AppCompatViewInflater</item>
     </style>
 
 
     <style name="WriteFitnessTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimaryDark">@android:color/white</item>
         <item name="colorAccent">@color/shopAccent</item>
+        <item name="viewInflaterClass">androidx.appcompat.app.AppCompatViewInflater</item>
     </style>
 
 
     <style name="WriteGlucoseTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimaryDark">@android:color/white</item>
         <item name="colorAccent">@color/shopAccent</item>
+        <item name="viewInflaterClass">androidx.appcompat.app.AppCompatViewInflater</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/Widget.MaterialComponents.Button</item>
     </style>
 
 
