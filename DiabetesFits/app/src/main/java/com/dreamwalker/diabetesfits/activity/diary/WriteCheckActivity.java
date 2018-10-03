@@ -134,7 +134,6 @@ public class WriteCheckActivity extends AppCompatActivity {
         typeTextView.setText(userInputMap.get("userType"));
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
 
-
         String timestamp = userInputMap.get("timestamp");
         Date date = new Date(Long.valueOf(timestamp));
         userTs = Long.valueOf(timestamp) / 1000;

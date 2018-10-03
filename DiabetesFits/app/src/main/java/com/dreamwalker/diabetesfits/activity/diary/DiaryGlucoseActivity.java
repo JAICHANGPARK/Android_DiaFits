@@ -325,6 +325,7 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
         bundle.putString("userDate", glucoArrayList.get(position).getDate());
         bundle.putString("userTime", glucoArrayList.get(position).getTime());
         bundle.putString("userTimestamp", glucoArrayList.get(position).getTimestamp());
+        bundle.putLong("userTimestampLong", glucoArrayList.get(position).getLongTs());
 
         Intent intent = new Intent(DiaryGlucoseActivity.this, EditGlucoseActivity.class);
         intent.putExtra(IntentConst.USER_EDIT_GLUCOSE, bundle);
@@ -357,5 +358,17 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
         });
         builder.setNegativeButton(android.R.string.no, (dialog, which) -> dialog.dismiss());
         builder.show();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.e(TAG, "onRestart: " );
+        super.onRestart();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.e(TAG, "onRestart: " );
+        super.onStart();
     }
 }
