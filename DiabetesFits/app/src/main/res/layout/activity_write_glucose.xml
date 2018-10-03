@@ -169,7 +169,7 @@
                 android:layout_margin="16dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/fitness_time_edt"
+                    android:id="@+id/glucose_value_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="혈당 수치 (mg/dL)"

@@ -255,6 +255,23 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
     }
 
     @Override
+    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
+        Log.e(TAG, "onDateSet: " + year + "|" + monthOfYear + "|" + dayOfMonth);
+
+        //
+        y = year;
+        m = monthOfYear;
+        d = dayOfMonth;
+
+        userInputMap.put("year", String.valueOf(year));
+        userInputMap.put("monthOfYear", String.valueOf(monthOfYear));
+        userInputMap.put("dayOfMonth", String.valueOf(dayOfMonth));
+
+        gridTimeDialog.show(getSupportFragmentManager(), "3");
+
+    }
+
+    @Override
     public void onTimeSet(ViewGroup viewGroup, int hourOfDay, int minute) {
         Log.e(TAG, "onTimeSet: " + hourOfDay + ", " + minute);
         h = hourOfDay;
@@ -273,25 +290,6 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
         startActivity(intent);
 
     }
-
-
-    @Override
-    public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-        Log.e(TAG, "onDateSet: " + year + "|" + monthOfYear + "|" + dayOfMonth);
-
-        //
-        y = year;
-        m = monthOfYear;
-        d = dayOfMonth;
-
-        userInputMap.put("year", String.valueOf(year));
-        userInputMap.put("monthOfYear", String.valueOf(monthOfYear));
-        userInputMap.put("dayOfMonth", String.valueOf(dayOfMonth));
-
-        gridTimeDialog.show(getSupportFragmentManager(), "3");
-
-    }
-
 
     @OnClick(R.id.home)
     public void onClickBackButton() {
