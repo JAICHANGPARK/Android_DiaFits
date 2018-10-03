@@ -172,7 +172,7 @@
                     android:id="@+id/fitness_time_edt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="혈당 수치"
+                    android:hint="혈당 수치 (mg/dL)"
                     android:inputType="number"
                     android:maxLength="3"
                     android:maxLines="1" />
@@ -190,12 +190,12 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
-        app:backgroundTint="@color/diary_bottom_appbar_color2"
+        app:backgroundTint="@color/default_background"
         app:fabAlignmentMode="end"
         app:fabCradleRoundedCornerRadius="10dp"
         app:hideOnScroll="true"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:navigationIcon="@drawable/ic_menu_white_24dp"
+        app:navigationIcon="@drawable/ic_menu_black_24dp"
         app:titleTextColor="@android:color/black" />
 
     <android.support.design.widget.FloatingActionButton

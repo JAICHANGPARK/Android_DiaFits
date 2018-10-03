@@ -1,16 +1,19 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.database.RealmManagement;
@@ -38,10 +41,16 @@ public class WriteGlucoseActivity extends AppCompatActivity {
     BottomAppBar bottomAppBar;
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
+    @BindView(R.id.type_info_button)
+    ImageView typeInfoButton;
+    @BindView(R.id.done)
+    ImageView doneButton;
+    @BindView(R.id.home)
+    ImageView homeButton;
 
     Realm realm;
     RealmConfiguration realmConfiguration;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,22 +102,39 @@ public class WriteGlucoseActivity extends AppCompatActivity {
     private void setNiceSpinner() {
 
         List<String> dataset = new LinkedList<>(Arrays.asList("공복", "취침 전", "운동", "아침 식사", "점심 식사", "저녁 식사"));
-        List<String> treadmillSet = new LinkedList<>(Arrays.asList("가볍게걷기", "일반 걷기", "달리기"));
-        List<String> indoorBikeSet = new LinkedList<>(Arrays.asList("보통으로", "빠르게", "가볍게"));
-        List<String> rpeSet = new LinkedList<>(Arrays.asList("전혀 힘들지 않다", "힘들지 않다", "보통이다", "약간 힘들다", "힘들다", "매우 힘들다", "매우 매우 힘들다"));
+        List<String> detailDataSet = new LinkedList<>(Arrays.asList("전", "후"));
+        List<String> blankDataSet = new LinkedList<>(Arrays.asList("없음"));
 
         niceSpinner.attachDataSource(dataset);
-
+        niceSpinner2.attachDataSource(blankDataSet);
 
         niceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
-                    case 0:
-
+                    case 0: //공복
+                        Log.e(TAG, "onItemSelected: " + dataset.get(position));
+                        niceSpinner2.attachDataSource(blankDataSet);
                         break;
-                    case 1:
-
+                    case 1: // 취칮전
+                        Log.e(TAG, "onItemSelected: " + dataset.get(position));
+                        niceSpinner2.attachDataSource(blankDataSet);
+                        break;
+                    case 2: // 운동
+                        Log.e(TAG, "onItemSelected: " + dataset.get(position));
+                        niceSpinner2.attachDataSource(detailDataSet);
+                        break;
+                    case 3: // 아침 식사
+                        Log.e(TAG, "onItemSelected: " + dataset.get(position));
+                        niceSpinner2.attachDataSource(detailDataSet);
+                        break;
+                    case 4: //점심식사
+                        Log.e(TAG, "onItemSelected: " + dataset.get(position));
+                        niceSpinner2.attachDataSource(detailDataSet);
+                        break;
+                    case 5: // 저녁 식사
+                        Log.e(TAG, "onItemSelected: " + dataset.get(position));
+                        niceSpinner2.attachDataSource(detailDataSet);
                         break;
                 }
                 Log.e(TAG, "onItemSelected: " + position + "," + id);
@@ -119,13 +145,73 @@ public class WriteGlucoseActivity extends AppCompatActivity {
 
             }
         });
+        niceSpinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
 
+                        break;
+                    case 1:
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @OnClick(R.id.fab)
-    public void onClickFlotingActionButton(){
+    public void onClickFlotingActionButton() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("알림");
+        builder.setMessage("입력을 취소하시겠어요?");
+        builder.setPositiveButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setNegativeButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.show();
+    }
+
+    @OnClick(R.id.type_info_button)
+    public void onClickTypeInfoButton() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("측정 유형");
+        builder.setMessage("자가 채혈을 수행한 시점을 입력합니다." +
+                " 자가채혈은 최소 하루 4번 수행이 필요하며 공복, 취침전, 식전후, 운동전후를 권장합니다." +
+                "이곳에는 채혈시점을 선택해주시면 됩니다.");
+        builder.setPositiveButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
 
     }
+
+    @OnClick(R.id.home)
+    public void onClickHomeButton() {
+        finish();
+    }
+
+    @OnClick(R.id.done)
+    public void onClickDoneButton() {
+        finish();
+    }
+
 
     @Override
     protected void onDestroy() {

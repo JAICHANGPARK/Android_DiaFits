@@ -14,12 +14,14 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.diary.DiaryGlucoseAdapter;
+import com.dreamwalker.diabetesfits.adapter.diary.ItemClickListener;
 import com.dreamwalker.diabetesfits.database.RealmManagement;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.dreamwalker.diabetesfits.model.diary.Gluco;
@@ -43,7 +45,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
-public class DiaryGlucoseActivity extends AppCompatActivity {
+public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClickListener {
     private static final String TAG = "DiaryGlucoseActivity";
 
     @BindView(R.id.recycler_view)
@@ -58,7 +60,6 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
     ArrayList<Gluco> glucoArrayList = new ArrayList<>();
     DiaryGlucoseAdapter adapter;
     LinearLayoutManager layoutManager;
-
 
     HorizontalCalendar horizontalCalendar;
     Realm realm;
@@ -103,6 +104,7 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
 
 
         adapter = new DiaryGlucoseAdapter(this, glucoArrayList);
+        adapter.setItemClickListener(this);
         recyclerView.setAdapter(adapter);
 
 
@@ -299,5 +301,10 @@ public class DiaryGlucoseActivity extends AppCompatActivity {
 
 //        horizontalCalendar.goToday(false);
 
+    }
+
+    @Override
+    public void onItemClick(View v, int position) {
+        Log.e(TAG, "onItemClick: " + position );
     }
 }

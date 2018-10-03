@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/home"
-        android:icon="@drawable/ic_menu_white_24dp"
-        android:title="Menu"/>
+        android:id="@+id/diary_glucose"
+        android:iconTint="@android:color/white"
+        android:icon="@drawable/ic_loyalty_white_24dp"
+        android:title="Glucose"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/diary_fitness"
+        android:iconTint="@android:color/white"
+        android:icon="@drawable/ic_fitness_center_white_24dp"
+        android:title="Fitness"
+        app:showAsAction="always" />
+    <!--<item-->
+    <!--android:id="@+id/home"-->
+    <!--android:icon="@drawable/ic_menu_white_24dp"-->
+    <!--android:title="Menu" />-->
 
     <!--<item-->
     <!--android:id="@+id/ftb_menu_profile"-->

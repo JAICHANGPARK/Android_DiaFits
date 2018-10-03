@@ -1,6 +1,7 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -80,6 +83,8 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
     private String[] mTitles;
 
     FilterFragment dialogFrag, dialogFrag1;
+
+
 
 
     @Override
@@ -483,14 +488,23 @@ public class DiaryActivity extends AppCompatActivity implements FilterListener<T
 //        return super.onCreateOptionsMenu(menu);
 //    }
 //
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.home:
-//                BottomNavigationDrawerFragment bottomNavigationDrawerFragmen = new BottomNavigationDrawerFragment();
-//                bottomNavigationDrawerFragmen.show(getSupportFragmentManager(), bottomNavigationDrawerFragmen.getTag());
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.diary_glucose:
+                startActivity(new Intent(DiaryActivity.this, DiaryGlucoseActivity.class));
+                return true;
+            case R.id.diary_fitness:
+                startActivity(new Intent(DiaryActivity.this, DiaryFitnessActivity.class));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_diary, menu);
+        return true;
+//        return super.onCreateOptionsMenu(menu);
+    }
 }

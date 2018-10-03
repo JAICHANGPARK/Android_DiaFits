@@ -19,32 +19,13 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 
 
-class DiaryGlucoseViewHolder extends RecyclerView.ViewHolder {
-
-    ImageView mThumbnailImage;
-    TextView mTitleText;
-    TextView mDateAndTimeText;
-    TextView glucoseValueTextView;
-    TextView glucoseChangeTextView;
-
-
-    public DiaryGlucoseViewHolder(@NonNull View itemView) {
-        super(itemView);
-        mThumbnailImage = (ImageView) itemView.findViewById(R.id.thumbnail_image);
-        mTitleText = (TextView) itemView.findViewById(R.id.recycle_title);
-        mDateAndTimeText = (TextView) itemView.findViewById(R.id.recycle_date_time);
-        glucoseValueTextView = (TextView) itemView.findViewById(R.id.glucose_value);
-        glucoseChangeTextView = (TextView) itemView.findViewById(R.id.glucose_change);
-    }
-}
-
-
-public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseViewHolder> {
+public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseAdapter.DiaryGlucoseViewHolder> {
     Context context;
     ArrayList<Gluco> glucoArrayList;
     private ColorGenerator mColorGenerator = ColorGenerator.DEFAULT;
     private TextDrawable mDrawableBuilder;
 
+    ItemClickListener itemClickListener;
 
     public DiaryGlucoseAdapter(Context context, ArrayList<Gluco> glucoArrayList) {
         this.context = context;
@@ -102,4 +83,38 @@ public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseViewHo
         mDrawableBuilder = TextDrawable.builder().buildRound(letter, color);
 
     }
+
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+
+    class DiaryGlucoseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        ImageView mThumbnailImage;
+        TextView mTitleText;
+        TextView mDateAndTimeText;
+        TextView glucoseValueTextView;
+        TextView glucoseChangeTextView;
+
+
+        public DiaryGlucoseViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mThumbnailImage = (ImageView) itemView.findViewById(R.id.thumbnail_image);
+            mTitleText = (TextView) itemView.findViewById(R.id.recycle_title);
+            mDateAndTimeText = (TextView) itemView.findViewById(R.id.recycle_date_time);
+            glucoseValueTextView = (TextView) itemView.findViewById(R.id.glucose_value);
+            glucoseChangeTextView = (TextView) itemView.findViewById(R.id.glucose_change);
+            itemView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            if (itemClickListener != null) {
+                itemClickListener.onItemClick(v, getAdapterPosition());
+            }
+        }
+    }
+
 }

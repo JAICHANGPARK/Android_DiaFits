@@ -131,14 +131,21 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
         rulerValuePicker.setValuePickerListener(new RulerValuePickerListener() {
             @Override
             public void onValueChange(int selectedValue) {
-                String gluValue = String.valueOf(selectedValue);
+                float v = (float) selectedValue;
+                Log.e(TAG, "onValueChange: " + v);
+                String gluValue = String.valueOf(v);
+                Log.e(TAG, "onValueChange: " + gluValue);
+//                String gluValue = String.valueOf(selectedValue);
+//                Log.e(TAG, "onValueChange: "+ gluValue);
                 //glucoseValueTextView.setText(gluValue);
                 userInputMap.put("userGlucose", gluValue);
             }
 
             @Override
             public void onIntermediateValueChange(int selectedValue) {
-                String value = String.valueOf(selectedValue);
+                float v = (float) selectedValue;
+                Log.e(TAG, "onValueChange: " + v);
+                String value = String.valueOf(v);
                 glucoseValueTextView.setText(value);
 
             }
@@ -183,7 +190,7 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
         dateDialog.show(getSupportFragmentManager(), "2");
     }
 
-    private void setDefaultValue(){
+    private void setDefaultValue() {
         userInputMap.put("userGlucose", "100");
     }
 
@@ -288,7 +295,7 @@ public class WriteBSActivity extends AppCompatActivity implements CustomItemClic
 
 
     @OnClick(R.id.home)
-    public void onClickBackButton(){
+    public void onClickBackButton() {
         finish();
     }
 }
