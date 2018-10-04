@@ -170,7 +170,6 @@ public class WriteFintessCheckActivity extends AppCompatActivity {
         realm = Realm.getInstance(realmConfiguration);
     }
 
-
     private void otherInitSetting() {
         handler = new Handler();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);

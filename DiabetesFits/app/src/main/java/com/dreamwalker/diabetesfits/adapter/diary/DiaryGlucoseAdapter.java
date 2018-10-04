@@ -60,7 +60,6 @@ public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseAdapte
         } else if (changeGlucoseValue > 0) {
             String tmp = String.valueOf(changeGlucoseValue) + " 증가";
             diaryGlucoseViewHolder.glucoseChangeTextView.setTextColor(ContextCompat.getColor(context, R.color.under_line));
-
             diaryGlucoseViewHolder.glucoseChangeTextView.setText(tmp);
         } else if (changeGlucoseValue == 0) {
             String tmp = " - ";

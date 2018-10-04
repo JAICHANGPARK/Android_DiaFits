@@ -184,6 +184,15 @@
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
 
+        <activity
+            android:name=".activity.diary.WriteGlucoseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/WriteGlucoseTheme" />
+
+        <activity android:name=".activity.diary.EditGlucoseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/WriteGlucoseTheme"></activity>
+
         <service
             android:name=".utils.reminder.alarm.ReminderAlarmService"
             android:exported="false" />
@@ -202,14 +211,7 @@
         <!-- android:authorities="com.dreamwalker.diabetesreminder" -->
         <!-- android:exported="true" -->
         <!-- android:enabled="true"/> -->
-        <activity
-            android:name=".activity.diary.WriteGlucoseActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/WriteGlucoseTheme" />
 
-        <activity android:name=".activity.diary.EditGlucoseActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/WriteGlucoseTheme"></activity>
     </application>
 
 </manifest>
