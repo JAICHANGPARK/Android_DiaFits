@@ -409,6 +409,7 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
     public void onClickedFab() {
         Intent intent = new Intent(DiaryFitnessActivity.this, WriteFitnessActivity.class);
         startActivity(intent);
+
     }
 
     @Override
@@ -425,6 +426,7 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
         bundle.putString("userFitnessDistance", fitnesArrayList.get(position).getDistance());
         bundle.putString("userFitnessSpeed", fitnesArrayList.get(position).getSpeed());
         bundle.putString("userREPScore", fitnesArrayList.get(position).getRpeScore());
+        bundle.putString("userKcal", fitnesArrayList.get(position).getKcal());
         type = fitnesArrayList.get(position).getType();
         String detailType = fitnesArrayList.get(position).getSelectTypeDetail();
 
