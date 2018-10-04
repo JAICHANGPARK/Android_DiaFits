@@ -76,6 +76,8 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
 
     Bundle bundle = new Bundle();  //데이터 수정 액티비티에 전달할 번들 객체 생성
 
+    String userSelectedGlobalDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -221,6 +223,7 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
             public void onDateSelected(Calendar date, int position) {
                 String selectedDateStr = DateFormat.format("EEE, MMM d, yyyy", date).toString();
                 String selectedDate = DateFormat.format("yyyy-MM-dd", date).toString();
+                userSelectedGlobalDate = DateFormat.format("yyyy-MM-dd", date).toString();
                 Toast.makeText(DiaryGlucoseActivity.this, selectedDate + " selected!", Toast.LENGTH_SHORT).show();
 //                Log.e("onDateSelected", selectedDateStr + " - Position = " + position);
                 Log.e("onDateSelected", selectedDate + " - Position = " + position);
@@ -367,7 +370,7 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         Date todayDate = defaultSelectedDate.getTime();
         String todayString = simpleDateFormat.format(todayDate);
-        sortAndProcessGlucose(todayString, true);
+        sortAndProcessGlucose(userSelectedGlobalDate, true);
         adapter = new DiaryGlucoseAdapter(this, glucoArrayList);
         adapter.setItemClickListener(this);
         recyclerView.setAdapter(adapter);

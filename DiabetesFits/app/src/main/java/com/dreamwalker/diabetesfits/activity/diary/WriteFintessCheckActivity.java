@@ -120,7 +120,7 @@ public class WriteFintessCheckActivity extends AppCompatActivity {
 
         glucoseTextView.setText(userInputMap.get("fitnessTime"));
         typeTextView.setText(userInputMap.get("selectType"));
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.KOREA);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
 //        SimpleDateFormat ticketDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 //        SimpleDateFormat ticketTimeFormat = new SimpleDateFormat("hh:mm:ss", Locale.KOREA);
 
