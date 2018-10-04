@@ -183,6 +183,10 @@ public class EditFitnessActivity extends AppCompatActivity implements DatePicker
         timeEditText.setText(timeString);
         // TODO: 2018-10-05 앞에서 선택된 타입값에 대해 인덱스 처리된 값을 받는다. 
 
+        selectType = bundle.getString("userType");
+        selectTypeDetail = bundle.getString("userDetailType");
+        selectRpeExpression = bundle.getString("userREPDetail");
+
         niceSpinner.setSelectedIndex(bundle.getInt("userTypePosition"));
         if (bundle.getInt("userTypePosition") == 1) {
             List<String> indoorBikeSet = new LinkedList<>(Arrays.asList("보통으로", "빠르게", "가볍게"));
@@ -604,11 +608,11 @@ public class EditFitnessActivity extends AppCompatActivity implements DatePicker
                 Log.e(TAG, "met Result --> " + m.getStrength());
                 if (userFitnessSpeed.equals(m.getStrength())) {
                     fitnessMet = m.getMetValue();
-                }else if(m.getStrength().equals("보통으로")){
+                } else if (m.getStrength().equals("보통으로")) {
                     fitnessMet = m.getMetValue();
-                }else if(m.getStrength().equals("빠르게")){
+                } else if (m.getStrength().equals("빠르게")) {
                     fitnessMet = m.getMetValue();
-                }else if (m.getStrength().equals("가볍게")){
+                } else if (m.getStrength().equals("가볍게")) {
                     fitnessMet = m.getMetValue();
                 }
             }
@@ -631,13 +635,11 @@ public class EditFitnessActivity extends AppCompatActivity implements DatePicker
                 results.setSpeed(fitnessSpeed);
                 results.setRpeScore(rpeScore);
                 results.setKcal(userKcal);
-
                 results.setDate(dateTime[0]);
                 results.setTime(dateTime[1]);
                 results.setTimestamp(timeStamps);
                 results.setLongTs(userTs);
                 results.setDatetime(userDateTimes);
-
             });
 
 //            Toast.makeText(this, "Complete 완벽하다고", Toast.LENGTH_SHORT).show();

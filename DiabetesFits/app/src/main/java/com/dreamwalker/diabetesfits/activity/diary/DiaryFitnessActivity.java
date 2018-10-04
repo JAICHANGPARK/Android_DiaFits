@@ -418,6 +418,8 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
         Log.e(TAG, "onItemClick: " + position);
 
         bundle.putString("userType", fitnesArrayList.get(position).getType());
+        bundle.putString("userDetailType", fitnesArrayList.get(position).getSelectTypeDetail());
+        bundle.putString("userREPDetail", fitnesArrayList.get(position).getSelectRpeExpression());
         bundle.putString("userDate", fitnesArrayList.get(position).getDate());
         bundle.putString("userTime", fitnesArrayList.get(position).getTime());
         bundle.putString("userTimestamp", fitnesArrayList.get(position).getTimestamp());
