@@ -184,7 +184,14 @@ public class EditFitnessActivity extends AppCompatActivity implements DatePicker
         // TODO: 2018-10-05 앞에서 선택된 타입값에 대해 인덱스 처리된 값을 받는다. 
 
         selectType = bundle.getString("userType");
+        // TODO: 2018-10-05  null 값 처리는 충실하게 해주자. 
+        if (selectType == null){
+            selectType = "트레드밀";
+        }
         selectTypeDetail = bundle.getString("userDetailType");
+        if (selectTypeDetail == null){
+            selectTypeDetail = "가볍게걷기";
+        }
         selectRpeExpression = bundle.getString("userREPDetail");
 
         niceSpinner.setSelectedIndex(bundle.getInt("userTypePosition"));

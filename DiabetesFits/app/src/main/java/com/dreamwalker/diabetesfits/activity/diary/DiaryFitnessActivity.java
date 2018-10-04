@@ -442,50 +442,60 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
 
     /**
      * 타입에 대해 인덱스 처리하는 메소드
+     *
      * @param type
      * @return
      */
     private int checkPositionType(String type) {
         int position = 0;
-        switch (type) {
-            case "트레드밀":
-                position = 0;
-                break;
-            case "실내자전거":
-                position = 1;
-                break;
+        if (type == null) {
+            position = 0;
+        } else {
+            switch (type) {
+                case "트레드밀":
+                    position = 0;
+                    break;
+                case "실내자전거":
+                    position = 1;
+                    break;
+            }
         }
+
         return position;
     }
 
     private int checkPositionDetailType(String detailType) {
+
         int position = 0;
-        if (type.equals("트레드밀")) {
-            switch (detailType) {
-                case "가볍게 걷기":
-                    position = 0;
-                    break;
-                case "일반 걷기":
-                    position = 1;
-                    break;
-                case "달리기":
-                    position = 2;
-                    break;
-            }
-        } else if (type.equals("실내자전거")) {
-            switch (detailType) {
-                case "보통으로":
-                    position = 0;
-                    break;
-                case "빠르게":
-                    position = 1;
-                    break;
-                case "가볍게":
-                    position = 2;
-                    break;
+        if (detailType == null || type == null) {
+            position = 0;
+        } else {
+            if (type.equals("트레드밀")) {
+                switch (detailType) {
+                    case "가볍게 걷기":
+                        position = 0;
+                        break;
+                    case "일반 걷기":
+                        position = 1;
+                        break;
+                    case "달리기":
+                        position = 2;
+                        break;
+                }
+            } else if (type.equals("실내자전거")) {
+                switch (detailType) {
+                    case "보통으로":
+                        position = 0;
+                        break;
+                    case "빠르게":
+                        position = 1;
+                        break;
+                    case "가볍게":
+                        position = 2;
+                        break;
+                }
             }
         }
-
         return position;
     }
 
