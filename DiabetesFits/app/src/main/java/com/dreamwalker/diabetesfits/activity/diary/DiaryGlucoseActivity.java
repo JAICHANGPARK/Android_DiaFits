@@ -366,10 +366,7 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
     @Override
     protected void onRestart() {
         Log.e(TAG, "onRestart: " );
-        final Calendar defaultSelectedDate = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-        Date todayDate = defaultSelectedDate.getTime();
-        String todayString = simpleDateFormat.format(todayDate);
+        // TODO: 2018-10-04 혈당 값 수정 후 이전 날짜 수정임에도 불구하고 당일 날짜의 값이 나오는 오류 수정   
         sortAndProcessGlucose(userSelectedGlobalDate, true);
         adapter = new DiaryGlucoseAdapter(this, glucoArrayList);
         adapter.setItemClickListener(this);

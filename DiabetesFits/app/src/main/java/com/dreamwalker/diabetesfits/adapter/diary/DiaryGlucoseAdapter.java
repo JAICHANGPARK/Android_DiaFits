@@ -3,6 +3,7 @@ package com.dreamwalker.diabetesfits.adapter.diary;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,9 +55,12 @@ public class DiaryGlucoseAdapter extends RecyclerView.Adapter<DiaryGlucoseAdapte
         if (changeGlucoseValue < 0) {
             String tmp = String.valueOf(changeGlucoseValue);
             tmp = tmp.substring(1) + " 감소";
+            diaryGlucoseViewHolder.glucoseChangeTextView.setTextColor(ContextCompat.getColor(context, R.color.inbounds_stat));
             diaryGlucoseViewHolder.glucoseChangeTextView.setText(tmp);
         } else if (changeGlucoseValue > 0) {
             String tmp = String.valueOf(changeGlucoseValue) + " 증가";
+            diaryGlucoseViewHolder.glucoseChangeTextView.setTextColor(ContextCompat.getColor(context, R.color.under_line));
+
             diaryGlucoseViewHolder.glucoseChangeTextView.setText(tmp);
         } else if (changeGlucoseValue == 0) {
             String tmp = " - ";
