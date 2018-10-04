@@ -130,7 +130,7 @@ public class EditFitnessActivity extends AppCompatActivity implements DatePicker
         setContentView(R.layout.activity_edit_fitness);
 
         initSetting();
-        
+
         bundle = getIntent().getBundleExtra(IntentConst.USER_EDIT_FITNESS);
         Log.e(TAG, "onCreate: userType " + bundle.getString("userType"));
         Log.e(TAG, "onCreate: userDate" + bundle.getString("userDate"));
@@ -151,7 +151,7 @@ public class EditFitnessActivity extends AppCompatActivity implements DatePicker
 
         try {
             userDateTimes = simpleDateFormat.parse(newDate); // 문자여을 가지고 데이터로 파싱하기
-            Log.e(TAG, "onCreate: " + userDateTimes );
+            Log.e(TAG, "onCreate: " + userDateTimes);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -159,7 +159,7 @@ public class EditFitnessActivity extends AppCompatActivity implements DatePicker
         dateTime = newDate.split(" "); // 데이터포맷의 결과로 나온 문자열을 공백을 기준으로 자르기
 
         String dateString = DateFormat.getDateInstance().format(date);
-        String timeString = DateFormat.getTimeInstance().format(date);
+        String timeString = DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
         timeStamps = bundle.getString("userTimestamp");
 
         timeEditText.setKeyListener(null);
@@ -167,7 +167,18 @@ public class EditFitnessActivity extends AppCompatActivity implements DatePicker
 
         dateEditText.setText(dateString);
         timeEditText.setText(timeString);
-        niceSpinner.setSelectedIndex(1);
+        // TODO: 2018-10-05 앞에서 선택된 타입값에 대해 인덱스 처리된 값을 받는다. 
+
+        niceSpinner.setSelectedIndex(bundle.getInt("userTypePosition"));
+        if (bundle.getInt("userTypePosition") == 1){
+            List<String> indoorBikeSet = new LinkedList<>(Arrays.asList("보통으로", "빠르게", "가볍게"));
+            niceSpinner2.attachDataSource(indoorBikeSet);
+            niceSpinner2.setSelectedIndex(bundle.getInt("userDetailTypePosition"));
+        }else {
+            niceSpinner2.setSelectedIndex(bundle.getInt("userDetailTypePosition"));
+        }
+
+
 
     }
 
@@ -186,6 +197,7 @@ public class EditFitnessActivity extends AppCompatActivity implements DatePicker
     private void initPaper() {
         Paper.init(this);
     }
+
     private void initUserWeight() {
         userWeight = readUserWeightFromPaper();
         if (userWeight == null) {
@@ -357,7 +369,7 @@ public class EditFitnessActivity extends AppCompatActivity implements DatePicker
 
     }
 
-    private void setNestedScrollView(){
+    private void setNestedScrollView() {
 
         nestedScrollView = (NestedScrollView) findViewById(R.id.nsv);
         nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener)

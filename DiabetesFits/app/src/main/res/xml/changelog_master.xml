@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.0.8" versioncode="9">
+        <change>Date : 2018-10-05</change>
+        <change>Glucose, Fitness Value Delete, Update Function added</change>
+        <change>Diary Filter added</change>
+        <change>Bug Fixed</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
+    </release>
+
     <release version="1.0.7" versioncode="8">
         <change>Date : 2018-10-02</change>
         <change>Diary Function change</change>
