@@ -20,7 +20,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.diary.DiaryGlucoseAdapter;
@@ -277,7 +276,7 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
                 String selectedDateStr = DateFormat.format("EEE, MMM d, yyyy", date).toString();
                 String selectedDate = DateFormat.format("yyyy-MM-dd", date).toString();
                 userSelectedGlobalDate = DateFormat.format("yyyy-MM-dd", date).toString();
-                Toast.makeText(DiaryGlucoseActivity.this, selectedDate + " selected!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DiaryGlucoseActivity.this, selectedDate + " selected!", Toast.LENGTH_SHORT).show();
 //                Log.e("onDateSelected", selectedDateStr + " - Position = " + position);
                 Log.e("onDateSelected", selectedDate + " - Position = " + position);
                 sortAndProcessGlucose(selectedDate, true);

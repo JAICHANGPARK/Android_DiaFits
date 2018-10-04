@@ -416,11 +416,14 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
         Log.e(TAG, "onItemClick: " + position);
 
         bundle.putString("userType", fitnesArrayList.get(position).getType());
-        bundle.putString("userValue", fitnesArrayList.get(position).getUserValue());
         bundle.putString("userDate", fitnesArrayList.get(position).getDate());
         bundle.putString("userTime", fitnesArrayList.get(position).getTime());
         bundle.putString("userTimestamp", fitnesArrayList.get(position).getTimestamp());
         bundle.putLong("userTimestampLong", fitnesArrayList.get(position).getLongTs());
+        bundle.putString("userFitnessTime", fitnesArrayList.get(position).getFitnessTime());
+        bundle.putString("userFitnessDistance", fitnesArrayList.get(position).getDistance());
+        bundle.putString("userFitnessSpeed", fitnesArrayList.get(position).getSpeed());
+        bundle.putString("userREPScore", fitnesArrayList.get(position).getRpeScore());
 
         Intent intent = new Intent(DiaryFitnessActivity.this, EditFitnessActivity.class);
         intent.putExtra(IntentConst.USER_EDIT_FITNESS, bundle);
