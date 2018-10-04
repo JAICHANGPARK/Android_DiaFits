@@ -183,15 +183,14 @@
             android:name=".activity.sync.treadmillzero.SyncTreadmillDataActivity"
             android:screenOrientation="portrait"
             android:theme="@style/ShopTheme" />
-
         <activity
             android:name=".activity.diary.WriteGlucoseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/WriteGlucoseTheme" />
-
-        <activity android:name=".activity.diary.EditGlucoseActivity"
+        <activity
+            android:name=".activity.diary.EditGlucoseActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/WriteGlucoseTheme"></activity>
+            android:theme="@style/WriteGlucoseTheme" />
 
         <service
             android:name=".utils.reminder.alarm.ReminderAlarmService"
@@ -212,6 +211,7 @@
         <!-- android:exported="true" -->
         <!-- android:enabled="true"/> -->
 
+        <activity android:name=".activity.diary.EditFitnessActivity"></activity>
     </application>
 
 </manifest>

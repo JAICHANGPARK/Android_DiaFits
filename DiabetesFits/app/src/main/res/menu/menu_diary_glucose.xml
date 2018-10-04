@@ -4,8 +4,22 @@
 
     <item
         app:showAsAction="always"
+        android:id="@+id/filter"
+        android:icon="@drawable/ic_tune_white_24dp"
+        android:title="filter"/>
+
+    <item
+        app:showAsAction="always"
+        android:id="@+id/chart"
+        android:icon="@drawable/ic_multiline_chart_white_24dp"
+        android:title="chart"/>
+
+    <item
+        app:showAsAction="always"
         android:id="@+id/home"
         android:icon="@drawable/ic_calendar_24dp"
         android:title="today"/>
+
+
 
 </menu>

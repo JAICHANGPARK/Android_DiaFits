@@ -1,5 +1,6 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -7,7 +8,9 @@ import android.os.Bundle;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateFormat;
@@ -22,6 +25,7 @@ import android.widget.LinearLayout;
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.diary.DiaryFitnessAdapter;
 import com.dreamwalker.diabetesfits.adapter.diary.ItemClickListener;
+import com.dreamwalker.diabetesfits.consts.IntentConst;
 import com.dreamwalker.diabetesfits.database.RealmManagement;
 import com.dreamwalker.diabetesfits.database.model.Fitness;
 import com.dreamwalker.diabetesfits.model.diary.Fitnes;
@@ -44,6 +48,7 @@ import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class DiaryFitnessActivity extends AppCompatActivity implements ItemClickListener {
 
@@ -77,6 +82,8 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
     LinearLayoutManager layoutManager;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,9 +95,12 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
         RealmResults<Fitness> result = realm.where(Fitness.class).findAll();
-        Log.e(TAG, "onCreate: " + result.size() );
-        for (Fitness fitness: result){
+        Log.e(TAG, "onCreate: " + result.size());
+        for (Fitness fitness : result) {
             Log.e(TAG, "onCreate: --> " + fitness.getFitnessTime());
             Log.e(TAG, "onCreate: --> " + fitness.getDate());
         }
@@ -129,6 +139,71 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
         }
 
         todayList = realm.where(Fitness.class).equalTo("date", ts).findAll().sort("datetime");
+//        todayList = realm.where(Glucose.class).equalTo("date", todayString).findAll().sort("datetime");
+        for (Fitness f : todayList) {
+            Log.e(TAG, "onCreate: todayList  getValue --> " + f.getUserValue());
+            Log.e(TAG, "onCreate: todayList  getLongTs --> " + f.getDate());
+            Log.e(TAG, "onCreate: todayList  getLongTs --> " + f.getTimestamp());
+        }
+
+        if (todayList.size() != 0) {
+
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyLayout.setVisibility(View.GONE);
+
+
+            /**
+             *         fitness.setType(userInputMap.get("selectType"));
+             *                 fitness.setSelectTypeDetail(userInputMap.get("selectTypeDetail"));
+             *                 fitness.setSelectRpeExpression(userInputMap.get("selectRpeExpression"));
+             *                 fitness.setFitnessTime(userInputMap.get("fitnessTime"));
+             *                 fitness.setDistance(userInputMap.get("fitnessDistance"));
+             *                 fitness.setSpeed(userInputMap.get("fitnessSpeed"));
+             *                 fitness.setRpeScore(userInputMap.get("rpeScore"));
+             *                 fitness.setKcal(userKcal);
+             *                 fitness.setDate(dateTime[0]);
+             *                 fitness.setTime(dateTime[1]);
+             *                 fitness.setTimestamp(userInputMap.get("timestamp"));
+             *                 fitness.setLongTs(userTs);
+             *                 fitness.setDatetime(userDateTimes);
+             */
+
+            for (int i = 0; i < todayList.size(); i++) {
+                fitnesArrayList.add(new Fitnes(todayList.get(i).getType(),
+                        todayList.get(i).getSelectTypeDetail(),
+                        todayList.get(i).getSelectRpeExpression(),
+                        todayList.get(i).getFitnessTime(),
+                        todayList.get(i).getDistance(),
+                        todayList.get(i).getSpeed(),
+                        todayList.get(i).getRpeScore(),
+                        todayList.get(i).getKcal(),
+                        todayList.get(i).getDate(),
+                        todayList.get(i).getTime(),
+                        todayList.get(i).getTimestamp(),
+                        todayList.get(i).getLongTs(),
+                        todayList.get(i).getDatetime()));
+            }
+
+        } else {
+            // TODO: 2018-10-02 값이 없을때 뷰처리
+            recyclerView.setVisibility(View.GONE);
+            emptyLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * 필터 적용 메소드
+     * 오름차순 , 내림차순
+     * @param ts
+     * @param clearFlag
+     * @param sort
+     */
+    private void sortAndProcessGlucose(String ts, boolean clearFlag, Sort sort) {
+        if (clearFlag) {
+            fitnesArrayList.clear();
+        }
+
+        todayList = realm.where(Fitness.class).equalTo("date", ts).findAll().sort("datetime", sort);
 //        todayList = realm.where(Glucose.class).equalTo("date", todayString).findAll().sort("datetime");
         for (Fitness f : todayList) {
             Log.e(TAG, "onCreate: todayList  getValue --> " + f.getUserValue());
@@ -196,7 +271,7 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
     }
 
 
-    private void initSetting(){
+    private void initSetting() {
         bindView();
         initRealm();
         initToolbar();
@@ -206,7 +281,8 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
     private void bindView() {
         ButterKnife.bind(this);
     }
-    private void initRealm(){
+
+    private void initRealm() {
         Realm.init(this);
         realmConfiguration = RealmManagement.getRealmConfiguration();
         Realm.setDefaultConfiguration(realmConfiguration);
@@ -268,14 +344,13 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
-//                String selectedDateStr = DateFormat.format("EEE, MMM d, yyyy", date).toString();
-//                String selectedDate = DateFormat.format("yyyy-MM-dd", date).toString();
-//                userSelectedGlobalDate = DateFormat.format("yyyy-MM-dd", date).toString();
-//                Toast.makeText(DiaryGlucoseActivity.this, selectedDate + " selected!", Toast.LENGTH_SHORT).show();
-////                Log.e("onDateSelected", selectedDateStr + " - Position = " + position);
-//                Log.e("onDateSelected", selectedDate + " - Position = " + position);
-//                sortAndProcessGlucose(selectedDate, true);
-//                adapter.notifyDataSetChanged();
+                String selectedDate = DateFormat.format("yyyy-MM-dd", date).toString();
+                userSelectedGlobalDate = DateFormat.format("yyyy-MM-dd", date).toString();
+//                Toast.makeText(DiaryFitnessActivity.this, selectedDate + " selected!", Toast.LENGTH_SHORT).show();
+//                Log.e("onDateSelected", selectedDateStr + " - Position = " + position);
+                Log.e("onDateSelected", selectedDate + " - Position = " + position);
+                sortAndProcessGlucose(selectedDate, true);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -294,6 +369,29 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
             case R.id.home:
                 horizontalCalendar.goToday(false);
                 break;
+            case R.id.filter:
+                final CharSequence[] items = {"오름차순", "내림차순"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(DiaryFitnessActivity.this);
+                builder.setTitle("Set filter");
+                builder.setSingleChoiceItems(items, -1, (dialog, which) -> {
+                    Log.e(TAG, "onClick: " + which);
+                    switch (which) {
+                        case 0:
+                            sortAndProcessGlucose(userSelectedGlobalDate, true, Sort.ASCENDING);
+                            adapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                            break;
+                        case 1:
+                            sortAndProcessGlucose(userSelectedGlobalDate, true, Sort.DESCENDING);
+                            adapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                            break;
+                    }
+                });
+
+                builder.show();
+
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -309,21 +407,56 @@ public class DiaryFitnessActivity extends AppCompatActivity implements ItemClick
     @OnClick(R.id.fab)
     public void onClickedFab() {
         Intent intent = new Intent(DiaryFitnessActivity.this, WriteFitnessActivity.class);
-        // Configurations cannot be different if used to open the same file.
-        // The most likely cause is that equals() and hashCode() are not overridden in the migration class: com.dreamwalker.diabetesfits.database.MyMigration
         startActivity(intent);
-
-//        horizontalCalendar.goToday(false);
-
     }
 
     @Override
     public void onItemClick(View v, int position) {
 
+        Log.e(TAG, "onItemClick: " + position);
+
+        bundle.putString("userType", fitnesArrayList.get(position).getType());
+        bundle.putString("userValue", fitnesArrayList.get(position).getUserValue());
+        bundle.putString("userDate", fitnesArrayList.get(position).getDate());
+        bundle.putString("userTime", fitnesArrayList.get(position).getTime());
+        bundle.putString("userTimestamp", fitnesArrayList.get(position).getTimestamp());
+        bundle.putLong("userTimestampLong", fitnesArrayList.get(position).getLongTs());
+
+        Intent intent = new Intent(DiaryFitnessActivity.this, EditFitnessActivity.class);
+        intent.putExtra(IntentConst.USER_EDIT_FITNESS, bundle);
+        startActivity(intent);
     }
 
     @Override
     public void onItemLongClick(View v, int position) {
 
+        String timeStamps = fitnesArrayList.get(position).getTimestamp();
+
+        Log.e(TAG, "onItemLongClick: " + position);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("경고");
+        builder.setMessage("삭제하시겠어요?");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final RealmResults<Fitness> results = realm.where(Fitness.class).equalTo("timestamp", timeStamps).findAll();
+                Log.e(TAG, "onClick: results size -->" + results.size());
+                realm.executeTransaction(realm -> results.deleteAllFromRealm());
+                fitnesArrayList.remove(position);
+                adapter.notifyDataSetChanged();
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, (dialog, which) -> dialog.dismiss());
+        builder.show();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        sortAndProcessGlucose(userSelectedGlobalDate, true);
+        adapter = new DiaryFitnessAdapter(this, fitnesArrayList);
+        adapter.setItemClickListener(this);
+        recyclerView.setAdapter(adapter);
+        super.onRestart();
     }
 }

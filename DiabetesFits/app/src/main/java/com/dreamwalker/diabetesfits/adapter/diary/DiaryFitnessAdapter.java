@@ -44,18 +44,21 @@ public class DiaryFitnessAdapter extends RecyclerView.Adapter<DiaryFitnessAdapte
         String type = fitnesArrayList.get(i).getType();
         String typeDetail = fitnesArrayList.get(i).getSelectTypeDetail();
         String repScore = fitnesArrayList.get(i).getRpeScore();
-        String repScoreDetail = fitnesArrayList.get(i).getSelectTypeDetail();
-        String fitnessTime = fitnesArrayList.get(i).getFitnessTime();
+        String repScoreDetail = fitnesArrayList.get(i).getSelectRpeExpression();
+        String fitnessTime = fitnesArrayList.get(i).getFitnessTime() + " 분";
         String userType = type + "(" + typeDetail + ")";
         String repMessage = repScoreDetail + "(" + repScore + ")";
+        String fitnessDistance = fitnesArrayList.get(i).getDistance() + " km";
+        String fitnessSpeed = fitnesArrayList.get(i).getSpeed() + " km/h";
+        setReminderTitle(userType);
 
         diaryFitnessViewHolder.mTitleText.setText(userType);
-        setReminderTitle(userType);
         diaryFitnessViewHolder.mThumbnailImage.setImageDrawable(mDrawableBuilder);
-        diaryFitnessViewHolder.mDateAndTimeText.setText(DateFormat.getTimeInstance().format(fitnesArrayList.get(i).getDatetime()));
+        diaryFitnessViewHolder.mDateAndTimeText.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(fitnesArrayList.get(i).getDatetime()));
         diaryFitnessViewHolder.fitnessTimeTextView.setText(fitnessTime);
         diaryFitnessViewHolder.fitnessREPText.setText(repMessage);
-
+        diaryFitnessViewHolder.fitnessDistanceTextView.setText(fitnessDistance);
+        diaryFitnessViewHolder.fitnessSpeedTextView.setText(fitnessSpeed);
     }
 
     @Override

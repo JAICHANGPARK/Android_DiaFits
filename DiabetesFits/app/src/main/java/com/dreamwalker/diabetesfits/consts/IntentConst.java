@@ -14,6 +14,7 @@ public class IntentConst {
     public static final String USER_WRITE_GLUCOSE = "USER_WRITE_GLUCOSE";
     public static final String USER_WRITE_FITNESS = "USER_WRITE_FITNESS";
     public static final String USER_EDIT_GLUCOSE = "USER_EDIT_GLUCOSE";
+    public static final String USER_EDIT_FITNESS = "USER_EDIT_FITNESS";
     public static final String WEB_URL = "WEB_URL";
     public static final String EDUCATION_PART = "EDUCATION_PART";
     public static final String EDUCATION_PART_NAME = "EDUCATION_PART_NAME";

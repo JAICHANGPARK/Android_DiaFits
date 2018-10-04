@@ -48,6 +48,7 @@ import butterknife.OnClick;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClickListener {
     private static final String TAG = "DiaryGlucoseActivity";
@@ -103,7 +104,7 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
         Date todayDate = defaultSelectedDate.getTime();
         String todayString = simpleDateFormat.format(todayDate);
         Log.e(TAG, "onCreate: todayString --> " + todayString);
-
+       
         initHorizontalCalendar(startDate, endDate, defaultSelectedDate, simpleDateFormat);
         sortAndProcessGlucose(todayString, true);
 
@@ -135,6 +136,57 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
         }
 
         todayList = realm.where(Glucose.class).equalTo("date", ts).findAll().sort("datetime");
+//        todayList = realm.where(Glucose.class).equalTo("date", todayString).findAll().sort("datetime");
+        for (Glucose glucose : todayList) {
+            Log.e(TAG, "onCreate: todayList  getValue --> " + glucose.getValue());
+            Log.e(TAG, "onCreate: todayList  getLongTs --> " + glucose.getDate());
+            Log.e(TAG, "onCreate: todayList  getLongTs --> " + glucose.getTimestamp());
+        }
+
+        if (todayList.size() != 0) {
+
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyLayout.setVisibility(View.GONE);
+
+            ArrayList<Integer> changeList = new ArrayList<>();
+            for (int i = (todayList.size() - 1); i > 0; i--) {
+                float change = Float.parseFloat(todayList.get(i).getValue()) - Float.parseFloat(todayList.get(i - 1).getValue());
+                Log.e(TAG, "onCreate: " + change);
+                changeList.add((int) change);
+            }
+
+            glucoArrayList.add(new Gluco(todayList.get(0).getValue(),
+                    todayList.get(0).getType(),
+                    todayList.get(0).getDate(),
+                    todayList.get(0).getTime(),
+                    todayList.get(0).getTimestamp(),
+                    todayList.get(0).getLongTs(),
+                    todayList.get(0).getDatetime(), 0));
+
+            for (int i = 1; i < todayList.size(); i++) {
+                glucoArrayList.add(new Gluco(todayList.get(i).getValue(),
+                        todayList.get(i).getType(),
+                        todayList.get(i).getDate(),
+                        todayList.get(i).getTime(),
+                        todayList.get(i).getTimestamp(),
+                        todayList.get(i).getLongTs(),
+                        todayList.get(i).getDatetime(),
+                        changeList.get(changeList.size() - i)));
+            }
+
+        } else {
+            // TODO: 2018-10-02 값이 없을때 뷰처리
+            recyclerView.setVisibility(View.GONE);
+            emptyLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void sortAndProcessGlucose(String ts, boolean clearFlag, Sort sort) {
+        if (clearFlag) {
+            glucoArrayList.clear();
+        }
+
+        todayList = realm.where(Glucose.class).equalTo("date", ts).findAll().sort("datetime", sort);
 //        todayList = realm.where(Glucose.class).equalTo("date", todayString).findAll().sort("datetime");
         for (Glucose glucose : todayList) {
             Log.e(TAG, "onCreate: todayList  getValue --> " + glucose.getValue());
@@ -221,6 +273,7 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
         horizontalCalendar.setCalendarListener(new HorizontalCalendarListener() {
             @Override
             public void onDateSelected(Calendar date, int position) {
+                // TODO: 2018-10-04 화면이 로딩되면 리스너틑 한번 호출되기 때문에 글로벌 데이터 변수를 이곳에 선언함.
                 String selectedDateStr = DateFormat.format("EEE, MMM d, yyyy", date).toString();
                 String selectedDate = DateFormat.format("yyyy-MM-dd", date).toString();
                 userSelectedGlobalDate = DateFormat.format("yyyy-MM-dd", date).toString();
@@ -283,6 +336,37 @@ public class DiaryGlucoseActivity extends AppCompatActivity implements ItemClick
         switch (item.getItemId()) {
             case R.id.home:
                 horizontalCalendar.goToday(false);
+                break;
+            case R.id.filter:
+                final CharSequence[] items = {"오름차순", "내림차순"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(DiaryGlucoseActivity.this);
+                builder.setTitle("Set filter");
+                builder.setSingleChoiceItems(items, -1, (dialog, which) -> {
+                    Log.e(TAG, "onClick: " + which );
+                    switch (which){
+                        case 0:
+                            sortAndProcessGlucose(userSelectedGlobalDate, true, Sort.ASCENDING);
+                            adapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                            break;
+                        case 1:
+                            sortAndProcessGlucose(userSelectedGlobalDate, true, Sort.DESCENDING);
+                            adapter.notifyDataSetChanged();
+                            dialog.dismiss();
+                            break;
+                    }
+                });
+                builder.show();
+                break;
+
+            case R.id.chart:
+                if (todayList.size() == 0){
+                    AlertDialog.Builder chartBuilder = new AlertDialog.Builder(DiaryGlucoseActivity.this);
+                    chartBuilder.setTitle("알림");
+                    chartBuilder.setMessage("데이터가 없습니다.");
+                    chartBuilder.setPositiveButton(android.R.string.yes, (dialog, which) -> dialog.dismiss());
+                    chartBuilder.show();
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
