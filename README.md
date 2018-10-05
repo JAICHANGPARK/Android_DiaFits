@@ -8,8 +8,12 @@
 -  연구용 파일럿 프로젝트 
 
 <img src="https://github.com/JAICHANGPARK/Android_DiaFits/blob/master/source/icons/playstore/icon.png" width="200">
+
 <img src="https://github.com/JAICHANGPARK/Android_DiaFits/blob/master/source/img/playstore/mockup-images/mockup.png" width="500">
 
+### Play Store 
+
+<a href='https://play.google.com/store/apps/details?id=com.dreamwalker.diabetesfits&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='다운로드하기 Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/ko_badge_web_generic.png' width = "200"/></a>
 
 ### Release 1.0.9
 
