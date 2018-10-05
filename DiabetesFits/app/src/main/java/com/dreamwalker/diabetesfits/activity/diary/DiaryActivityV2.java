@@ -98,6 +98,114 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
 
     }
 
+    private void bindView() {
+        ButterKnife.bind(this);
+    }
+
+    private void initRealm() {
+        Realm.init(this);
+        realmConfiguration = RealmManagement.getRealmConfiguration();
+        Realm.setDefaultConfiguration(realmConfiguration);
+        realm = Realm.getInstance(realmConfiguration);
+
+    }
+
+    private void initRecyclerView() {
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        adapter = new GlobalDiaryAdapter(this, globalArrayList);
+        adapter.setItemClickListener(this);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void initTimeSet() {
+
+        // Default Date set to Today.
+        final Calendar defaultSelectedDate = Calendar.getInstance();
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        Date todayDate = defaultSelectedDate.getTime();
+        todayString = simpleDateFormat.format(todayDate);
+
+    }
+
+    private void setTimeLineView() {
+        timeline.setDateLabelAdapter((calendar, index) -> {
+            String selectDate = simpleDateFormat.format(calendar.getTime());
+            glucoseResults = realm.where(Glucose.class).equalTo("date", selectDate).findAll();
+            fitnessesResults = realm.where(Fitness.class).equalTo("date", selectDate).findAll();
+            int count = glucoseResults.size() + fitnessesResults.size();
+            Log.e(TAG, "getLabel: " + calendar.getTimeInMillis() + " | " + index);
+            return Integer.toString(count) + "개";
+
+//                return Integer.toString(calendar.get(Calendar.MONTH) + 1) + "/" + (calendar.get(Calendar.YEAR) % 2000);
+        });
+
+        timeline.setOnDateSelectedListener((year, month, day, index) -> {
+            Log.e(TAG, "setTimeLineView: setOnDateSelectedListener --> !!!!!!!!1 ");
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, month, day);
+            String selectDate = simpleDateFormat.format(calendar.getTime());
+            fetchFromRealm(selectDate, true);
+            adapter.notifyDataSetChanged();
+//                Toast.makeText(DiaryActivityV2.this, "" + year + month + day, Toast.LENGTH_SHORT).show();
+        });
+
+        Calendar startDate = Calendar.getInstance();
+        startDate.add(Calendar.YEAR, -2);
+        Calendar endDate = Calendar.getInstance();
+        endDate.add(Calendar.YEAR, 2);
+        Calendar defaultDate = Calendar.getInstance();
+
+        Log.e(TAG, "setTimeLineView: " + startDate.get(Calendar.YEAR) + startDate.get(Calendar.MONTH) + startDate.get(Calendar.DAY_OF_MONTH));
+        Log.e(TAG, "setTimeLineView: " + Calendar.JULY);
+
+//        timeline.setFirstVisibleDate(2016, Calendar.JULY, 19);
+//        timeline.setLastVisibleDate(2020, Calendar.JULY, 19);
+//
+        timeline.setFirstVisibleDate(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH));
+        timeline.setLastVisibleDate(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH));
+        timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH), defaultDate.get(Calendar.DAY_OF_MONTH));
+
+    }
+
+    private void setBottomAppBar() {
+        bottomAppBar = findViewById(R.id.bottomAppBar);
+        setSupportActionBar(bottomAppBar);
+        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
+    }
+
+    private void setRecyclerViewScrollListener() {
+
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                Log.e(TAG, "onScrollStateChanged: -->" + newState );
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    floatingActionButton.show();
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 || dy < 0 && floatingActionButton.isShown()) {
+                    floatingActionButton.hide();
+                }
+
+
+//                Log.e(TAG, "onScrolled: dy -- >" + dy );
+//                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+
+    }
+
     private void fetchFromRealm(String today) {
         glucoseResults = realm.where(Glucose.class).equalTo("date", today).findAll().sort("datetime");
         fitnessesResults = realm.where(Fitness.class).equalTo("date", today).findAll().sort("datetime");
@@ -176,115 +284,6 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
 
     }
 
-    private void initRecyclerView() {
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setHasFixedSize(true);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, layoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
-        adapter = new GlobalDiaryAdapter(this, globalArrayList);
-        adapter.setItemClickListener(this);
-        recyclerView.setAdapter(adapter);
-    }
-
-    private void initTimeSet() {
-
-        // Default Date set to Today.
-        final Calendar defaultSelectedDate = Calendar.getInstance();
-        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-        Date todayDate = defaultSelectedDate.getTime();
-        todayString = simpleDateFormat.format(todayDate);
-
-    }
-
-    private void bindView() {
-        ButterKnife.bind(this);
-    }
-
-    private void initRealm() {
-        Realm.init(this);
-        realmConfiguration = RealmManagement.getRealmConfiguration();
-        Realm.setDefaultConfiguration(realmConfiguration);
-        realm = Realm.getInstance(realmConfiguration);
-
-    }
-
-    private void setTimeLineView() {
-        timeline.setDateLabelAdapter((calendar, index) -> {
-            String selectDate = simpleDateFormat.format(calendar.getTime());
-            glucoseResults = realm.where(Glucose.class).equalTo("date", selectDate).findAll();
-            fitnessesResults = realm.where(Fitness.class).equalTo("date", selectDate).findAll();
-            int count = glucoseResults.size() + fitnessesResults.size();
-            Log.e(TAG, "getLabel: " + calendar.getTimeInMillis() + " | " + index);
-            return Integer.toString(count) + "개";
-
-//                return Integer.toString(calendar.get(Calendar.MONTH) + 1) + "/" + (calendar.get(Calendar.YEAR) % 2000);
-        });
-
-        timeline.setOnDateSelectedListener((year, month, day, index) -> {
-            Log.e(TAG, "setTimeLineView: setOnDateSelectedListener --> !!!!!!!!1 ");
-
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(year, month, day);
-            String selectDate = simpleDateFormat.format(calendar.getTime());
-            fetchFromRealm(selectDate, true);
-            adapter.notifyDataSetChanged();
-//                Toast.makeText(DiaryActivityV2.this, "" + year + month + day, Toast.LENGTH_SHORT).show();
-        });
-
-        Calendar startDate = Calendar.getInstance();
-        startDate.add(Calendar.YEAR, -2);
-        Calendar endDate = Calendar.getInstance();
-        endDate.add(Calendar.YEAR, 2);
-        Calendar defaultDate = Calendar.getInstance();
-
-        Log.e(TAG, "setTimeLineView: " + startDate.get(Calendar.YEAR) + startDate.get(Calendar.MONTH) + startDate.get(Calendar.DAY_OF_MONTH));
-        Log.e(TAG, "setTimeLineView: " + Calendar.JULY);
-
-//        timeline.setFirstVisibleDate(2016, Calendar.JULY, 19);
-//        timeline.setLastVisibleDate(2020, Calendar.JULY, 19);
-//
-        timeline.setFirstVisibleDate(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH));
-        timeline.setLastVisibleDate(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH), endDate.get(Calendar.DAY_OF_MONTH));
-        timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH), defaultDate.get(Calendar.DAY_OF_MONTH));
-
-    }
-
-    private void setBottomAppBar() {
-        bottomAppBar = findViewById(R.id.bottomAppBar);
-        setSupportActionBar(bottomAppBar);
-        bottomAppBar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END);
-    }
-
-    private void setRecyclerViewScrollListener() {
-
-
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-//                Log.e(TAG, "onScrollStateChanged: -->" + newState );
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE){
-                    floatingActionButton.show();
-                }
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0 ||dy<0 && floatingActionButton.isShown()){
-                    floatingActionButton.hide();
-                }
-
-//                Log.e(TAG, "onScrolled: dy -- >" + dy );
-//                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
-
-
-    }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -293,6 +292,10 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
                 return true;
             case R.id.diary_fitness:
                 startActivity(new Intent(DiaryActivityV2.this, DiaryFitnessActivity.class));
+                return true;
+            case R.id.home:
+                Calendar defaultDate = Calendar.getInstance();
+                timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH), defaultDate.get(Calendar.DAY_OF_MONTH));
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -15,6 +15,12 @@
         android:icon="@drawable/ic_fitness_center_white_24dp"
         android:title="Fitness"
         app:showAsAction="always" />
+
+    <item
+        app:showAsAction="always"
+        android:id="@+id/home"
+        android:icon="@drawable/ic_calendar_24dp"
+        android:title="today"/>
     <!--<item-->
     <!--android:id="@+id/home"-->
     <!--android:icon="@drawable/ic_menu_white_24dp"-->
