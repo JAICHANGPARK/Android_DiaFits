@@ -24,11 +24,11 @@ import io.realm.RealmConfiguration;
 
 public class DiaryActivityV2 extends AppCompatActivity {
     private static final String TAG = "DiaryActivityV2";
+
     @BindView(R.id.timeline)
     DatePickerTimeline timeline;
     @BindView(R.id.bottomAppBar)
     BottomAppBar bottomAppBar;
-
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
 
@@ -44,9 +44,6 @@ public class DiaryActivityV2 extends AppCompatActivity {
 
 
     }
-
-
-
 
     private void initSetting(){
         bindView();
@@ -93,13 +90,12 @@ public class DiaryActivityV2 extends AppCompatActivity {
         Log.e(TAG, "setTimeLineView: " + startDate.get(Calendar.YEAR) + startDate.get(Calendar.MONTH) +  startDate.get(Calendar.DAY_OF_MONTH) );
         Log.e(TAG, "setTimeLineView: " +   Calendar.JULY );
 
-        timeline.setFirstVisibleDate(2016, Calendar.JULY, 19);
-        timeline.setLastVisibleDate(2020, Calendar.JULY, 19);
-
-
-//        timeline.setFirstVisibleDate(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH) + 1, startDate.get(Calendar.DAY_OF_MONTH));
-//        timeline.setLastVisibleDate(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH) + 1, endDate.get(Calendar.DAY_OF_MONTH));
-//        timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH) + 1, defaultDate.get(Calendar.DAY_OF_MONTH));
+//        timeline.setFirstVisibleDate(2016, Calendar.JULY, 19);
+//        timeline.setLastVisibleDate(2020, Calendar.JULY, 19);
+//
+        timeline.setFirstVisibleDate(startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH));
+        timeline.setLastVisibleDate(endDate.get(Calendar.YEAR), endDate.get(Calendar.MONTH) , endDate.get(Calendar.DAY_OF_MONTH));
+        timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH), defaultDate.get(Calendar.DAY_OF_MONTH));
 
     }
 

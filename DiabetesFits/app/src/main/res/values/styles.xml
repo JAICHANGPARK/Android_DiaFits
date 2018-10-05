@@ -114,11 +114,25 @@
         <item name="colorPrimary">@color/shopAccent</item>
         <item name="colorPrimaryDark">@color/shopAccent</item>>
         <item name="colorAccent">@color/shopAccent</item>
+
         <item name="viewInflaterClass">androidx.appcompat.app.AppCompatViewInflater</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
         <item name="android:buttonBarNeutralButtonStyle">@style/Widget.MaterialComponents.Button</item>
     </style>
+
+    <style name="DiaryVersion2Theme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/shopAccent</item>
+        <item name="colorPrimaryDark">@color/shopAccent</item>>
+        <item name="colorAccent">@color/shopAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="viewInflaterClass">androidx.appcompat.app.AppCompatViewInflater</item>
+    </style>
+
+
 
 
     <style name="text_title">

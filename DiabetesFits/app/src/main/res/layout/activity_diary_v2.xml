@@ -30,19 +30,22 @@
 
     </android.support.design.widget.AppBarLayout>
 
+
     <View
         android:layout_width="1px"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:background="#000" />
 
-    <android.support.v4.widget.NestedScrollView
+    <RelativeLayout
         android:id="@+id/nsv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </android.support.v4.widget.NestedScrollView>
+
+
+    </RelativeLayout>
 
     <android.support.design.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
