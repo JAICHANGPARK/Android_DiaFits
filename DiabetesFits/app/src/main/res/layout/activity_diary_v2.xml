@@ -44,6 +44,45 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_below="@id/calendarView"
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#ffffff"
+            android:clipChildren="false"
+            android:clipToPadding="false" />
+
+        <LinearLayout
+            android:gravity="center"
+            android:id="@+id/empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/guillotine_actionbar_background_view_height"
+            android:orientation="vertical">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_margin="8dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/personal_character" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="기록된 정보가 없어요"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
 
     </RelativeLayout>
 
@@ -53,7 +92,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_gravity="bottom"
-        app:backgroundTint="@color/diary_bottom_appbar_color"
+        app:backgroundTint="@color/diary_bottom_appbar_color2"
         app:fabAlignmentMode="end"
         app:fabCradleRoundedCornerRadius="10dp"
         app:hideOnScroll="true"

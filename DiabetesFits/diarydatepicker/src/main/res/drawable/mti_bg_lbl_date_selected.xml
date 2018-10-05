@@ -7,7 +7,7 @@
     </item>
     <item android:bottom="3dp" android:left="3dp" android:right="3dp" android:top="3dp">
         <shape android:shape="oval">
-            <solid android:color="@color/mti_bg_lbl_date_selected_color"/>
+            <solid android:color="@color/mti_bg_lbl_date_selected_color_v2"/>
         </shape>
     </item>
 </layer-list>
