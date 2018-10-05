@@ -2,16 +2,22 @@ package com.dreamwalker.diabetesfits.activity.diary;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +34,9 @@ import com.dreamwalker.diabetesfits.database.model.Fitness;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
 import com.dreamwalker.diabetesfits.model.diary.Global;
 import com.dreamwalker.diarydatepicker.DatePickerTimeline;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetSequence;
+import com.getkeepsafe.taptargetview.TapTargetView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +75,9 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
     @BindView(R.id.home)
     ImageView homeButton;
 
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
 
     Realm realm;
     RealmConfiguration realmConfiguration;
@@ -99,6 +111,7 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
         setBottomAppBar(); // Bottom App Bar 초기화
         setRecyclerViewScrollListener();
         initToasty();
+        initTargetView();
 //        setNestedScrollView(); // setNestedScrollView
 
     }
@@ -211,8 +224,159 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
 
     }
 
-    private void initToasty(){
+    private void initToasty() {
         Toasty.Config.getInstance().apply();
+    }
+
+
+    private void initTargetView() {
+
+        final Display display = getWindowManager().getDefaultDisplay();
+        DisplayMetrics disp = getApplicationContext().getResources().getDisplayMetrics();
+        int deviceWidth = disp.widthPixels;
+        int deviceHeight = disp.heightPixels;
+        Log.e(TAG, "initTargetView: " + deviceWidth + "||" + deviceHeight);
+        // Load our little droid guy
+        final Drawable droid = ContextCompat.getDrawable(this, R.drawable.ic_loyalty_white_24dp);
+        // Tell our droid buddy where we want him to appear
+        final Rect droidTarget = new Rect(0, 0, droid.getIntrinsicWidth() * 2, droid.getIntrinsicHeight() * 2);
+        // Using deprecated methods makes you look way cool
+        droidTarget.offset(140, 1200);
+
+        final TapTargetSequence sequence = new TapTargetSequence(this)
+                .targets(
+
+                        TapTarget.forBounds(droidTarget, "Oh look!", "You can point to any part of the screen. You also can't cancel this one!")
+                                .cancelable(false)
+                                .icon(droid)
+                                .id(1),
+
+
+                        TapTarget.forBounds(droidTarget, "Oh look!", "You can point to any part of the screen. You also can't cancel this one!")
+                                .cancelable(false)
+                                .icon(droid)
+                                .id(2),
+
+                        TapTarget.forBounds(droidTarget, "Oh look!", "You can point to any part of the screen. You also can't cancel this one!")
+                                .cancelable(false)
+                                .icon(droid)
+                                .id(3),
+
+                        TapTarget.forBounds(droidTarget, "Oh look!", "You can point to any part of the screen. You also can't cancel this one!")
+                                .cancelable(false)
+                                .icon(droid)
+                                .id(4)
+//
+//
+//                        TapTarget.forView(findViewById(R.id.diary_glucose), "This is a target", "We have the best targets, believe me")
+//                                // All options below are optional
+//                                // Specify a color for the outer circle
+//                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+//                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
+//                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
+//                                .titleTextColor(R.color.white)      // Specify the color of the title text
+//                                .descriptionTextSize(10)            // Specify the size (in sp) of the description text
+//                                .textColor(R.color.blue)            // Specify a color for both the title and description text
+//                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
+//                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
+//                                .drawShadow(true)                   // Whether to draw a drop shadow or not
+//                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+//                                .tintTarget(true)                   // Whether to tint the target view's color
+//                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
+//                                // Specify a custom drawable to draw as the target
+//                                .targetRadius(60)
+//                                .id(1),// Specify the target radius (in dp)
+//                        TapTarget.forView(findViewById(R.id.diary_fitness), "This is a target", "We have the best targets, believe me")
+//                                // All options below are optional
+//                                // Specify a color for the outer circle
+//                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+//                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
+//                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
+//                                .titleTextColor(R.color.white)      // Specify the color of the title text
+//                                .descriptionTextSize(10)            // Specify the size (in sp) of the description text
+//                                .textColor(R.color.blue)            // Specify a color for both the title and description text
+//                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
+//                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
+//                                .drawShadow(true)                   // Whether to draw a drop shadow or not
+//                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+//                                .tintTarget(true)                   // Whether to tint the target view's color
+//                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
+//                                // Specify a custom drawable to draw as the target
+//                                .targetRadius(60)
+//                                .id(2),
+//                        TapTarget.forView(findViewById(R.id.chart), "This is a target", "We have the best targets, believe me")
+//                                // All options below are optional
+//                                // Specify a color for the outer circle
+//                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+//                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
+//                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
+//                                .titleTextColor(R.color.white)      // Specify the color of the title text
+//                                .descriptionTextSize(10)            // Specify the size (in sp) of the description text
+//                                .textColor(R.color.blue)            // Specify a color for both the title and description text
+//                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
+//                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
+//                                .drawShadow(true)                   // Whether to draw a drop shadow or not
+//                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+//                                .tintTarget(true)                   // Whether to tint the target view's color
+//                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
+//                                // Specify a custom drawable to draw as the target
+//                                .targetRadius(60)
+//                                .id(3),
+//
+//                        TapTarget.forView(findViewById(R.id.home), "This is a target", "We have the best targets, believe me")
+//                                // All options below are optional
+//                                // Specify a color for the outer circle
+//                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+//                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
+//                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
+//                                .titleTextColor(R.color.white)      // Specify the color of the title text
+//                                .descriptionTextSize(10)            // Specify the size (in sp) of the description text
+//                                .textColor(R.color.blue)            // Specify a color for both the title and description text
+//                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
+//                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
+//                                .drawShadow(true)                   // Whether to draw a drop shadow or not
+//                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+//                                .tintTarget(true)                   // Whether to tint the target view's color
+//                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
+//                                // Specify a custom drawable to draw as the target
+//                                .targetRadius(60)
+//                                .id(4)
+
+                )
+                .listener(new TapTargetSequence.Listener() {
+                    // This listener will tell us when interesting(tm) events happen in regards
+                    // to the sequence
+                    @Override
+                    public void onSequenceFinish() {
+//                        ((TextView) findViewById(R.id.educated)).setText("Congratulations! You're educated now!");
+                    }
+
+                    @Override
+                    public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+                        Log.d("TapTargetView", "Clicked on " + lastTarget.id());
+                    }
+
+                    @Override
+                    public void onSequenceCanceled(TapTarget lastTarget) {
+                        final AlertDialog dialog = new AlertDialog.Builder(DiaryActivityV2.this)
+                                .setTitle("Uh oh")
+                                .setMessage("You canceled the sequence")
+                                .setPositiveButton("Oops", null).show();
+                        TapTargetView.showFor(dialog,
+                                TapTarget.forView(dialog.getButton(DialogInterface.BUTTON_POSITIVE), "Uh oh!", "You canceled the sequence at step " + lastTarget.id())
+                                        .cancelable(false)
+                                        .tintTarget(false), new TapTargetView.Listener() {
+                                    @Override
+                                    public void onTargetClick(TapTargetView view) {
+                                        super.onTargetClick(view);
+                                        dialog.dismiss();
+                                    }
+                                });
+                    }
+                });
+
+        sequence.start();
+
     }
 
     private void fetchFromRealm(String today) {
@@ -312,8 +476,8 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
             case R.id.diary_fitness:
                 startActivity(new Intent(DiaryActivityV2.this, DiaryFitnessActivity.class));
                 return true;
-            case R.id.home:
-                Toasty.error(this,"공사중..", Toast.LENGTH_SHORT, true).show();
+            case R.id.chart:
+                Toasty.error(this, "공사중..", Toast.LENGTH_SHORT, true).show();
 //                Calendar defaultDate = Calendar.getInstance();
 //                timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH), defaultDate.get(Calendar.DAY_OF_MONTH));
                 return true;
@@ -441,14 +605,14 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
     }
 
     @OnClick(R.id.fab)
-    public void onClickedFabButton(){
+    public void onClickedFabButton() {
 
-        Toasty.error(this,"공사중..", Toast.LENGTH_SHORT, true).show();
+        Toasty.error(this, "공사중..", Toast.LENGTH_SHORT, true).show();
 
     }
 
     @OnClick(R.id.home)
-    public void onClickedHomeButton(){
+    public void onClickedHomeButton() {
         Calendar defaultDate = Calendar.getInstance();
         timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH), defaultDate.get(Calendar.DAY_OF_MONTH));
     }
