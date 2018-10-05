@@ -30,6 +30,7 @@ import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.diary.GlobalDiaryAdapter;
 import com.dreamwalker.diabetesfits.adapter.diary.ItemClickListener;
 import com.dreamwalker.diabetesfits.consts.GlobalTag;
+import com.dreamwalker.diabetesfits.consts.IntentConst;
 import com.dreamwalker.diabetesfits.database.RealmManagement;
 import com.dreamwalker.diabetesfits.database.model.Fitness;
 import com.dreamwalker.diabetesfits.database.model.Glucose;
@@ -92,6 +93,10 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
     SimpleDateFormat simpleDateFormat;
 
     String todayString;
+    Bundle bundle = new Bundle();
+
+    String type;
+    String userSelectedGlobalDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +173,7 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, month, day);
             String selectDate = simpleDateFormat.format(calendar.getTime());
+            userSelectedGlobalDate =  simpleDateFormat.format(calendar.getTime());
             fetchFromRealm(selectDate, true);
             adapter.notifyDataSetChanged();
 //                Toast.makeText(DiaryActivityV2.this, "" + year + month + day, Toast.LENGTH_SHORT).show();
@@ -274,8 +280,6 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
                                 .id(4),
 
                         TapTarget.forView(findViewById(R.id.home), "되돌아오기", "오늘 날짜로 되돌아올 수 있습니다.")
-                                // All options below are optional
-                                // Specify a color for the outer circle
                                 .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
                                 .targetCircleColor(R.color.white)   // Specify a color for the target circle
                                 .titleTextSize(20)                  // Specify the size (in sp) of the title text
@@ -288,15 +292,10 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
                                 .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
                                 .tintTarget(true)                   // Whether to tint the target view's color
                                 .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
-                                // Specify a custom drawable to draw as the target
                                 .targetRadius(60)
                                 .id(5)
-
-
                 )
                 .listener(new TapTargetSequence.Listener() {
-                    // This listener will tell us when interesting(tm) events happen in regards
-                    // to the sequence
                     @Override
                     public void onSequenceFinish() {
                         Paper.book().write("diary_tutorial", true);
@@ -503,6 +502,49 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
 
     @Override
     public void onItemClick(View v, int position) {
+        int dataTag = globalArrayList.get(position).getTag();
+        String timestamp = globalArrayList.get(position).getTimestamp();
+        switch (dataTag) {
+            case 0:
+
+                bundle.putString("userType", globalArrayList.get(position).getType());
+                bundle.putString("userValue", globalArrayList.get(position).getUserValue());
+                bundle.putString("userDate", globalArrayList.get(position).getDate());
+                bundle.putString("userTime", globalArrayList.get(position).getTime());
+                bundle.putString("userTimestamp", globalArrayList.get(position).getTimestamp());
+                bundle.putLong("userTimestampLong", globalArrayList.get(position).getLongTs());
+
+                Intent intent = new Intent(DiaryActivityV2.this, EditGlucoseActivity.class);
+                intent.putExtra(IntentConst.USER_EDIT_GLUCOSE, bundle);
+                startActivity(intent);
+                break;
+            case 1:
+
+                Fitness result = realm.where(Fitness.class).equalTo("timestamp", timestamp).findFirst();
+
+                bundle.putString("userType", result.getType());
+                bundle.putString("userDetailType", result.getSelectTypeDetail());
+                bundle.putString("userREPDetail", result.getSelectRpeExpression());
+                bundle.putString("userDate", result.getDate());
+                bundle.putString("userTime", result.getTime());
+                bundle.putString("userTimestamp", result.getTimestamp());
+                bundle.putLong("userTimestampLong", result.getLongTs());
+                bundle.putString("userFitnessTime", result.getFitnessTime());
+                bundle.putString("userFitnessDistance", result.getDistance());
+                bundle.putString("userFitnessSpeed", result.getSpeed());
+                bundle.putString("userREPScore", result.getRpeScore());
+                bundle.putString("userKcal", result.getKcal());
+                type = result.getType();
+                String detailType = result.getSelectTypeDetail();
+
+                bundle.putInt("userTypePosition", checkPositionType(type));
+                bundle.putInt("userDetailTypePosition", checkPositionDetailType(detailType));
+
+                Intent fitnessIntent = new Intent(DiaryActivityV2.this, EditFitnessActivity.class);
+                fitnessIntent.putExtra(IntentConst.USER_EDIT_FITNESS, bundle);
+                startActivity(fitnessIntent);
+                break;
+        }
 
     }
 
@@ -574,5 +616,75 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
         public int compare(Long o1, Long o2) {
             return o2.compareTo(o1);
         }
+    }
+
+
+    /**
+     * 타입에 대해 인덱스 처리하는 메소드
+     *
+     * @param type
+     * @return
+     */
+    private int checkPositionType(String type) {
+        int position = 0;
+        if (type == null) {
+            position = 0;
+        } else {
+            switch (type) {
+                case "트레드밀":
+                    position = 0;
+                    break;
+                case "실내자전거":
+                    position = 1;
+                    break;
+            }
+        }
+
+        return position;
+    }
+
+    private int checkPositionDetailType(String detailType) {
+
+        int position = 0;
+        if (detailType == null || type == null) {
+            position = 0;
+        } else {
+            if (type.equals("트레드밀")) {
+                switch (detailType) {
+                    case "가볍게 걷기":
+                        position = 0;
+                        break;
+                    case "일반 걷기":
+                        position = 1;
+                        break;
+                    case "달리기":
+                        position = 2;
+                        break;
+                }
+            } else if (type.equals("실내자전거")) {
+                switch (detailType) {
+                    case "보통으로":
+                        position = 0;
+                        break;
+                    case "빠르게":
+                        position = 1;
+                        break;
+                    case "가볍게":
+                        position = 2;
+                        break;
+                }
+            }
+        }
+        return position;
+    }
+
+
+    @Override
+    protected void onRestart() {
+        fetchFromRealm(userSelectedGlobalDate, true);
+        adapter = new GlobalDiaryAdapter(this, globalArrayList);
+        adapter.setItemClickListener(this);
+        recyclerView.setAdapter(adapter);
+        super.onRestart();
     }
 }

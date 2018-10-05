@@ -10,8 +10,8 @@ android {
         applicationId "com.dreamwalker.diabetesfits"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 8
-        versionName "1.0.7"
+        versionCode 10
+        versionName "1.0.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
