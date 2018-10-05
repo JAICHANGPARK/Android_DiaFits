@@ -21,6 +21,12 @@
         android:id="@+id/home"
         android:icon="@drawable/ic_calendar_24dp"
         android:title="today"/>
+
+    <item
+        app:showAsAction="always"
+        android:id="@+id/filter"
+        android:icon="@drawable/ic_tune_white_24dp"
+        android:title="filter"/>
     <!--<item-->
     <!--android:id="@+id/home"-->
     <!--android:icon="@drawable/ic_menu_white_24dp"-->

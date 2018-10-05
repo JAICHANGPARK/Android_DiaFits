@@ -43,18 +43,7 @@
             android:text="@string/dashboard" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/activity_group"
-        style="@style/LinearLayout.GuillotineItem">
 
-        <ImageView
-            style="@style/ImageView.GuillotineItem"
-            android:src="@drawable/ic_activity" />
-
-        <com.dreamwalker.diabetesfits.widget.CanaroTextView
-            style="@style/TextView.GuillotineItem"
-            android:text="@string/activity" />
-    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/activity_diary"
@@ -67,6 +56,19 @@
         <com.dreamwalker.diabetesfits.widget.CanaroTextView
             style="@style/TextView.GuillotineItem"
             android:text="@string/diary" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/activity_group"
+        style="@style/LinearLayout.GuillotineItem">
+
+        <ImageView
+            style="@style/ImageView.GuillotineItem"
+            android:src="@drawable/ic_activity" />
+
+        <com.dreamwalker.diabetesfits.widget.CanaroTextView
+            style="@style/TextView.GuillotineItem"
+            android:text="@string/activity" />
     </LinearLayout>
 
     <LinearLayout

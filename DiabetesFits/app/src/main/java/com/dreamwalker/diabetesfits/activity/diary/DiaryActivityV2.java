@@ -1,10 +1,12 @@
 package com.dreamwalker.diabetesfits.activity.diary;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.bottomappbar.BottomAppBar;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.adapter.diary.GlobalDiaryAdapter;
@@ -35,6 +38,8 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -77,13 +82,8 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
         setContentView(R.layout.activity_diary_v2);
 
         initSetting();
-
-
 //        fetchFromRealm(todayString);
-
-
     }
-
 
     private void initSetting() {
 
@@ -94,6 +94,7 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
         setTimeLineView(); // 타임라인 초기화
         setBottomAppBar(); // Bottom App Bar 초기화
         setRecyclerViewScrollListener();
+        initToasty();
 //        setNestedScrollView(); // setNestedScrollView
 
     }
@@ -206,6 +207,10 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
 
     }
 
+    private void initToasty(){
+        Toasty.Config.getInstance().apply();
+    }
+
     private void fetchFromRealm(String today) {
         glucoseResults = realm.where(Glucose.class).equalTo("date", today).findAll().sort("datetime");
         fitnessesResults = realm.where(Fitness.class).equalTo("date", today).findAll().sort("datetime");
@@ -278,6 +283,16 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
                 }
             }
 
+            // TODO: 2018-10-05 오름차순 정렬
+            Collections.sort(globalArrayList, (o1, o2) -> {
+                if (o1.getLongTs() < o2.getLongTs()) {
+                    return -1;
+                } else if (o1.getLongTs() > o2.getLongTs()) {
+                    return 1;
+                }
+                return 0;
+            });
+
             recyclerView.setVisibility(View.VISIBLE);
             emptyLayout.setVisibility(View.GONE);
         }
@@ -297,6 +312,65 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
                 Calendar defaultDate = Calendar.getInstance();
                 timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH), defaultDate.get(Calendar.DAY_OF_MONTH));
                 return true;
+
+            case R.id.filter:
+                final CharSequence[] items = {"오름차순", "내림차순"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(DiaryActivityV2.this);
+                if (globalArrayList.size() != 0) {
+                    builder.setTitle("Set filter");
+                    builder.setSingleChoiceItems(items, -1, (dialog, which) -> {
+                        Log.e(TAG, "onClick: " + which);
+                        switch (which) {
+                            case 0:
+                                // TODO: 2018-10-05 오름차순 정렬
+                                Collections.sort(globalArrayList, (o1, o2) -> {
+                                    if (o1.getDatetime().getTime() < o2.getDatetime().getTime()) {
+                                        return -1;
+                                    } else if (o1.getDatetime().getTime() > o2.getDatetime().getTime()) {
+                                        return 1;
+                                    }
+                                    return 0;
+                                });
+//                            sortAndProcessGlucose(userSelectedGlobalDate, true, Sort.ASCENDING);
+                                adapter.notifyDataSetChanged();
+                                dialog.dismiss();
+                                break;
+                            case 1:
+
+                                // TODO: 2018-10-05 내림차순 정렬
+                                Collections.sort(globalArrayList, (o1, o2) -> {
+                                    if (o1.getDatetime().getTime() < o2.getDatetime().getTime()) {
+                                        return 1;
+                                    } else if (o1.getDatetime().getTime() > o2.getDatetime().getTime()) {
+                                        return -1;
+                                    }
+                                    return 0;
+                                });
+//                            sortAndProcessGlucose(userSelectedGlobalDate, true, Sort.DESCENDING);
+                                adapter.notifyDataSetChanged();
+                                dialog.dismiss();
+                                break;
+                        }
+                    });
+
+                    builder.show();
+
+                } else {
+
+                    builder.setTitle("알림");
+                    builder.setMessage("정렬할 데이터가 없습니다.");
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+
+                }
+
+                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -315,8 +389,59 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
 
     @Override
     public void onItemLongClick(View v, int position) {
+        int dataTag = globalArrayList.get(position).getTag();
+        if (dataTag == 0) {
+            String timeStamps = globalArrayList.get(position).getTimestamp();
+            Log.e(TAG, "onItemLongClick: " + position);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("경고");
+            builder.setMessage("혈당 정보를 삭제하시겠어요?");
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    final RealmResults<Glucose> results = realm.where(Glucose.class).equalTo("timestamp", timeStamps).findAll();
+                    Log.e(TAG, "onClick: results size -->" + results.size());
+                    realm.executeTransaction(realm -> results.deleteAllFromRealm());
+                    globalArrayList.remove(position);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+            builder.setNegativeButton(android.R.string.no, (dialog, which) -> dialog.dismiss());
+            builder.show();
+
+        } else if (dataTag == 1) {
+
+            String timeStamps = globalArrayList.get(position).getTimestamp();
+
+            Log.e(TAG, "onItemLongClick: " + position);
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("경고");
+            builder.setMessage("운동정보를 삭제하시겠어요?");
+            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    final RealmResults<Fitness> results = realm.where(Fitness.class).equalTo("timestamp", timeStamps).findAll();
+                    Log.e(TAG, "onClick: results size -->" + results.size());
+                    realm.executeTransaction(realm -> results.deleteAllFromRealm());
+                    globalArrayList.remove(position);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+            builder.setNegativeButton(android.R.string.no, (dialog, which) -> dialog.dismiss());
+            builder.show();
+
+        }
+
 
     }
+    
+    @OnClick(R.id.fab)
+    public void onClickedFabButton(){
+
+        Toasty.error(this,"공사중..", Toast.LENGTH_SHORT, true).show();
+
+    }
+
 
     class AscendingTime implements Comparator<Long> {
 
