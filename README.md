@@ -1,6 +1,6 @@
 # Android_DiaFits
 
-[![GitHub release](https://img.shields.io/badge/%20release-1.0.4-blue.svg)](https://github.com/JAICHANGPARK/Android_DiaFits/releases)
+[![GitHub release](https://img.shields.io/badge/%20release-1.0.9-blue.svg)](https://github.com/JAICHANGPARK/Android_DiaFits/releases)
 [![Github commit merge status](https://img.shields.io/github/commit-status/badges/shields/master/5d4ab86b1b5ddfb3c4a70a70bd19932c52603b8c.svg)](https://github.com/JAICHANGPARK/Android_DiaFits)
 ![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)
 
