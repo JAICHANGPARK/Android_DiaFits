@@ -19,7 +19,7 @@
     <item
         app:showAsAction="always"
         android:id="@+id/home"
-        android:icon="@drawable/ic_calendar_24dp"
+        android:icon="@drawable/ic_multiline_chart_white_24dp"
         android:title="today"/>
 
     <item

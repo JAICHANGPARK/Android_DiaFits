@@ -3,6 +3,7 @@
 
     <release version="1.0.8" versioncode="9">
         <change>Date : 2018-10-05</change>
+        <change>Diary UI Changed</change>
         <change>Glucose, Fitness Value Delete, Update Function added</change>
         <change>Diary Filter added</change>
         <change>Bug Fixed</change>

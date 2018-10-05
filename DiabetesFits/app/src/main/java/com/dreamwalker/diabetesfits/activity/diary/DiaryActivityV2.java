@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -61,6 +62,9 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
 
     @BindView(R.id.fab)
     FloatingActionButton floatingActionButton;
+
+    @BindView(R.id.home)
+    ImageView homeButton;
 
 
     Realm realm;
@@ -309,8 +313,9 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
                 startActivity(new Intent(DiaryActivityV2.this, DiaryFitnessActivity.class));
                 return true;
             case R.id.home:
-                Calendar defaultDate = Calendar.getInstance();
-                timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH), defaultDate.get(Calendar.DAY_OF_MONTH));
+                Toasty.error(this,"공사중..", Toast.LENGTH_SHORT, true).show();
+//                Calendar defaultDate = Calendar.getInstance();
+//                timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH), defaultDate.get(Calendar.DAY_OF_MONTH));
                 return true;
 
             case R.id.filter:
@@ -434,12 +439,18 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
 
 
     }
-    
+
     @OnClick(R.id.fab)
     public void onClickedFabButton(){
 
         Toasty.error(this,"공사중..", Toast.LENGTH_SHORT, true).show();
 
+    }
+
+    @OnClick(R.id.home)
+    public void onClickedHomeButton(){
+        Calendar defaultDate = Calendar.getInstance();
+        timeline.setSelectedDate(defaultDate.get(Calendar.YEAR), defaultDate.get(Calendar.MONTH), defaultDate.get(Calendar.DAY_OF_MONTH));
     }
 
 
