@@ -3,6 +3,7 @@ package com.dreamwalker.diabetesfits.activity.diary;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,7 +37,6 @@ import com.dreamwalker.diabetesfits.model.diary.Global;
 import com.dreamwalker.diarydatepicker.DatePickerTimeline;
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
-import com.getkeepsafe.taptargetview.TapTargetView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +50,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
+import io.paperdb.Paper;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
@@ -236,111 +237,61 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
         int deviceWidth = disp.widthPixels;
         int deviceHeight = disp.heightPixels;
         Log.e(TAG, "initTargetView: " + deviceWidth + "||" + deviceHeight);
-        // Load our little droid guy
-        final Drawable droid = ContextCompat.getDrawable(this, R.drawable.ic_loyalty_white_24dp);
-        // Tell our droid buddy where we want him to appear
-        final Rect droidTarget = new Rect(0, 0, droid.getIntrinsicWidth() * 2, droid.getIntrinsicHeight() * 2);
-        // Using deprecated methods makes you look way cool
-        droidTarget.offset(140, 1200);
+        Log.e(TAG, "initTargetView: " + display.getWidth() + "||" + display.getHeight());
+        final Drawable droid = ContextCompat.getDrawable(this, R.drawable.ic_loyalty_white_24dp);// Load our little droid guy
+        final Rect droidTarget = new Rect(0, 0, droid.getIntrinsicWidth() * 2, droid.getIntrinsicHeight() * 2);   // Tell our droid buddy where we want him to appear
+        droidTarget.offset(120, deviceHeight - 100); // Using deprecated methods makes you look way cool
+
+        final Drawable droid2 = ContextCompat.getDrawable(this, R.drawable.ic_fitness_center_white_24dp);// Load our little droid guy
+        final Rect droidTarget2 = new Rect(0, 0, droid.getIntrinsicWidth() * 2, droid.getIntrinsicHeight() * 2);   // Tell our droid buddy where we want him to appear
+        droidTarget2.offset(220, deviceHeight - 100); // Using deprecated methods makes you look way cool
+
+        final Drawable droid3 = ContextCompat.getDrawable(this, R.drawable.ic_multiline_chart_white_24dp);// Load our little droid guy
+        final Rect droidTarget3 = new Rect(0, 0, droid.getIntrinsicWidth() * 2, droid.getIntrinsicHeight() * 2);   // Tell our droid buddy where we want him to appear
+        droidTarget3.offset(320, deviceHeight - 100); // Using deprecated methods makes you look way cool
+
+        final Drawable droid4 = ContextCompat.getDrawable(this, R.drawable.ic_tune_white_24dp);// Load our little droid guy
+        final Rect droidTarget4 = new Rect(0, 0, droid.getIntrinsicWidth() * 2, droid.getIntrinsicHeight() * 2);   // Tell our droid buddy where we want him to appear
+        droidTarget4.offset(420, deviceHeight - 100); // Using deprecated methods makes you look way cool
 
         final TapTargetSequence sequence = new TapTargetSequence(this)
                 .targets(
-
-                        TapTarget.forBounds(droidTarget, "Oh look!", "You can point to any part of the screen. You also can't cancel this one!")
+                        TapTarget.forBounds(droidTarget, "혈당 다이어리", "혈당 다이어리는 혈당 기록만 볼 수 있습니다.")
                                 .cancelable(false)
                                 .icon(droid)
                                 .id(1),
-
-
-                        TapTarget.forBounds(droidTarget, "Oh look!", "You can point to any part of the screen. You also can't cancel this one!")
+                        TapTarget.forBounds(droidTarget2, "운동 다이어리", "운동 다이어리는 혈당 기록만 볼 수 있습니다.")
                                 .cancelable(false)
-                                .icon(droid)
+                                .icon(droid2)
                                 .id(2),
-
-                        TapTarget.forBounds(droidTarget, "Oh look!", "You can point to any part of the screen. You also can't cancel this one!")
+                        TapTarget.forBounds(droidTarget3, "차트 보기", "다이어리 그래프 보기 ")
                                 .cancelable(false)
-                                .icon(droid)
+                                .icon(droid3)
                                 .id(3),
-
-                        TapTarget.forBounds(droidTarget, "Oh look!", "You can point to any part of the screen. You also can't cancel this one!")
+                        TapTarget.forBounds(droidTarget4, "데이터 정렬", "시간 순으로 정렬해줍니다.(최신순, 과거순)")
                                 .cancelable(false)
-                                .icon(droid)
-                                .id(4)
-//
-//
-//                        TapTarget.forView(findViewById(R.id.diary_glucose), "This is a target", "We have the best targets, believe me")
-//                                // All options below are optional
-//                                // Specify a color for the outer circle
-//                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
-//                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
-//                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
-//                                .titleTextColor(R.color.white)      // Specify the color of the title text
-//                                .descriptionTextSize(10)            // Specify the size (in sp) of the description text
-//                                .textColor(R.color.blue)            // Specify a color for both the title and description text
-//                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
-//                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
-//                                .drawShadow(true)                   // Whether to draw a drop shadow or not
-//                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
-//                                .tintTarget(true)                   // Whether to tint the target view's color
-//                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
-//                                // Specify a custom drawable to draw as the target
-//                                .targetRadius(60)
-//                                .id(1),// Specify the target radius (in dp)
-//                        TapTarget.forView(findViewById(R.id.diary_fitness), "This is a target", "We have the best targets, believe me")
-//                                // All options below are optional
-//                                // Specify a color for the outer circle
-//                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
-//                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
-//                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
-//                                .titleTextColor(R.color.white)      // Specify the color of the title text
-//                                .descriptionTextSize(10)            // Specify the size (in sp) of the description text
-//                                .textColor(R.color.blue)            // Specify a color for both the title and description text
-//                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
-//                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
-//                                .drawShadow(true)                   // Whether to draw a drop shadow or not
-//                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
-//                                .tintTarget(true)                   // Whether to tint the target view's color
-//                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
-//                                // Specify a custom drawable to draw as the target
-//                                .targetRadius(60)
-//                                .id(2),
-//                        TapTarget.forView(findViewById(R.id.chart), "This is a target", "We have the best targets, believe me")
-//                                // All options below are optional
-//                                // Specify a color for the outer circle
-//                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
-//                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
-//                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
-//                                .titleTextColor(R.color.white)      // Specify the color of the title text
-//                                .descriptionTextSize(10)            // Specify the size (in sp) of the description text
-//                                .textColor(R.color.blue)            // Specify a color for both the title and description text
-//                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
-//                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
-//                                .drawShadow(true)                   // Whether to draw a drop shadow or not
-//                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
-//                                .tintTarget(true)                   // Whether to tint the target view's color
-//                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
-//                                // Specify a custom drawable to draw as the target
-//                                .targetRadius(60)
-//                                .id(3),
-//
-//                        TapTarget.forView(findViewById(R.id.home), "This is a target", "We have the best targets, believe me")
-//                                // All options below are optional
-//                                // Specify a color for the outer circle
-//                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
-//                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
-//                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
-//                                .titleTextColor(R.color.white)      // Specify the color of the title text
-//                                .descriptionTextSize(10)            // Specify the size (in sp) of the description text
-//                                .textColor(R.color.blue)            // Specify a color for both the title and description text
-//                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
-//                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
-//                                .drawShadow(true)                   // Whether to draw a drop shadow or not
-//                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
-//                                .tintTarget(true)                   // Whether to tint the target view's color
-//                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
-//                                // Specify a custom drawable to draw as the target
-//                                .targetRadius(60)
-//                                .id(4)
+                                .icon(droid4)
+                                .id(4),
+
+                        TapTarget.forView(findViewById(R.id.home), "되돌아오기", "오늘 날짜로 되돌아올 수 있습니다.")
+                                // All options below are optional
+                                // Specify a color for the outer circle
+                                .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+                                .targetCircleColor(R.color.white)   // Specify a color for the target circle
+                                .titleTextSize(20)                  // Specify the size (in sp) of the title text
+                                .titleTextColor(R.color.white)      // Specify the color of the title text
+                                .descriptionTextSize(18)            // Specify the size (in sp) of the description text
+                                .textColor(R.color.diary_bottom_appbar_color2)            // Specify a color for both the title and description text
+                                .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
+                                .dimColor(R.color.black)            // If set, will dim behind the view with 30% opacity of the given color
+                                .drawShadow(true)                   // Whether to draw a drop shadow or not
+                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                                .tintTarget(true)                   // Whether to tint the target view's color
+                                .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
+                                // Specify a custom drawable to draw as the target
+                                .targetRadius(60)
+                                .id(5)
+
 
                 )
                 .listener(new TapTargetSequence.Listener() {
@@ -348,7 +299,7 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
                     // to the sequence
                     @Override
                     public void onSequenceFinish() {
-//                        ((TextView) findViewById(R.id.educated)).setText("Congratulations! You're educated now!");
+                        Paper.book().write("diary_tutorial", true);
                     }
 
                     @Override
@@ -358,24 +309,23 @@ public class DiaryActivityV2 extends AppCompatActivity implements ItemClickListe
 
                     @Override
                     public void onSequenceCanceled(TapTarget lastTarget) {
-                        final AlertDialog dialog = new AlertDialog.Builder(DiaryActivityV2.this)
-                                .setTitle("Uh oh")
-                                .setMessage("You canceled the sequence")
-                                .setPositiveButton("Oops", null).show();
-                        TapTargetView.showFor(dialog,
-                                TapTarget.forView(dialog.getButton(DialogInterface.BUTTON_POSITIVE), "Uh oh!", "You canceled the sequence at step " + lastTarget.id())
-                                        .cancelable(false)
-                                        .tintTarget(false), new TapTargetView.Listener() {
-                                    @Override
-                                    public void onTargetClick(TapTargetView view) {
-                                        super.onTargetClick(view);
-                                        dialog.dismiss();
-                                    }
-                                });
+
                     }
                 });
 
-        sequence.start();
+        if (Paper.book().read("diary_tutorial") != null) {
+            boolean tutorial = Paper.book().read("diary_tutorial");
+            if (tutorial) {
+                // TODO: 2018-10-05
+                Log.e(TAG, "initTargetView: " + "튜토리얼 진행함");
+            } else {
+                Log.e(TAG, "initTargetView: " + "튜토리얼 진행안함");
+                sequence.start();
+            }
+        } else {
+            sequence.start();
+        }
+
 
     }
 
