@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.0.10" versioncode="11">
+        <change>Date : 2018-10-05</change>
+        <change>Hot Fix: Bug Fixed</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
+    </release>
+
     <release version="1.0.9" versioncode="10">
         <change>Date : 2018-10-05</change>
         <change>Hot Fix: Bug Fixed</change>

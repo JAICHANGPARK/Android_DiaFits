@@ -7,8 +7,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.dreamwalker.diabetesfits.R;
-import com.luseen.verticalintrolibrary.VerticalIntro;
-import com.luseen.verticalintrolibrary.VerticalIntroItem;
+import com.dreamwalker.verticalintrov2.VerticalIntro;
+import com.dreamwalker.verticalintrov2.VerticalIntroItem;
+
 
 public class AppIntroVerticalActivity extends VerticalIntro {
 
