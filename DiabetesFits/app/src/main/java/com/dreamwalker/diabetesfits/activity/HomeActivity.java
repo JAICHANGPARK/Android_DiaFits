@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.chart.ChartActivity;
-import com.dreamwalker.diabetesfits.activity.diary.DiaryActivity;
+import com.dreamwalker.diabetesfits.activity.diary.DiaryActivityV2;
 import com.dreamwalker.diabetesfits.activity.diary.WriteBSActivity;
 import com.dreamwalker.diabetesfits.activity.diary.WriteFitnessActivity;
 import com.dreamwalker.diabetesfits.activity.education.KADNEHomeActivity;
@@ -281,7 +281,8 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
         diaryLayout.setOnClickListener(view -> {
-            Intent intent = new Intent(HomeActivity.this, DiaryActivity.class);
+//            Intent intent = new Intent(HomeActivity.this, DiaryActivity.class);
+            Intent intent = new Intent(HomeActivity.this, DiaryActivityV2.class);
 //            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
             startActivity(intent);
         });

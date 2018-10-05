@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:parentTag="LinearLayout">
+
+    <com.dreamwalker.diarydatepicker.MonthView
+        android:id="@+id/mti_month_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/mti_month_height"
+        tools:background="@color/mti_default_primary"
+        tools:listitem="@layout/mti_item_month"/>
+
+    <com.dreamwalker.diarydatepicker.TimelineView
+        android:id="@+id/mti_timeline"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        tools:listitem="@layout/mti_item_day"/>
+</merge>

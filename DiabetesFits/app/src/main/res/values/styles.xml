@@ -111,7 +111,8 @@
 
 
     <style name="WriteGlucoseTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimaryDark">@android:color/white</item>
+        <item name="colorPrimary">@color/shopAccent</item>
+        <item name="colorPrimaryDark">@color/shopAccent</item>>
         <item name="colorAccent">@color/shopAccent</item>
         <item name="viewInflaterClass">androidx.appcompat.app.AppCompatViewInflater</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button</item>

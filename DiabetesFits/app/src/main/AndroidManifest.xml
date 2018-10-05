@@ -191,10 +191,10 @@
             android:name=".activity.diary.EditGlucoseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/WriteGlucoseTheme" />
-
-        <activity android:name=".activity.diary.EditFitnessActivity"
+        <activity
+            android:name=".activity.diary.EditFitnessActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/WriteGlucoseTheme"></activity>
+            android:theme="@style/WriteGlucoseTheme" />
 
         <service
             android:name=".utils.reminder.alarm.ReminderAlarmService"
@@ -215,7 +215,9 @@
         <!-- android:exported="true" -->
         <!-- android:enabled="true"/> -->
 
-
+        <activity android:name=".activity.diary.DiaryActivityV2"
+            android:screenOrientation="portrait"
+            android:theme="@style/WriteGlucoseTheme"></activity>
     </application>
 
 </manifest>
