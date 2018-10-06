@@ -106,7 +106,6 @@ public class DeviceScanActivity extends AppCompatActivity {
     }
 
 
-
     private void checkBleSupport() {
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
@@ -150,25 +149,35 @@ public class DeviceScanActivity extends AppCompatActivity {
 
 
     private void scanLeDevice(final boolean enable) {
+        if (!bluetoothAdapter.isEnabled()) { // TODO: 2018-10-06 블루투스 오류 처리 하기  
 
-        if (enable) {
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mScanning = false;
-                    bluetoothLeScanner.stopScan(leScanCallback);
-                    StateButton.setText("SCAN");
-                    animationView.cancelAnimation();
-                    animationView.setFrame(0);
-                }
-            }, SCAN_PERIOD);
-            mScanning = true;
-            startNEWBTLEDiscovery();
-            //bluetoothLeScanner.startScan(leScanCallback);
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+
         } else {
-            mScanning = false;
-            bluetoothLeScanner.stopScan(leScanCallback);
+
+            if (enable) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mScanning = false;
+                        bluetoothLeScanner.stopScan(leScanCallback);
+                        StateButton.setText("SCAN");
+                        animationView.cancelAnimation();
+                        animationView.setFrame(0);
+                    }
+                }, SCAN_PERIOD);
+                mScanning = true;
+                startNEWBTLEDiscovery();
+                //bluetoothLeScanner.startScan(leScanCallback);
+            } else {
+                mScanning = false;
+                bluetoothLeScanner.stopScan(leScanCallback);
+            }
+
         }
+
+
     }
 
     private ScanCallback leScanCallback = new ScanCallback() {
@@ -178,23 +187,22 @@ public class DeviceScanActivity extends AppCompatActivity {
             BluetoothDevice device = result.getDevice();
 
             // TODO: 2018-07-21 장비가 중복되어 리스트에 추가되는 현상을 막아줍니다. - 박제창
-            if (bleDeviceList.size() < 1){
+            if (bleDeviceList.size() < 1) {
                 bleDeviceList.add(device);
                 adapter.notifyDataSetChanged();
-            }
-            else {
+            } else {
                 boolean flag = true;
-                for (int i = 0; i< bleDeviceList.size(); i++){
-                    if (device.getAddress().equals(bleDeviceList.get(i).getAddress())){
+                for (int i = 0; i < bleDeviceList.size(); i++) {
+                    if (device.getAddress().equals(bleDeviceList.get(i).getAddress())) {
                         flag = false;
                     }
                 }
-                if (flag){
+                if (flag) {
                     bleDeviceList.add(device);
                     adapter.notifyDataSetChanged();
                 }
             }
-            
+
             //String address = device.getAddress();
         }
 
@@ -213,7 +221,7 @@ public class DeviceScanActivity extends AppCompatActivity {
     public void onClickedSkipButton() {
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean("activity_executed",true);
+        editor.putBoolean("activity_executed", true);
         editor.apply();
 
         startActivity(new Intent(this, LoginActivity.class));
@@ -276,16 +284,19 @@ public class DeviceScanActivity extends AppCompatActivity {
         super.onResume();
 
         if (!bluetoothAdapter.isEnabled()) {
-            if (!bluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            }
+
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+
+        } else {
+
+            adapter = new DeviceScanAdapter(bleDeviceList, this);
+            recyclerView.setAdapter(adapter);
+            scanLeDevice(true);
+            StateButton.setText("STOP");
         }
 
-        adapter = new DeviceScanAdapter(bleDeviceList, this);
-        recyclerView.setAdapter(adapter);
-        scanLeDevice(true);
-        StateButton.setText("STOP");
+
     }
 
     @Override
@@ -307,7 +318,9 @@ public class DeviceScanActivity extends AppCompatActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void startNEWBTLEDiscovery() {
         // Only use new API when user uses Lollipop+ device
+
         bluetoothLeScanner.startScan(getScanFilters(), getScanSettings(), leScanCallback);
+
     }
 
     private List<ScanFilter> getScanFilters() {
