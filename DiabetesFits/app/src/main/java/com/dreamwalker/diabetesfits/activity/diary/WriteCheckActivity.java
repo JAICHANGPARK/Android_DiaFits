@@ -186,7 +186,7 @@ public class WriteCheckActivity extends AppCompatActivity {
 
 
                     long[] pattern = {0, 100, 100, 50};
-                    int[] amp = {100, 50};
+                    int[] amp = {100, 50, 100, 50};
                     handler.postDelayed(() -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             vibrator.vibrate(VibrationEffect.createWaveform(pattern, amp, -1));

@@ -149,7 +149,7 @@ public class DeviceScanActivity extends AppCompatActivity {
 
 
     private void scanLeDevice(final boolean enable) {
-        if (!bluetoothAdapter.isEnabled()) { // TODO: 2018-10-06 블루투스 오류 처리 하기  
+        if (!bluetoothAdapter.isEnabled()) { // TODO: 2018-10-06 블루투스 오류 처리 하기
 
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
@@ -318,8 +318,11 @@ public class DeviceScanActivity extends AppCompatActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void startNEWBTLEDiscovery() {
         // Only use new API when user uses Lollipop+ device
-
-        bluetoothLeScanner.startScan(getScanFilters(), getScanSettings(), leScanCallback);
+        if (bluetoothLeScanner == null) {
+            getBluetoothAdapter();
+        } else {
+            bluetoothLeScanner.startScan(getScanFilters(), getScanSettings(), leScanCallback);
+        }
 
     }
 

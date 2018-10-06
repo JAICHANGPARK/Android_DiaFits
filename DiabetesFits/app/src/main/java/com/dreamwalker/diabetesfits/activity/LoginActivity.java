@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderManager.Lo
                     progressDialog.dismiss();
                 }
             });
-        }else {
+        } else {
             progressDialog.dismiss();
         }
 

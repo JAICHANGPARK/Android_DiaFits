@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.0.12" versioncode="13">
+        <change>Date : 2018-10-06</change>
+        <change>Fixed : Bluetooth Crash Fixed </change>
+        <change>Fixed : Check Activity Vibrate Timing and Amplitude arrays Fixed</change>
+        <change>Fixed : Bug Fixed</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
+    </release>
+
     <release version="1.0.11" versioncode="12">
         <change>Date : 2018-10-06</change>
         <change>Hot Fix: Android Oreo Crash Fixed</change>
