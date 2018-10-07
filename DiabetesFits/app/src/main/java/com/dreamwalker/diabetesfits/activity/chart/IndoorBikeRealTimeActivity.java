@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,7 +21,16 @@ import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.service.knu.egzero.EZBLEService;
+import com.dreamwalker.diabetesfits.utils.met.Met;
 import com.dreamwalker.waveviewlib.WaveView;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +49,9 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     @BindView(R.id.text_view)
     TextView textView;
 
+    @BindView(R.id.textView2)
+    TextView kcalTextview;
+
     @BindView(R.id.wave_view)
     WaveView customWaveView;
 
@@ -47,13 +61,32 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     @BindView(R.id.textView9)
     TextView totalDistanceTextView;
 
+    @BindView(R.id.textView11)
+    TextView userStateMsgTextView;
     @BindView(R.id.textView13)
     TextView heartRateTextView;
 
     @BindView(R.id.chronometer)
     Chronometer chronometer;
 
+    @BindView(R.id.line_chart)
+    LineChart lineChart;
+
+    Met met = new Met();
+    ArrayList<Met> metArrayList = new ArrayList<>();
+
     private boolean startIndicator = false;
+    float globalKCal = 0.0f;
+
+
+    private LineDataSet lineDataSet;
+    private LineData lineData;
+    private ArrayList<Entry> realtimeData = new ArrayList<>();
+    private int cnt = 0;
+
+    float userHeartRate = 190.0f;
+    float userMinHeartRate = userHeartRate * 0.5f;
+    float userMaxHeartRate = userHeartRate * 0.7f;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -103,7 +136,6 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 invalidateOptionsMenu();
             } else if (EZBLEService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
-
                 chronometer.stop();
                 //updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
@@ -112,24 +144,97 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 // Show all the supported services and characteristics on the user interface.
                 // TODO: 2018-07-24 서비스와 연결되엉ㅅ을때 방송되어 받아지는 리시버 - 박제창
                 startIndicator = true;
+                chronometer.start();
                 //chronometer.start();
                 //displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (EZBLEService.ACTION_DATA_AVAILABLE.equals(action)) {
                 Log.e(TAG, "onReceive: " + intent.getStringExtra(EZBLEService.EXTRA_DATA));
                 displayData(intent.getStringExtra(EZBLEService.EXTRA_DATA));
             } else if (EZBLEService.ACTION_HEART_RATE_AVAILABLE.equals(action)) {
-                Log.e(TAG, "onReceive:  실시간 화면에서 심박수 받앗어요 " );
+                Log.e(TAG, "onReceive:  실시간 화면에서 심박수 받앗어요 ");
                 String hr = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 heartRateTextView.setText(hr);
+
+                setLineChartData(hr);
+                float userHR = Float.parseFloat(hr);
+                if (userHR < userMinHeartRate) {
+                    String msg = "운동강도를 올릴 필요가 있습니다.";
+                    userStateMsgTextView.setText(msg);
+                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.low_stat));
+                    customWaveView.setmAboveWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.low_stat));
+                } else if (userHR >= userMinHeartRate && userHR < userMaxHeartRate) {
+                    String msg = "적절한 운동강도로 운동중입니다.";
+                    userStateMsgTextView.setText(msg);
+                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.shopAccent));
+                    customWaveView.setmAboveWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.shopAccent));
+                } else if (userHR >= userMaxHeartRate) {
+                    String msg = "운동강도가 초과됬습니다. 속도를 낮추고나 W를 낮춰주세요";
+                    userStateMsgTextView.setText(msg);
+                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.bsp_red));
+                    customWaveView.setmAboveWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.bsp_red));
+                }
+
             } else if (EZBLEService.ACTION_INDOOR_BIKE_AVAILABLE.equals(action)) {
                 String nowSpeed = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 nowSpeedTextView.setText(nowSpeed);
+
+                globalKCal += countSpeed(nowSpeed);
+                String msg = String.valueOf(globalKCal + " kcal");
+                kcalTextview.setText(msg);
+
+
             } else if (EZBLEService.ACTION_TREADMILL_AVAILABLE.equals(action)) {
                 String totalDistance = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 totalDistanceTextView.setText(totalDistance);
             }
         }
     };
+
+    private void setLineChartData(String hr) {
+        float floatValue = Float.parseFloat(hr);
+        realtimeData.add(new Entry(cnt, floatValue));
+        lineDataSet = new LineDataSet(realtimeData, "실시간 데이터");
+        lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        lineDataSet.setDrawCircles(true);
+        lineDataSet.setDrawValues(false);
+        lineDataSet.setCubicIntensity(0.2f);
+        lineDataSet.setColor(Color.RED);
+        lineData = new LineData(lineDataSet);
+        lineChart.setData(lineData);
+        lineChart.moveViewToX(lineData.getEntryCount());
+        lineChart.notifyDataSetChanged();
+        ++cnt;
+    }
+
+
+    private float countSpeed(String speed) {
+        metArrayList = met.getIndoorBikeMetData();
+        if (Float.parseFloat(speed) < 15.0f) {
+            float metValue = metArrayList.get(0).getMetValue();
+            float userKCal = 3.5f * 0.05f * 65.0f * metValue * 0.017f;
+            return userKCal;
+        } else if (Float.parseFloat(speed) >= 15.0f && Float.parseFloat(speed) < 20.0f) {
+            float metValue = metArrayList.get(1).getMetValue();
+            float userKCal = 3.5f * 0.05f * 65.0f * metValue * 0.017f;
+            return userKCal;
+        } else if (Float.parseFloat(speed) >= 20.0f) {
+            float metValue = metArrayList.get(2).getMetValue();
+            float userKCal = 3.5f * 0.05f * 65.0f * metValue * 0.017f;
+            return userKCal;
+        } else {
+            return 0.0f;
+        }
+    }
+
+    private void initChart() {
+        // TODO: 2018-02-21 차트 속성 설정.
+        YAxis yAxis = lineChart.getAxisRight();
+        yAxis.setEnabled(false);
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +245,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
         // TODO: 2018-07-24 폰트 설정
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/grobold.ttf");
         chronometer.setTypeface(font, Typeface.NORMAL);
-        chronometer.setTextSize(80);
+        chronometer.setTextSize(20);
 
         final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(-2, -2);
         lp.gravity = Gravity.BOTTOM | Gravity.CENTER;
@@ -150,12 +255,15 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
         Intent gattServiceIntent = new Intent(this, EZBLEService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
+        initChart();
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        chronometer.start();
+//        chronometer.start();
     }
 
     @Override
@@ -167,7 +275,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
             Log.d(TAG, "Connect request result=" + result);
         }
 
-        chronometer.start();
+//        chronometer.start();
     }
 
     @Override

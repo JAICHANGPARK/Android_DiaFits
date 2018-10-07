@@ -62,6 +62,14 @@ public class WaveView extends LinearLayout {
         setProgress(mProgress);
     }
 
+    public void setmAboveWaveColor(int color){
+        this.mWave.setAboveWaveColor(color);
+    }
+
+    public void  setmBlowWaveColor(int color){
+        this.mWave.setBlowWaveColor(color);
+    }
+
     public void setProgress(int progress) {
         this.mProgress = progress > 100 ? 100 : progress;
         computeWaveToTop();

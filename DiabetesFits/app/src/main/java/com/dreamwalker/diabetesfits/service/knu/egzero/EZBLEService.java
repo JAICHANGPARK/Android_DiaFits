@@ -301,7 +301,12 @@ public class EZBLEService extends Service {
         }
         final int heartRate = characteristic.getIntValue(format, 1);
         Log.d(TAG, String.format("Received heart rate: %d", heartRate));
-        intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+        if (heartRate == 0xFF) {
+            int hr = 0;
+            intent.putExtra(EXTRA_DATA, String.valueOf(hr));
+        } else {
+            intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
+        }
 
         // TODO: 2018-07-24 꼭 브로드 케스트를 전송해야 합니다. 나중에 삽질할 수도 있어요 - 박제창
         sendBroadcast(intent);
