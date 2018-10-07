@@ -15,8 +15,10 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
@@ -71,6 +73,11 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
 
     @BindView(R.id.line_chart)
     LineChart lineChart;
+
+    @BindView(R.id.empty_layout)
+    LinearLayout emptyLayout;
+    @BindView(R.id.info_layout)
+    LinearLayout infoLayout;
 
     Met met = new Met();
     ArrayList<Met> metArrayList = new ArrayList<>();
@@ -134,11 +141,16 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 mConnected = true;
                 //updateConnectionState(R.string.connected);
                 invalidateOptionsMenu();
+                emptyLayout.setVisibility(View.GONE);
+                infoLayout.setVisibility(View.VISIBLE);
+
             } else if (EZBLEService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 chronometer.stop();
                 //updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
+                emptyLayout.setVisibility(View.VISIBLE);
+                infoLayout.setVisibility(View.GONE);
                 //clearUI();
             } else if (EZBLEService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
@@ -256,6 +268,9 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         initChart();
+
+        emptyLayout.setVisibility(View.VISIBLE);
+        infoLayout.setVisibility(View.GONE);
 
 
     }
