@@ -18,6 +18,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.dreamwalker.diabetesfits.consts.IntentConst.REAL_TIME_INDOOR_BIKE_DEVICE;
 
@@ -64,9 +66,12 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     TextView totalDistanceTextView;
 
     @BindView(R.id.textView11)
-    TextView userStateMsgTextView;
+    TextView userStateMsgTextView; //운동상태
     @BindView(R.id.textView13)
-    TextView heartRateTextView;
+    TextView heartRateTextView; //심박수
+
+    @BindView(R.id.textView6)
+    TextView meanSpeedTextView; //평균속도
 
     @BindView(R.id.chronometer)
     Chronometer chronometer;
@@ -79,17 +84,22 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     @BindView(R.id.info_layout)
     LinearLayout infoLayout;
 
+    @BindView(R.id.home)
+    ImageView backButton;
+
     Met met = new Met();
     ArrayList<Met> metArrayList = new ArrayList<>();
 
     private boolean startIndicator = false;
     float globalKCal = 0.0f;
-
+    float sumSpeed = 0.0f;
 
     private LineDataSet lineDataSet;
     private LineData lineData;
     private ArrayList<Entry> realtimeData = new ArrayList<>();
     private int cnt = 0;
+    private int speedCount = 0;
+
 
     float userHeartRate = 190.0f;
     float userMinHeartRate = userHeartRate * 0.5f;
@@ -166,33 +176,43 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 Log.e(TAG, "onReceive:  실시간 화면에서 심박수 받앗어요 ");
                 String hr = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 heartRateTextView.setText(hr);
-
                 setLineChartData(hr);
+
                 float userHR = Float.parseFloat(hr);
                 if (userHR < userMinHeartRate) {
                     String msg = "운동강도를 올릴 필요가 있습니다.";
                     userStateMsgTextView.setText(msg);
-                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.low_stat));
+//                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.low_stat));
                     customWaveView.setmAboveWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.low_stat));
+                    customWaveView.setBackgroundColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.low_stat));
                 } else if (userHR >= userMinHeartRate && userHR < userMaxHeartRate) {
                     String msg = "적절한 운동강도로 운동중입니다.";
                     userStateMsgTextView.setText(msg);
-                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.shopAccent));
+//                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.shopAccent));
                     customWaveView.setmAboveWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.shopAccent));
+                    customWaveView.setBackgroundColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.shopAccent));
                 } else if (userHR >= userMaxHeartRate) {
                     String msg = "운동강도가 초과됬습니다. 속도를 낮추고나 W를 낮춰주세요";
                     userStateMsgTextView.setText(msg);
-                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.bsp_red));
+//                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.bsp_red));
                     customWaveView.setmAboveWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.bsp_red));
+                    customWaveView.setBackgroundColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.bsp_red));
                 }
 
             } else if (EZBLEService.ACTION_INDOOR_BIKE_AVAILABLE.equals(action)) {
                 String nowSpeed = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 nowSpeedTextView.setText(nowSpeed);
-
-                globalKCal += countSpeed(nowSpeed);
-                String msg = String.valueOf(globalKCal + " kcal");
-                kcalTextview.setText(msg);
+                if (!nowSpeed.equals("0.00")) {
+                    globalKCal += countSpeed(nowSpeed);
+                    String tmp = String.format("%3.2f", globalKCal);
+                    String msg = tmp + "kcal";
+                    kcalTextview.setText(msg);
+                    sumSpeed += Float.parseFloat(nowSpeed);
+                    float meanSpeed = sumSpeed / speedCount;
+                    String meanSpeedMsg = String.format("%2.1f", meanSpeed);
+                    meanSpeedTextView.setText(meanSpeedMsg);
+                    speedCount++;
+                }
 
 
             } else if (EZBLEService.ACTION_TREADMILL_AVAILABLE.equals(action)) {
@@ -312,5 +332,11 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
             textView.append(data);
         }
     }
+
+    @OnClick(R.id.home)
+    public void onClickButton() {
+        finish();
+    }
+
 
 }

@@ -35,7 +35,7 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="130dp"
+        android:layout_width="0dp"
         android:layout_height="51dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="60dp"
@@ -44,6 +44,7 @@
         android:elevation="10dp"
         android:fontFamily="@font/noto_sans"
         android:gravity="center"
+        android:paddingStart="30dp"
         android:text="칼로리"
         android:textAlignment="textStart"
         android:textSize="30sp"

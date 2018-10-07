@@ -90,8 +90,7 @@ class Wave extends View {
         mWaveHeight = getWaveHeight(waveHeight);
         mWaveHz = getWaveHz(waveHz);
         mBlowOffset = mWaveHeight * 0.4f;
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                mWaveHeight * 2);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mWaveHeight * 2);
         setLayoutParams(params);
     }
 
