@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.RealtimeSettingActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/secondarytext" />
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:text="Select Type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <android.support.design.chip.ChipGroup
+                    android:id="@+id/chip_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    app:chipSpacing="25dp"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <android.support.design.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:clickable="true"
+                        android:focusable="true"
+
+                        app:chipStrokeColor="@color/shopAccent"
+                        app:chipStrokeWidth="2dp"
+                        android:text="중강도 운동"
+                        app:chipBackgroundColor="@color/white" />
+
+                    <android.support.design.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        app:chipCornerRadius="16dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:chipStrokeColor="@color/shopAccent"
+                        app:chipStrokeWidth="2dp"
+                        android:text="고강도 운동"
+                        app:chipBackgroundColor="@color/shopAccent" />
+                    <!-- Chips can be declared here, or added dynamically. -->
+
+                </android.support.design.chip.ChipGroup>
+            </HorizontalScrollView>
+        </LinearLayout>
+
+        <android.support.design.button.MaterialButton
+            android:id="@+id/start_fitness_button"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            style="@style/Widget.MaterialComponents.Button"
+            android:text="START FITNESS"
+            android:textSize="18sp"
+            app:backgroundTint="@color/shopAccent"
+            android:background="@color/shopAccent"/>
+
+
+    </RelativeLayout>
+
+
+
+
+</android.support.design.widget.CoordinatorLayout>

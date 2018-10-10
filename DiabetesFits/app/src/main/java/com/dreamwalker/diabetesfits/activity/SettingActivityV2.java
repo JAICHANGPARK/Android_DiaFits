@@ -51,6 +51,9 @@ public class SettingActivityV2 extends AppCompatActivity {
     @BindView(R.id.alarm_button)
     Button alarmButton;
 
+    @BindView(R.id.workout_load_test_button)
+    Button loadTestButton;
+
     @BindView(R.id.home)
     ImageView imageView;
 
@@ -163,6 +166,11 @@ public class SettingActivityV2 extends AppCompatActivity {
     @OnClick(R.id.alarm_button)
     public void onClickedAlarmButton() {
         Toasty.warning(this, getResources().getString(R.string.under_construction), Toast.LENGTH_SHORT, true).show();
+    }
+
+    @OnClick(R.id.workout_load_test_button)
+    public void onClickedWorkoutLoadTestButton(){
+        Toasty.warning(this, "운동부하검사실험-준비중", Toast.LENGTH_SHORT, true).show();
     }
 
     private void checkScrollView() {

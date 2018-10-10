@@ -219,7 +219,10 @@
         <!-- android:exported="true" -->
         <!-- android:enabled="true"/> -->
 
-        <activity android:name=".activity.SelectWriteMethodActivity"></activity>
+        <activity android:name=".activity.SelectWriteMethodActivity" />
+        <activity android:name=".activity.RealtimeSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/WriteGlucoseTheme"></activity>
     </application>
 
 </manifest>

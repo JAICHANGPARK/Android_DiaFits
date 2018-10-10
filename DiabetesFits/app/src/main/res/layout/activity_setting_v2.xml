@@ -150,6 +150,8 @@
                 android:layout_marginTop="4dp"
                 android:background="@color/secondarytext" />
 
+
+
             <Button
                 android:id="@+id/reminder_button"
                 style="?android:attr/borderlessButtonStyle"
@@ -169,6 +171,16 @@
                 android:fontFamily="@font/noto_sans"
                 android:gravity="start|center"
                 android:text="@string/setting_management_tool_menu1" />
+            
+            <Button
+                android:id="@+id/workout_load_test_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:fontFamily="@font/noto_sans"
+                android:gravity="start|center"
+                android:text="@string/setting_management_tool_menu2" />
 
 
             <LinearLayout

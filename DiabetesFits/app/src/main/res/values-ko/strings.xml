@@ -175,6 +175,7 @@
     <string name="setting_management_tool_title">Management Tool</string>
     <string name="setting_management_tool_menu0">Reminder</string>
     <string name="setting_management_tool_menu1">Alarm</string>
+    <string name="setting_management_tool_menu2">Fitness Load Test</string>
 
     <string name="setting_databases_title">Databases</string>
     <string name="setting_databases_menu_1">Management</string>

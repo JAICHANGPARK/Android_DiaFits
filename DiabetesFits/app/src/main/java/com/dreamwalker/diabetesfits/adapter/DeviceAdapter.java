@@ -35,6 +35,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.activity.RealtimeSettingActivity;
 import com.dreamwalker.diabetesfits.activity.chart.IndoorBikeRealTimeActivity;
 import com.dreamwalker.diabetesfits.activity.sync.bsm.SyncBSMDataActivity;
 import com.dreamwalker.diabetesfits.activity.sync.indoorbike.SyncIndoorBikeDataActivity;
@@ -261,8 +262,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                                                              switch (deviceName) {
                                                                  case EGZeroConst.DEVICE_NAME:
                                                                      Log.e("클릭됨", "onClick: 클릭툄" );
-                                                                     Intent bsmIntent = new Intent(context, IndoorBikeRealTimeActivity.class);
+                                                                     Intent bsmIntent = new Intent(context, RealtimeSettingActivity.class);
                                                                      bsmIntent.putExtra(REAL_TIME_INDOOR_BIKE_DEVICE, deviceAddress);
+//                                                                     Intent bsmIntent = new Intent(context, IndoorBikeRealTimeActivity.class);
+//                                                                     bsmIntent.putExtra(REAL_TIME_INDOOR_BIKE_DEVICE, deviceAddress);
                                                                      context.startActivity(bsmIntent);
                                                                      break;
 
