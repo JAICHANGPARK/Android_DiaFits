@@ -47,12 +47,10 @@ public class RealtimeSettingActivity extends AppCompatActivity implements IActiv
     @BindView(R.id.chip_03)
     Chip chip03;
 
-
-
     // TODO: 2018-10-10 0 : 저강도, 1: 중강도, 2: 고강도
+    // TODO: 2018-10-10 defualt value :  시간: 30분, 중강도
     int workoutTime = 1800;
-    int workoutIntense = 0;
-
+    int workoutIntense = 1;
 
 
     @Override
@@ -63,24 +61,26 @@ public class RealtimeSettingActivity extends AppCompatActivity implements IActiv
 
         deviceAddress = getIntent().getStringExtra(IntentConst.REAL_TIME_INDOOR_BIKE_DEVICE);
 
-
-
-
-        
     }
-    private void initChipGroup(){
+
+    private void initChipGroup() {
+
+        chip01.setChipBackgroundColorResource(R.color.white);
+        chip02.setChipBackgroundColorResource(R.color.shopAccent);
+        chip03.setChipBackgroundColorResource(R.color.white);
+
 
         chipGroup.setOnCheckedChangeListener((chipGroup, i) -> {
             Log.e(TAG, "onCheckedChanged: " + i);
 
             Chip chip = chipGroup.findViewById(i);
             Log.e(TAG, "onCheckedChanged: " + chipGroup.getCheckedChipId());
-            if (chip != null){
+            if (chip != null) {
                 Log.e(TAG, "onCheckedChanged: " + chip.getText());
 
                 String value = chip.getText().toString();
 
-                switch (value){
+                switch (value) {
                     case "저강도 운동":
                         workoutIntense = 0;
                         chip01.setChipBackgroundColorResource(R.color.shopAccent);
@@ -105,7 +105,7 @@ public class RealtimeSettingActivity extends AppCompatActivity implements IActiv
 
     }
 
-    private void initTimerView(){
+    private void initTimerView() {
 
 
         circleTimerView.setCurrentTime(1800);
@@ -159,7 +159,7 @@ public class RealtimeSettingActivity extends AppCompatActivity implements IActiv
     }
 
     @OnClick(R.id.start_fitness_button)
-    public void onClickedStartFitnessButton(){
+    public void onClickedStartFitnessButton() {
         Bundle bundle = new Bundle();
 
         Intent intent = new Intent(RealtimeSettingActivity.this, IndoorBikeRealTimeActivity.class);
@@ -173,7 +173,7 @@ public class RealtimeSettingActivity extends AppCompatActivity implements IActiv
     }
 
     @OnClick(R.id.info)
-    public void onClickedInfoButton(){
+    public void onClickedInfoButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("정보");
         builder.setMessage("운동 시간은 30-60분이 적당합니다. 혈당 감소에는 중강도 운동, 고강도 운동이 효과가 있다는 보고가 있습니다. 시간을 설정한 후 운동 강도를 설정해주세요");

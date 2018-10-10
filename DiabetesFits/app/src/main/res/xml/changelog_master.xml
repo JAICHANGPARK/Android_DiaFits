@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
 
+    <release version="1.0.13" versioncode="14">
+        <change>Date : 2018-10-10</change>
+        <change>added : Real time fitness setting added </change>
+        <change>changed : Real Time process changed</change>
+        <change>Fixed : Bug Fixed</change>
+        <change>Made by JAICHANGPARK (DREAMWALKER)</change>
+    </release>
+
     <release version="1.0.12" versioncode="13">
         <change>Date : 2018-10-06</change>
         <change>Fixed : Bluetooth Crash Fixed </change>

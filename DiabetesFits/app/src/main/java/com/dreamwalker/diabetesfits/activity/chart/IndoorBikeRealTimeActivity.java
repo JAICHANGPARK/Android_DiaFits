@@ -115,6 +115,8 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
 
     int workoutTime;
     int workoutIntense;
+    
+    boolean firstStartFlag = false;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -164,6 +166,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 invalidateOptionsMenu();
                 emptyLayout.setVisibility(View.GONE);
                 infoLayout.setVisibility(View.VISIBLE);
+                countdownView.setVisibility(View.VISIBLE);
 
             } else if (EZBLEService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
@@ -173,6 +176,9 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 invalidateOptionsMenu();
                 emptyLayout.setVisibility(View.VISIBLE);
                 infoLayout.setVisibility(View.GONE);
+                countdownView.setVisibility(View.GONE);
+
+                firstStartFlag = true;
                 //clearUI();
             } else if (EZBLEService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
                 // Show all the supported services and characteristics on the user interface.
@@ -180,6 +186,11 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 startIndicator = true;
                 chronometer.start();
                 countdownView.start(workoutTime * 1000);
+                // TODO: 2018-10-10 처음 시작한다. --> 장비와 연결이 종료되었다. --> 타이머를 잠시 정지한다. --> 장비가 연결되면 다시 시작한다.
+                if (firstStartFlag){
+                    countdownView.restart();
+                    firstStartFlag = false;
+                }
                 //chronometer.start();
                 //displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (EZBLEService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -192,7 +203,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 setLineChartData(hr);
 
                 float userHR = Float.parseFloat(hr);
-                if (userHR < userMinHeartRate) {
+                if (userHR > 0.0f && userHR < userMinHeartRate) {
                     String msg = "운동강도를 올릴 필요가 있습니다.";
                     userStateMsgTextView.setText(msg);
 //                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.low_stat));
@@ -316,6 +327,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
 
         emptyLayout.setVisibility(View.VISIBLE);
         infoLayout.setVisibility(View.GONE);
+        countdownView.setVisibility(View.GONE);
 
 
     }
