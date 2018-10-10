@@ -11,97 +11,122 @@
         android:layout_height="match_parent">
 
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Timer Setting" />
-
-
-            <com.dreamwalker.diabetesfits.widget.CircleTimerView
-                android:id="@+id/ctv"
-                android:layout_width="280dp"
-                android:layout_height="280dp"
-                android:layout_gravity="center"
-                android:layout_margin="16dp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/secondarytext" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Select Type" />
-
-            <HorizontalScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:layout_margin="8dp"
+                android:orientation="vertical">
 
-                <android.support.design.chip.ChipGroup
-                    android:id="@+id/chip_group"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Timer Setting" />
+
+                    <ImageView
+                        android:id="@+id/home"
+                        style="@style/ClickableImageView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_gravity="end"
+                        android:layout_margin="8dp"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_info_outline_black_24dp" />
+                </RelativeLayout>
+
+
+                <com.dreamwalker.diabetesfits.widget.CircleTimerView
+                    android:id="@+id/ctv"
+                    android:layout_width="280dp"
+                    android:layout_height="280dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/secondarytext" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    app:chipSpacing="8dp"
-                    app:singleLine="true"
-                    app:singleSelection="true">
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Select Type" />
 
-                    <android.support.design.chip.Chip
-                        style="@style/CustomChipChoice"
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <android.support.design.chip.ChipGroup
+                        android:id="@+id/chip_group"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:text="저강도 운동"
-                        app:chipBackgroundColor="@color/white"
-                        app:chipStrokeColor="@color/shopAccent"
-                        app:chipStrokeWidth="2dp"
-                        app:rippleColor="@color/shopFabRipple" />
+                        android:layout_margin="8dp"
+                        app:chipSpacing="8dp"
+                        app:singleLine="true"
+                        app:singleSelection="true">
 
-                    <android.support.design.chip.Chip
-                        style="@style/CustomChipChoice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:text="중강도 운동"
-                        app:chipBackgroundColor="@color/white"
-                        app:chipStrokeColor="@color/shopAccent"
-                        app:chipStrokeWidth="2dp"
-                        app:rippleColor="@color/shopFabRipple" />
+                        <android.support.design.chip.Chip
+                            style="@style/CustomChipChoice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="저강도 운동"
+                            app:chipBackgroundColor="@color/white"
+                            app:chipStrokeColor="@color/shopAccent"
+                            app:chipStrokeWidth="2dp"
+                            app:rippleColor="@color/shopFabRipple" />
 
-                    <android.support.design.chip.Chip
-                        style="@style/CustomChipChoice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:text="고강도 운동"
-                        app:chipBackgroundColor="@color/white"
-                        app:chipCornerRadius="16dp"
-                        app:chipStrokeColor="@color/shopAccent"
-                        app:chipStrokeWidth="2dp"
-                        app:rippleColor="@color/shopFabRipple" />
-                    <!-- Chips can be declared here, or added dynamically. -->
+                        <android.support.design.chip.Chip
+                            style="@style/CustomChipChoice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="중강도 운동"
+                            app:chipBackgroundColor="@color/white"
+                            app:chipStrokeColor="@color/shopAccent"
+                            app:chipStrokeWidth="2dp"
+                            app:rippleColor="@color/shopFabRipple" />
 
-                </android.support.design.chip.ChipGroup>
-            </HorizontalScrollView>
-        </LinearLayout>
+                        <android.support.design.chip.Chip
+                            style="@style/CustomChipChoice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checkable="true"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:text="고강도 운동"
+
+                            app:chipBackgroundColor="@color/white"
+                            app:chipCornerRadius="16dp"
+                            app:chipStrokeColor="@color/shopAccent"
+                            app:chipStrokeWidth="2dp"
+                            app:rippleColor="@color/shopFabRipple" />
+                        <!-- Chips can be declared here, or added dynamically. -->
+
+                    </android.support.design.chip.ChipGroup>
+                </HorizontalScrollView>
+            </LinearLayout>
+
+
+        </ScrollView>
+
 
         <android.support.design.button.MaterialButton
 

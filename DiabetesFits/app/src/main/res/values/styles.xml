@@ -192,8 +192,9 @@
 
 
     <style name="CustomChipChoice" parent="@style/Widget.MaterialComponents.Chip.Choice">
-        <item name="chipBackgroundColor">@color/white</item>
-        <item name="android:textColor">@color/black</item>
+            <item name="chipBackgroundColor">@col/background_color_chip_state_list</item>
+            <item name="android:textColor">@color/text_color_chip_state_list</item>
+
     </style>
 
 
