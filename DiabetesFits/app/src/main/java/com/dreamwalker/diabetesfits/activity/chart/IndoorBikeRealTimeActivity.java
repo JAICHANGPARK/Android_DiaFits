@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
+import com.dreamwalker.diabetesfits.consts.IntentConst;
 import com.dreamwalker.diabetesfits.service.knu.egzero.EZBLEService;
 import com.dreamwalker.diabetesfits.utils.met.Met;
 import com.dreamwalker.waveviewlib.WaveView;
@@ -40,8 +41,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.dreamwalker.diabetesfits.consts.IntentConst.REAL_TIME_INDOOR_BIKE_DEVICE;
+import cn.iwgang.countdownview.CountdownView;
 
 public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     private static final String TAG = "IndoorBikeRealTimeActiv";
@@ -89,6 +89,9 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     @BindView(R.id.home)
     ImageView backButton;
 
+    @BindView(R.id.cv_countdownView)
+    CountdownView countdownView;
+
     Met met = new Met();
     ArrayList<Met> metArrayList = new ArrayList<>();
 
@@ -106,6 +109,12 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
     float userHeartRate = 190.0f;
     float userMinHeartRate = userHeartRate * 0.5f;
     float userMaxHeartRate = userHeartRate * 0.7f;
+
+
+    Bundle bundle = new Bundle();
+
+    int workoutTime;
+    int workoutIntense;
 
     // Code to manage Service lifecycle.
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -159,6 +168,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
             } else if (EZBLEService.ACTION_GATT_DISCONNECTED.equals(action)) {
                 mConnected = false;
                 chronometer.stop();
+                countdownView.pause();
                 //updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
                 emptyLayout.setVisibility(View.VISIBLE);
@@ -169,6 +179,7 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
                 // TODO: 2018-07-24 서비스와 연결되엉ㅅ을때 방송되어 받아지는 리시버 - 박제창
                 startIndicator = true;
                 chronometer.start();
+                countdownView.start(workoutTime * 1000);
                 //chronometer.start();
                 //displayGattServices(mBluetoothLeService.getSupportedGattServices());
             } else if (EZBLEService.ACTION_DATA_AVAILABLE.equals(action)) {
@@ -199,6 +210,9 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
 //                    customWaveView.setmBlowWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.bsp_red));
                     customWaveView.setmAboveWaveColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.bsp_red));
                     customWaveView.setBackgroundColor(ContextCompat.getColor(IndoorBikeRealTimeActivity.this, R.color.bsp_red));
+                } else if (userHR == 0.0f) {
+                    String msg = "심박센서 착용 및 위치 확인해주세요.";
+                    userStateMsgTextView.setText(msg);
                 }
 
             } else if (EZBLEService.ACTION_INDOOR_BIKE_AVAILABLE.equals(action)) {
@@ -285,7 +299,15 @@ public class IndoorBikeRealTimeActivity extends AppCompatActivity {
         final FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(-2, -2);
         lp.gravity = Gravity.BOTTOM | Gravity.CENTER;
 
-        mDeviceAddress = getIntent().getStringExtra(REAL_TIME_INDOOR_BIKE_DEVICE);
+//        mDeviceAddress = getIntent().getStringExtra(REAL_TIME_INDOOR_BIKE_DEVICE);
+
+        bundle = getIntent().getBundleExtra(IntentConst.REAL_TIME_SETTING_FITNESS_INFO);
+        mDeviceAddress = bundle.getString(IntentConst.REAL_TIME_DEVICE_ADDEDSS);
+        workoutTime = bundle.getInt(IntentConst.REAL_TIME_WORKOUT_TOTAL_TIME);
+        workoutIntense = bundle.getInt(IntentConst.REAL_TIME_WORKOUT_INTENSE);
+        Log.e(TAG, "onCreate: " + mDeviceAddress + "||" + workoutIntense + "::" + workoutTime);
+
+//        countdownView.start(workoutTime * 1000);
 
         Intent gattServiceIntent = new Intent(this, EZBLEService.class);
         bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);

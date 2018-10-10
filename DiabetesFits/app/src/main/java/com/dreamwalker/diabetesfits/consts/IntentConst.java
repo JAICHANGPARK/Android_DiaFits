@@ -21,6 +21,16 @@ public class IntentConst {
 
 
 
+    public static final String REAL_TIME_DEVICE_ADDEDSS = "REAL_TIME_DEVICE_ADDEDSS";
+    public static final String REAL_TIME_WORKOUT_TOTAL_TIME = "REAL_TIME_WORKOUT_TOTAL_TIME";
+    public static final String REAL_TIME_WORKOUT_INTENSE = "REAL_TIME_WORKOUT_INTENSE";
+
+    public static final String REAL_TIME_SETTING_FITNESS_INFO = "REAL_TIME_SETTING_FITNESS_INFO";
+
+
+
+
+
 
 
 
