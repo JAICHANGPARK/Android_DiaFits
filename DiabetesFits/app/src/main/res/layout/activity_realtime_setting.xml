@@ -10,11 +10,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <LinearLayout
-            android:layout_margin="8dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Timer Setting" />
+
+
+            <com.dreamwalker.diabetesfits.widget.CircleTimerView
+                android:id="@+id/ctv"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:layout_gravity="center"
+                android:layout_margin="16dp" />
 
             <View
                 android:layout_width="match_parent"
@@ -22,10 +38,11 @@
                 android:background="@color/secondarytext" />
 
             <TextView
-                android:layout_marginTop="8dp"
-                android:text="Select Type"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Select Type" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -37,35 +54,49 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    app:chipSpacing="25dp"
+                    app:chipSpacing="8dp"
                     app:singleLine="true"
                     app:singleSelection="true">
 
                     <android.support.design.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        style="@style/CustomChipChoice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
                         android:clickable="true"
                         android:focusable="true"
-
+                        android:text="저강도 운동"
+                        app:chipBackgroundColor="@color/white"
                         app:chipStrokeColor="@color/shopAccent"
                         app:chipStrokeWidth="2dp"
-                        android:text="중강도 운동"
-                        app:chipBackgroundColor="@color/white" />
+                        app:rippleColor="@color/shopFabRipple" />
 
                     <android.support.design.chip.Chip
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        app:chipCornerRadius="16dp"
+                        style="@style/CustomChipChoice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:checkable="true"
                         android:clickable="true"
                         android:focusable="true"
+                        android:text="중강도 운동"
+                        app:chipBackgroundColor="@color/white"
                         app:chipStrokeColor="@color/shopAccent"
                         app:chipStrokeWidth="2dp"
+                        app:rippleColor="@color/shopFabRipple" />
+
+                    <android.support.design.chip.Chip
+                        style="@style/CustomChipChoice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:clickable="true"
+                        android:focusable="true"
                         android:text="고강도 운동"
-                        app:chipBackgroundColor="@color/shopAccent" />
+                        app:chipBackgroundColor="@color/white"
+                        app:chipCornerRadius="16dp"
+                        app:chipStrokeColor="@color/shopAccent"
+                        app:chipStrokeWidth="2dp"
+                        app:rippleColor="@color/shopFabRipple" />
                     <!-- Chips can be declared here, or added dynamically. -->
 
                 </android.support.design.chip.ChipGroup>
@@ -73,21 +104,20 @@
         </LinearLayout>
 
         <android.support.design.button.MaterialButton
+
             android:id="@+id/start_fitness_button"
-            android:layout_alignParentBottom="true"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            style="@style/Widget.MaterialComponents.Button"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="24dp"
+            android:background="@color/shopAccent"
             android:text="START FITNESS"
             android:textSize="18sp"
-            app:backgroundTint="@color/shopAccent"
-            android:background="@color/shopAccent"/>
+            app:backgroundTint="@color/shopAccent" />
 
 
     </RelativeLayout>
-
-
 
 
 </android.support.design.widget.CoordinatorLayout>
