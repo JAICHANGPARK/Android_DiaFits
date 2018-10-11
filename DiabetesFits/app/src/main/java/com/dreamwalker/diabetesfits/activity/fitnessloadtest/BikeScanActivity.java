@@ -22,6 +22,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -51,6 +55,9 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+    @BindView(R.id.tool_bar)
+    Toolbar toolbar;
     DeviceScanAdapterV2 adapter;
     ArrayList<BluetoothDevice> bleDeviceList;
     ArrayList<ScanResult> scanResultArrayList;
@@ -70,6 +77,15 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bike_scan);
         initSetting();
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(BikeScanActivity.this);
+            builder.setTitle("알림");
+            builder.setMessage("장비 검색과 운동부하 검사를 종료하시겠어요?");
+            builder.setPositiveButton(android.R.string.yes, (dialog, which) -> finish());
+            builder.setNegativeButton(android.R.string.no, (dialog, which) -> dialog.dismiss());
+            builder.show();
+        });
         multiWaveHeader.setScaleY(-1f);
 
         bleDeviceList = new ArrayList<>();
@@ -161,7 +177,9 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
             if (enable) {
                 handler.postDelayed(() -> {
                     mScanning = false;
+
                     bluetoothLeScanner.stopScan(leScanCallback);
+                    invalidateOptionsMenu();
 //                        StateButton.setText("SCAN");
 //                        animationView.cancelAnimation();
 //                        animationView.setFrame(0);
@@ -174,6 +192,7 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
                 bluetoothLeScanner.stopScan(leScanCallback);
             }
         }
+        invalidateOptionsMenu();
     }
 
     private ScanCallback leScanCallback = new ScanCallback() {
@@ -259,11 +278,44 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
 
     @Override
     public void onItemClick(View v, int position) {
-
+        Log.e(TAG, "onItemClick: " + position);
     }
 
     @Override
     public void onItemLongClick(View v, int position) {
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_device_scan, menu);
+//        return super.onCreateOptionsMenu(menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.scan:
+
+                if (!mScanning) {
+                    item.setIcon(R.drawable.ic_cancel);
+//                    StateButton.setText("STOP");
+                    bleDeviceList.clear();
+                    adapter.notifyDataSetChanged();
+//                    animationView.playAnimation();
+                    scanLeDevice(true);
+
+                } else {
+                    item.setIcon(R.drawable.refresh);
+//                    animationView.cancelAnimation();
+//                    animationView.setProgress(0);
+//                    StateButton.setText("SCAN");
+                    scanLeDevice(false);
+                }
+
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

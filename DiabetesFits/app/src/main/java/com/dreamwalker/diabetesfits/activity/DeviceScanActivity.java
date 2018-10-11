@@ -56,9 +56,10 @@ public class DeviceScanActivity extends AppCompatActivity {
     TextView skipTextView;
     @BindView(R.id.button)
     Button StateButton;
-
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
+
     DeviceScanAdapter adapter;
     ArrayList<BluetoothDevice> bleDeviceList;
 
@@ -345,5 +346,7 @@ public class DeviceScanActivity extends AppCompatActivity {
                     .build();
         }
     }
+
+
 
 }
