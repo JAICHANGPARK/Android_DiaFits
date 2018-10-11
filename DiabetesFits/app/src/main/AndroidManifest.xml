@@ -230,7 +230,11 @@
             android:name=".activity.fitnessloadtest.TestStartBeforeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/WriteGlucoseTheme" />
-        <activity android:name=".activity.fitnessloadtest.BikeScanActivity"></activity>
+        <activity
+            android:name=".activity.fitnessloadtest.BikeScanActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/WriteGlucoseTheme" />
+        <activity android:name=".activity.fitnessloadtest.LoadTestActivity"></activity>
     </application>
 
 </manifest>

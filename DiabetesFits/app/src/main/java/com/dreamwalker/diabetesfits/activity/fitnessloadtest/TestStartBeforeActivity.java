@@ -206,6 +206,7 @@ public class TestStartBeforeActivity extends AppCompatActivity implements IActiv
     public void onClickedStartButton() {
         Log.e(TAG, "onClickedStartButton: clicked");
         startActivity(new Intent(this, BikeScanActivity.class));
+        mediaPlayer.stop();
         finish();
     }
 

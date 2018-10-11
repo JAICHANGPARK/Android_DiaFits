@@ -6,47 +6,51 @@
     android:layout_height="match_parent"
     tools:context=".activity.fitnessloadtest.BikeScanActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_add_contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/default_background"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-    <LinearLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/default_background"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24dp"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="Scan Accessory"
+            app:titleTextAppearance="@style/Toolbar.TitleText2"
+            app:titleTextColor="@color/black" />
+    </android.support.design.widget.AppBarLayout>
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <cn.iwgang.countdownview.CountdownView
-            android:id="@+id/cv_countdownView"
-            android:layout_width="165dp"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:isHideTimeBackground="false"
-            app:isShowDay="false"
-            app:isShowHour="false"
-            app:isShowMillisecond="true"
-            app:isShowMinute="true"
-            app:isShowSecond="true"
-            app:suffixGravity="center"
-            app:suffixTextColor="#000000"
-            app:suffixTextSize="30sp"
-            app:timeBgDivisionLineSize="1dp"
-            app:timeBgRadius="3dp"
-            app:timeBgSize="50dp"
-            app:timeTextColor="#FFFFFF"
-            app:timeTextSize="30sp" />
-
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/animation_view"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
             android:layout_margin="8dp"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"
-            app:lottie_rawRes="@raw/exploding_heart_v2" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        </android.support.v7.widget.RecyclerView>
 
 
-    </LinearLayout>
+        <com.dreamwalker.multiwaveview.MultiWaveHeader
+            android:id="@+id/waveHeader"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentBottom="true"
+            app:mwhCloseColor="@color/shopAccent"
+            app:mwhColorAlpha="0.45"
+            app:mwhStartColor="@color/colorPrimary" />
+    </RelativeLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

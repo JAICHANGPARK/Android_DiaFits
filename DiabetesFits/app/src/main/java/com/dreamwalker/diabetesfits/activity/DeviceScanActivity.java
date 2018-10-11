@@ -282,21 +282,15 @@ public class DeviceScanActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         if (!bluetoothAdapter.isEnabled()) {
-
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-
         } else {
-
             adapter = new DeviceScanAdapter(bleDeviceList, this);
             recyclerView.setAdapter(adapter);
             scanLeDevice(true);
             StateButton.setText("STOP");
         }
-
-
     }
 
     @Override
