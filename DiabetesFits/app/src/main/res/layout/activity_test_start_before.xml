@@ -30,7 +30,7 @@
                 android:src="@drawable/ic_arrow_back_black_24dp" />
 
         </RelativeLayout>
-
+        
     </android.support.design.widget.AppBarLayout>
 
     <RelativeLayout
