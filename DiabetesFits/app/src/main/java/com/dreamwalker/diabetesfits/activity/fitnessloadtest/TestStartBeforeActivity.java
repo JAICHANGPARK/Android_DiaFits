@@ -34,6 +34,12 @@ public class TestStartBeforeActivity extends AppCompatActivity implements IActiv
 
     @BindView(R.id.start_button)
     MaterialButton startButton;
+//
+//    @BindView(R.id.multiWaveHeader)
+//    MultiWaveHeader multiWaveHeader;
+//
+//    @BindView(R.id.tool_bar)
+//    android.support.v7.widget.Toolbar toolbar;
 
     MediaPlayer mediaPlayer;
     AudioManager audioManager;
@@ -65,15 +71,44 @@ public class TestStartBeforeActivity extends AppCompatActivity implements IActiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_test_start_before);
 
         initSetting();
+
         registerReceiver(audioReceiver, intentFilter());
+
+
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                finish();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(TestStartBeforeActivity.this);
+//                builder.setTitle("알림");
+//                builder.setMessage("검사를 종료하시겠어요?");
+//                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                    }
+//                });
+//                builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//                builder.show();
+//
+//            }
+//        });
+
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                Log.e(TAG, "onCompletion: " );
+                Log.e(TAG, "onCompletion: ");
 
                 mediaPlayer = MediaPlayer.create(TestStartBeforeActivity.this, R.raw.intro_test_02);
 
@@ -95,6 +130,17 @@ public class TestStartBeforeActivity extends AppCompatActivity implements IActiv
             }
         });
 
+//        multiWaveHeader.setProgress(1f * 15.0f / 100);
+//        multiWaveHeader.setVelocity(1f * 50.0f / 10);
+//        multiWaveHeader.setWaves("0,0,1,1,25");
+//        multiWaveHeader.setGradientAngle(110);
+//        multiWaveHeader.setColorAlpha(1f * 55.0f / 100);
+//        multiWaveHeader.setWaveHeight(14);
+//        List<String> waves = Arrays.asList("70,25,1.4,1.4,-26\n100,5,1.4,1.2,15\n420,0,1.15,1,-10\n520,10,1.7,1.5,20\n220,0,1,1,-15".split("\n"));
+//        multiWaveHeader.setStartColor(getResources().getColor(R.color.shopAccent));
+//        multiWaveHeader.setCloseColor(getResources().getColor(R.color.shopFabRipple));
+
+
     }
 
 
@@ -111,7 +157,7 @@ public class TestStartBeforeActivity extends AppCompatActivity implements IActiv
 
     }
 
-    private void initFontFace(){
+    private void initFontFace() {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/NotoSansCJKkr-Thin.otf");
         topTextView.setTypeface(typeface);
         midTextView.setTypeface(typeface);
@@ -157,12 +203,14 @@ public class TestStartBeforeActivity extends AppCompatActivity implements IActiv
     }
 
     @OnClick(R.id.start_button)
-    public void onClickedStartButton(){
-        Log.e(TAG, "onClickedStartButton: clicked" );
+    public void onClickedStartButton() {
+        Log.e(TAG, "onClickedStartButton: clicked");
+        startActivity(new Intent(this, BikeScanActivity.class));
+        finish();
     }
 
     @OnClick(R.id.home)
-    public void onClickedBackButton(){
+    public void onClickedBackButton() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("알림");
         builder.setMessage("검사를 종료하시겠어요?");

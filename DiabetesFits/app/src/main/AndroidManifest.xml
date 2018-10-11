@@ -219,18 +219,18 @@
         <!-- android:exported="true" -->
         <!-- android:enabled="true"/> -->
 
-        <activity android:name=".activity.SelectWriteMethodActivity"
-            android:screenOrientation="portrait"/>
-
+        <activity
+            android:name=".activity.SelectWriteMethodActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.RealtimeSettingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/WriteGlucoseTheme" />
-
-        <activity android:name=".activity.fitnessloadtest.TestStartBeforeActivity"
+        <activity
+            android:name=".activity.fitnessloadtest.TestStartBeforeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/WriteGlucoseTheme"
-            ></activity>
+            android:theme="@style/WriteGlucoseTheme" />
+        <activity android:name=".activity.fitnessloadtest.BikeScanActivity"></activity>
     </application>
 
 </manifest>
