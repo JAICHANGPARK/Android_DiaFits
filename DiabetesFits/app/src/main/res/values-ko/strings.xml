@@ -306,5 +306,13 @@
 
     <string name="write_fitness_rpe_label">운동자각인지도 RPE (Rate of Perceived Exertion)는 주관적인 느낌을 가지고 운동 강도를 정하는 것입니다.</string>
     <string name="write_fitness_kcal_label">체중은 소모 열량을 계산하기 위해 사용됩니다. 체중이 등록되어 있지 않다면 프로필에 들어가 체중 정보를 입력해주세요.</string>
+    <string name="fitness_load_test_start_message">안녕하세요.\n\n당뇨그루 피트니스 만의 운동부하검사를 시작합니다.
+        나만의 최대심박수를 측정해 볼 수 있습니다. \n\n검사 방법은 운동속도 시속 20 킬로미터로 시작해 운동속도를 2분마다 시속 2 킬로미터씩 증가시켜 나갑니다.
+    </string>
+
+
+    <string name="fitness_load_test_start_message2">시작에 앞서 실내자전거 모듈 전원을 켜주세요. 그리고 심박 수 측정을 위해 심박 센서를 착용해주세요.
+        준비가 완료되면 시작 버튼을 눌러주세요.
+    </string>
 
 </resources>

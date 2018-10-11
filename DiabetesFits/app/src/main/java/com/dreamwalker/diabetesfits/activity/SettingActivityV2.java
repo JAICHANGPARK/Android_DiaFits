@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.appinfo.DetailAppMenuActivity;
+import com.dreamwalker.diabetesfits.activity.fitnessloadtest.TestStartBeforeActivity;
 import com.dreamwalker.diabetesfits.activity.profile.EditProfileActivity;
 import com.dreamwalker.diabetesfits.activity.reminder.ReminderActivity;
 
@@ -170,6 +171,7 @@ public class SettingActivityV2 extends AppCompatActivity {
 
     @OnClick(R.id.workout_load_test_button)
     public void onClickedWorkoutLoadTestButton(){
+        startActivity(new Intent(SettingActivityV2.this, TestStartBeforeActivity.class));
         Toasty.warning(this, "운동부하검사실험-준비중", Toast.LENGTH_SHORT, true).show();
     }
 
