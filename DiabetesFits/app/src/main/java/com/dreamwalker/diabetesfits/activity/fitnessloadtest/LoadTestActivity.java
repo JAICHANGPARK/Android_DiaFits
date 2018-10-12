@@ -27,6 +27,7 @@ public class LoadTestActivity extends AppCompatActivity implements IActivityBasi
     @BindView(R.id.cv_countdownView)
     CountdownView countdownView;
 
+
     @BindView(R.id.gauge_view)
     GaugeView gaugeView;
 
@@ -36,6 +37,8 @@ public class LoadTestActivity extends AppCompatActivity implements IActivityBasi
     @BindView(R.id.stage_text_view)
     TextView stageTextView;
 
+    @BindView(R.id.guide_text_view)
+    TextView guideTextView;
 
     CountDownTimer timer;
     MediaPlayer mediaPlayer;
@@ -54,7 +57,7 @@ public class LoadTestActivity extends AppCompatActivity implements IActivityBasi
         initSetting();
 
         aimSpeedTextView.setText(String.valueOf(aimSpeed) + " km/h");
-        stageTextView.setText("Stage : "+ String.valueOf(testStage));
+        stageTextView.setText("Stage : " + String.valueOf(testStage));
 
         mediaPlayer = MediaPlayer.create(this, R.raw.load_test_01);
 
@@ -69,7 +72,7 @@ public class LoadTestActivity extends AppCompatActivity implements IActivityBasi
                 aimSpeed += 2.0;
                 testStage += 1;
                 aimSpeedTextView.setText(String.valueOf(aimSpeed) + " km/h");
-                stageTextView.setText("Stage : "+ String.valueOf(testStage));
+                stageTextView.setText("Stage : " + String.valueOf(testStage));
 
                 timer.start();
                 countdownView.start(SET_2_MINUTE);

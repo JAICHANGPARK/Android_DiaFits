@@ -27,9 +27,9 @@
 
                 <TextView
                     android:id="@+id/stage_text_view"
-                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:gravity="center"
                     android:text="Stage 2"
                     android:textColor="@color/black"
@@ -38,9 +38,9 @@
 
                 <TextView
                     android:id="@+id/aim_speed_text_view"
-                    android:layout_margin="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
                     android:gravity="center"
                     android:text="Speed"
                     android:textColor="@color/black"
@@ -74,15 +74,29 @@
                 app:timeBgSize="50dp"
                 app:timeTextColor="#FFFFFF"
                 app:timeTextSize="30sp" />
-
-
         </LinearLayout>
-
-
+        
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/secondarytext" />
+
+        <android.support.design.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <TextView
+                android:id="@+id/guide_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="검사를 잘 수행하고 있습니다." />
+        </android.support.design.card.MaterialCardView>
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -168,6 +182,7 @@
                         android:id="@+id/gauge_view"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_margin="8dp"
                         android:layout_weight="1"
                         android:background="#ffffff"
                         app:needleHeight="0.40"
