@@ -22,8 +22,6 @@ import com.dreamwalker.diabetesfits.consts.IntentConst;
 import com.dreamwalker.diabetesfits.service.knu.egzero.EZBLEService;
 import com.dreamwalker.gaugeview.GaugeView;
 
-import java.util.Random;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.iwgang.countdownview.CountdownView;
@@ -178,6 +176,7 @@ public class LoadTestActivity extends AppCompatActivity implements IActivityBasi
 
                 String nowSpeed = intent.getStringExtra(EZBLEService.EXTRA_DATA);
                 speedTextView.setText(nowSpeed);
+                gaugeView.setTargetValue(Float.parseFloat(nowSpeed));
 //                if (!nowSpeed.equals("0.00")) {
 //                    globalKCal += countSpeed(nowSpeed);
 //                    String tmp = String.format("%3.2f", globalKCal);
@@ -207,16 +206,16 @@ public class LoadTestActivity extends AppCompatActivity implements IActivityBasi
         Log.e(TAG, "onCreate: " + deviceAddress);
         initSetting();
 
+        mediaPlayer = MediaPlayer.create(this, R.raw.load_test_01);
         aimSpeedTextView.setText(String.valueOf(aimSpeed) + " km/h");
         stageTextView.setText("Stage : " + String.valueOf(testStage));
 
-//        mediaPlayer = MediaPlayer.create(this, R.raw.load_test_01);
 
         timer = new CountDownTimer(SET_2_MINUTE, 1000) {
 
             public void onTick(long millisUntilFinished) {
 //                mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
-                gaugeView.setTargetValue(new Random().nextInt(101));
+//                gaugeView.setTargetValue(new Random().nextInt(101));
             }
 
             public void onFinish() {
@@ -227,7 +226,7 @@ public class LoadTestActivity extends AppCompatActivity implements IActivityBasi
 
                 timer.start();
                 countdownView.start(SET_2_MINUTE);
-//                mediaPlayer.start();
+                mediaPlayer.start();
 //                mTextField.setText("done!");
             }
         };

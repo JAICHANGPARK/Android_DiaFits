@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activity.fitnessloadtest.LoadTestActivity">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,10 +45,7 @@
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
-
-
             </LinearLayout>
-
 
             <cn.iwgang.countdownview.CountdownView
                 android:id="@+id/cv_countdownView"
@@ -95,6 +91,7 @@
                 android:layout_margin="8dp"
                 android:gravity="center"
                 android:text="검사를 잘 수행하고 있습니다." />
+
         </android.support.design.card.MaterialCardView>
 
 
@@ -119,7 +116,6 @@
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/animation_view"
                         android:layout_width="0dp"
@@ -127,9 +123,8 @@
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         app:lottie_autoPlay="true"
-                        app:lottie_colorFilter="@color/under_text"
                         app:lottie_loop="true"
-                        app:lottie_rawRes="@raw/exploding_heart" />
+                        app:lottie_rawRes="@raw/love_explosion" />
 
                     <LinearLayout
                         android:layout_width="0dp"
