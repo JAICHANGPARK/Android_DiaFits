@@ -1,11 +1,8 @@
 package com.dreamwalker.diabetesfits.adapter.fitnessloadtest;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dreamwalker.diabetesfits.R;
-import com.dreamwalker.diabetesfits.activity.LoginActivity;
 import com.dreamwalker.diabetesfits.model.Device;
 
 import java.util.ArrayList;
@@ -73,30 +69,30 @@ public class DeviceScanAdapterV2 extends RecyclerView.Adapter<DeviceScanAdapterV
         holder.deviceAddress.setText(deviceArrayList.get(position).getAddress());
         holder.deviceRssi.setText(String.valueOf(deviceRssi));
 
-        holder.container.setOnClickListener(v -> {
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setTitle("Check");
-            builder.setMessage(deviceName + " 장비를 등록합니다.");
-            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putBoolean("activity_executed",true);
-                editor.apply();
-                // TODO: 2018-07-22 장비 등록 내부 케시에 저장한다. - 박제창 
-//                deviceMap.put("deviceName", deviceName);
-//                deviceMap.put("deviceAddress", deviceAddress);
-                deviceDatabase.add(new Device(deviceName, deviceAddress));
-                Paper.book("device").write("user_device", deviceDatabase);
-
-                Intent intent = new Intent(context, LoginActivity.class);
-//                intent.putExtra(IntentConst.EXTRAS_DEVICE_NAME, deviceName);
-//                intent.putExtra(IntentConst.EXTRAS_DEVICE_ADDRESS, deviceAddress);
-                context.startActivity(intent);
-                ((Activity)context).finish();
-
-            });
-            builder.show();
-        });
+//        holder.container.setOnClickListener(v -> {
+////            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+////            builder.setTitle("Check");
+////            builder.setMessage(deviceName + "의 엑세서리로 검사를 시작합니다.");
+////            builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+////
+////                SharedPreferences.Editor editor = preferences.edit();
+////                editor.putBoolean("activity_executed",true);
+////                editor.apply();
+////                // TODO: 2018-07-22 장비 등록 내부 케시에 저장한다. - 박제창
+//////                deviceMap.put("deviceName", deviceName);
+//////                deviceMap.put("deviceAddress", deviceAddress);
+////                deviceDatabase.add(new Device(deviceName, deviceAddress));
+////                Paper.book("device").write("user_device", deviceDatabase);
+////
+////                Intent intent = new Intent(context, LoadTestActivity.class);
+//////                intent.putExtra(IntentConst.EXTRAS_DEVICE_NAME, deviceName);
+//////                intent.putExtra(IntentConst.EXTRAS_DEVICE_ADDRESS, deviceAddress);
+////                context.startActivity(intent);
+////                ((Activity)context).finish();
+////
+////            });
+////            builder.show();
+//        });
     }
 
     @Override
@@ -112,12 +108,13 @@ public class DeviceScanAdapterV2 extends RecyclerView.Adapter<DeviceScanAdapterV
         TextView deviceRssi;
         LinearLayout container;
 
-        public DeviceScanViewHolder(View itemView) {
+        DeviceScanViewHolder(View itemView) {
             super(itemView);
-            this.deviceName = itemView.findViewById(R.id.device_name);
-            this.deviceAddress = itemView.findViewById(R.id.device_address);
-            this.deviceRssi = itemView.findViewById(R.id.device_rssi);
-            this.container = itemView.findViewById(R.id.container);
+            deviceName = itemView.findViewById(R.id.device_name);
+            deviceAddress = itemView.findViewById(R.id.device_address);
+            deviceRssi = itemView.findViewById(R.id.device_rssi);
+            container = itemView.findViewById(R.id.container);
+
             itemView.setOnClickListener(this);
         }
 
@@ -127,5 +124,7 @@ public class DeviceScanAdapterV2 extends RecyclerView.Adapter<DeviceScanAdapterV
                 deviceItemClickListener.onItemClick(v, getAdapterPosition());
             }
         }
+
     }
+
 }

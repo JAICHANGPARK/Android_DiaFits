@@ -28,6 +28,9 @@ public class IntentConst {
     public static final String REAL_TIME_SETTING_FITNESS_INFO = "REAL_TIME_SETTING_FITNESS_INFO";
 
 
+    public static final String FITNESS_LOAD_TEST_DEVICE_ADDRESS = "FITNESS_LOAD_TEST_DEVICE_ADDRESS";
+
+
 
 
 

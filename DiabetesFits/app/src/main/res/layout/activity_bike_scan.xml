@@ -45,7 +45,7 @@
         <com.dreamwalker.multiwaveview.MultiWaveHeader
             android:id="@+id/waveHeader"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="240dp"
             android:layout_alignParentBottom="true"
             app:mwhCloseColor="@color/shopAccent"
             app:mwhColorAlpha="0.45"

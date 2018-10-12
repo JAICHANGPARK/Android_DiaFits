@@ -33,6 +33,7 @@ import com.dreamwalker.diabetesfits.R;
 import com.dreamwalker.diabetesfits.activity.IActivityBasicSetting;
 import com.dreamwalker.diabetesfits.adapter.fitnessloadtest.DeviceItemClickListener;
 import com.dreamwalker.diabetesfits.adapter.fitnessloadtest.DeviceScanAdapterV2;
+import com.dreamwalker.diabetesfits.consts.IntentConst;
 import com.dreamwalker.multiwaveview.MultiWaveHeader;
 
 import java.util.ArrayList;
@@ -176,8 +177,8 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
 
             if (enable) {
                 handler.postDelayed(() -> {
+                    Log.e(TAG, "scanLeDevice: ---> " + "Scan Handler Done!!");
                     mScanning = false;
-
                     bluetoothLeScanner.stopScan(leScanCallback);
                     invalidateOptionsMenu();
 //                        StateButton.setText("SCAN");
@@ -186,13 +187,15 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
                 }, SCAN_PERIOD);
                 mScanning = true;
                 startNEWBTLEDiscovery();
+                invalidateOptionsMenu();
                 //bluetoothLeScanner.startScan(leScanCallback);
             } else {
                 mScanning = false;
                 bluetoothLeScanner.stopScan(leScanCallback);
+                invalidateOptionsMenu();
             }
         }
-        invalidateOptionsMenu();
+
     }
 
     private ScanCallback leScanCallback = new ScanCallback() {
@@ -276,20 +279,20 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
         }
     }
 
-    @Override
-    public void onItemClick(View v, int position) {
-        Log.e(TAG, "onItemClick: " + position);
-    }
 
-    @Override
-    public void onItemLongClick(View v, int position) {
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_device_scan, menu);
 //        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_device_scan, menu);
+
+        if (!mScanning) {
+            menu.findItem(R.id.cancel).setVisible(false);
+            menu.findItem(R.id.scan).setVisible(true);
+        } else {
+            menu.findItem(R.id.cancel).setVisible(true);
+            menu.findItem(R.id.scan).setVisible(false);
+        }
         return true;
     }
 
@@ -297,25 +300,42 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.scan:
+                bleDeviceList.clear();
+                scanResultArrayList.clear();
+                adapter.notifyDataSetChanged();
+                scanLeDevice(true);
+                break;
 
-                if (!mScanning) {
-                    item.setIcon(R.drawable.ic_cancel);
-//                    StateButton.setText("STOP");
-                    bleDeviceList.clear();
-                    adapter.notifyDataSetChanged();
-//                    animationView.playAnimation();
-                    scanLeDevice(true);
-
-                } else {
-                    item.setIcon(R.drawable.refresh);
-//                    animationView.cancelAnimation();
-//                    animationView.setProgress(0);
-//                    StateButton.setText("SCAN");
-                    scanLeDevice(false);
-                }
-
+            case R.id.cancel:
+                scanLeDevice(false);
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(View v, int position) {
+        Log.e(TAG, "onItemClick: " + position);
+        String deviceAddress = bleDeviceList.get(position).getAddress();
+        String deviceName = bleDeviceList.get(position).getName();
+
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(this);
+        builder.setTitle("Check");
+        builder.setMessage(deviceName + "의 엑세서리로 검사를 시작합니다.");
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
+
+            Intent intent = new Intent(this, LoadTestActivity.class);
+            intent.putExtra(IntentConst.FITNESS_LOAD_TEST_DEVICE_ADDRESS, deviceAddress);
+            startActivity(intent);
+            finish();
+
+        });
+
+        builder.show();
+    }
+
+    @Override
+    public void onItemLongClick(View v, int position) {
+
     }
 }

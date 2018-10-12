@@ -7,4 +7,9 @@
         app:showAsAction="always"
         android:title="scan" />
 
+    <item android:id="@+id/cancel"
+        android:icon="@drawable/ic_cancel"
+        app:showAsAction="always"
+        android:title="@string/cancel"/>
+
 </menu>
