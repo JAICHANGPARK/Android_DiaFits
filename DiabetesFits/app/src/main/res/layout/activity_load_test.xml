@@ -12,28 +12,72 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <cn.iwgang.countdownview.CountdownView
-            android:id="@+id/cv_countdownView"
-            android:layout_width="165dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="16dp"
-            app:isHideTimeBackground="false"
-            app:isShowDay="false"
-            app:isShowHour="false"
-            app:isShowMillisecond="true"
-            app:isShowMinute="true"
-            app:isShowSecond="true"
-            app:suffixGravity="center"
-            app:suffixTextColor="#000000"
-            app:suffixTextSize="30sp"
-            app:timeBgDivisionLineSize="1dp"
-            app:timeBgRadius="3dp"
-            app:timeBgSize="50dp"
-            app:timeTextColor="#FFFFFF"
-            app:timeTextSize="30sp" />
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/stage_text_view"
+                    android:layout_margin="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Stage 2"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/aim_speed_text_view"
+                    android:layout_margin="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Speed"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+
+            <cn.iwgang.countdownview.CountdownView
+                android:id="@+id/cv_countdownView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="1"
+                app:isHideTimeBackground="false"
+                app:isShowDay="false"
+                app:isShowHour="false"
+                app:isShowMillisecond="true"
+                app:isShowMinute="true"
+                app:isShowSecond="true"
+                app:suffixGravity="center"
+                app:suffixTextColor="#000000"
+                app:suffixTextSize="30sp"
+                app:timeBgDivisionLineSize="1dp"
+                app:timeBgRadius="3dp"
+                app:timeBgSize="50dp"
+                app:timeTextColor="#FFFFFF"
+                app:timeTextSize="30sp" />
+
+
+        </LinearLayout>
+
 
         <View
             android:layout_width="match_parent"
@@ -43,12 +87,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="2">
 
             <android.support.design.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 app:cardCornerRadius="8dp"
@@ -57,45 +102,57 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
 
                     <com.airbnb.lottie.LottieAnimationView
                         android:id="@+id/animation_view"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:paddingTop="80dp"
+                        android:layout_weight="1"
                         app:lottie_autoPlay="true"
                         app:lottie_colorFilter="@color/under_text"
                         app:lottie_loop="true"
-                        app:lottie_rawRes="@raw/exploding_heart_v2" />
+                        app:lottie_rawRes="@raw/exploding_heart" />
 
-                    <TextView
-                        android:id="@+id/heart_rate_text_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="심박수"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="BPM"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/heart_rate_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:gravity="center"
+                            android:text="심박수"
+                            android:textColor="@color/black"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="BPM"
+                            android:textColor="@color/secondarytext"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
+
+
                 </LinearLayout>
             </android.support.design.card.MaterialCardView>
 
             <android.support.design.card.MaterialCardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 app:cardCornerRadius="8dp"
@@ -103,13 +160,15 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <com.dreamwalker.gaugeview.GaugeView
                         android:id="@+id/gauge_view"
-                        android:layout_width="200dp"
-                        android:layout_height="200dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:background="#ffffff"
                         app:needleHeight="0.40"
                         app:needleWidth="0.010"
@@ -119,29 +178,143 @@
                         app:showOuterRim="false"
                         app:showOuterShadow="false" />
 
-                    <TextView
-                        android:id="@+id/speed_text_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:text="속도"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="km/h"
-                        android:textColor="@color/black"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/speed_text_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:gravity="center"
+                            android:text="속도"
+                            android:textColor="@color/black"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="km/h"
+                            android:textColor="@color/secondarytext"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
             </android.support.design.card.MaterialCardView>
         </LinearLayout>
+
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:weightSum="2">-->
+
+        <!--<android.support.design.card.MaterialCardView-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="vertical"-->
+        <!--app:cardCornerRadius="8dp"-->
+        <!--app:cardElevation="8dp">-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical">-->
+
+
+        <!--<com.airbnb.lottie.LottieAnimationView-->
+        <!--android:id="@+id/animation_view"-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:paddingTop="80dp"-->
+        <!--app:lottie_autoPlay="true"-->
+        <!--app:lottie_colorFilter="@color/under_text"-->
+        <!--app:lottie_loop="true"-->
+        <!--app:lottie_rawRes="@raw/exploding_heart_v2" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/heart_rate_text_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:gravity="center"-->
+        <!--android:text="심박수"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:textSize="24sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:text="BPM"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:textSize="24sp"-->
+        <!--android:textStyle="bold" />-->
+        <!--</LinearLayout>-->
+        <!--</android.support.design.card.MaterialCardView>-->
+
+        <!--<android.support.design.card.MaterialCardView-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="vertical"-->
+        <!--app:cardCornerRadius="8dp"-->
+        <!--app:cardElevation="8dp">-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:orientation="vertical">-->
+
+        <!--<com.dreamwalker.gaugeview.GaugeView-->
+        <!--android:id="@+id/gauge_view"-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:background="#ffffff"-->
+        <!--app:needleHeight="0.40"-->
+        <!--app:needleWidth="0.010"-->
+        <!--app:scaleEndValue="100"-->
+        <!--app:scaleStartValue="0"-->
+        <!--app:showInnerRim="false"-->
+        <!--app:showOuterRim="false"-->
+        <!--app:showOuterShadow="false" />-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/speed_text_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:gravity="center"-->
+        <!--android:text="속도"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:textSize="24sp"-->
+        <!--android:textStyle="bold" />-->
+
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:text="km/h"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:textSize="24sp"-->
+        <!--android:textStyle="bold" />-->
+        <!--</LinearLayout>-->
+
+        <!--</android.support.design.card.MaterialCardView>-->
+        <!--</LinearLayout>-->
 
         <View
             android:layout_width="match_parent"

@@ -234,7 +234,11 @@
             android:name=".activity.fitnessloadtest.BikeScanActivity"
             android:screenOrientation="portrait"
             android:theme="@style/WriteGlucoseTheme" />
-        <activity android:name=".activity.fitnessloadtest.LoadTestActivity"></activity>
+        <activity android:name=".activity.fitnessloadtest.LoadTestActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/WriteGlucoseTheme">
+
+        </activity>
     </application>
 
 </manifest>
