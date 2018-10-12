@@ -141,4 +141,5 @@ dependencies {
     implementation project(':diarydatepicker')
     implementation project(':verticalintrov2')
     implementation project(':multiwaveview')
+    implementation project(':gaugeview')
 }
