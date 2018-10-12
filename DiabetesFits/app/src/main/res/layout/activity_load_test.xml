@@ -75,7 +75,7 @@
                 app:timeTextColor="#FFFFFF"
                 app:timeTextSize="30sp" />
         </LinearLayout>
-        
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp">
+            app:cardElevation="4dp">
 
             <TextView
                 android:id="@+id/guide_text_view"
@@ -111,7 +111,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -170,7 +170,7 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"

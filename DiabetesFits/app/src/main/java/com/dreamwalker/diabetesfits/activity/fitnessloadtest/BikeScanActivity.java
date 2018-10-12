@@ -12,8 +12,9 @@ import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -67,11 +68,17 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
     BluetoothAdapter bluetoothAdapter;
     BluetoothLeScanner bluetoothLeScanner;
 
+
+
+
     Handler handler;
 
     boolean mScanning;
 
-    SharedPreferences preferences;
+    MediaPlayer mediaPlayer;
+    AudioManager audioManager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +95,8 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
             builder.show();
         });
         multiWaveHeader.setScaleY(-1f);
+        mediaPlayer = MediaPlayer.create(this, R.raw.load_test_scan_voice);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         bleDeviceList = new ArrayList<>();
         scanResultArrayList = new ArrayList<>();
@@ -108,6 +117,9 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
+            if (audioManager.getRingerMode() != AudioManager.ADJUST_MUTE){
+                mediaPlayer.start();
+            }
             adapter = new DeviceScanAdapterV2(bleDeviceList, scanResultArrayList, this);
             recyclerView.setAdapter(adapter);
             scanLeDevice(true);
@@ -337,5 +349,14 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
     @Override
     public void onItemLongClick(View v, int position) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        super.onDestroy();
     }
 }
