@@ -188,8 +188,6 @@ public class LoadTestActivity extends AppCompatActivity implements IActivityBasi
 //                    meanSpeedTextView.setText(meanSpeedMsg);
 //                    speedCount++;
 //                }
-
-
             } else if (EZBLEService.ACTION_TREADMILL_AVAILABLE.equals(action)) {
                 String totalDistance = intent.getStringExtra(EZBLEService.EXTRA_DATA);
 //                totalDistanceTextView.setText(totalDistance);
