@@ -68,16 +68,12 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
     BluetoothAdapter bluetoothAdapter;
     BluetoothLeScanner bluetoothLeScanner;
 
-
-
-
     Handler handler;
 
     boolean mScanning;
 
     MediaPlayer mediaPlayer;
     AudioManager audioManager;
-
 
 
     @Override
@@ -141,7 +137,6 @@ public class BikeScanActivity extends AppCompatActivity implements IActivityBasi
         bindView();
         initToasty();
     }
-
 
     private void initToasty() {
         Toasty.Config.getInstance().apply();
